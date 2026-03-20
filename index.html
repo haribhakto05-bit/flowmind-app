@@ -3450,7 +3450,7 @@ function enterApp() {
   const n = document.getElementById('nameInput') ? document.getElementById('nameInput').value.trim() : '';
   userName = n || 'Friend';
   localStorage.setItem('fm_name', userName);
-  window.startApp();
+  startApp();
 }
 
 function startApp() {
@@ -7033,12 +7033,10 @@ function handleQuickEnter() {
   const n = document.getElementById('quickName').value.trim();
   if (!n) { toast('⚠️ Please enter your name'); return; }
   userName=n; localStorage.setItem('fm_name',userName);
-  animateIntoApp(); setTimeout(()=>startApp(),400);
+  startApp();
 }
 
-// 10. Override startApp to use animated transition
-const _origStartApp = startApp;
-window.startApp = function() { animateIntoApp(); setTimeout(_origStartApp,400); };
+
 
 // Close modal on outside click
 document.getElementById('pricingModal').addEventListener('click', function(e) {
