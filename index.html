@@ -3367,8 +3367,6 @@ async function firebaseLogout() {
   setBtnLoading('signInBtn', false, 'Sign In →');
   window.onFirebaseLogout();
 }
-}
-
 window.onFirebaseLogin = async function(user) {
   userName = user.displayName || user.email.split('@')[0] || 'Friend';
 
