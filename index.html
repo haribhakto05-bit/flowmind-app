@@ -3364,7 +3364,9 @@ async function firebaseLogout() {
   if (window._fbAuth) {
     try { await window._fbAuth.signOut(); } catch(e) {}
   }
+  setBtnLoading('signInBtn', false, 'Sign In →');
   window.onFirebaseLogout();
+}
 }
 
 window.onFirebaseLogin = async function(user) {
