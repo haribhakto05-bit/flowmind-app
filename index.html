@@ -7032,7 +7032,9 @@ function handleQuickEnter() {
   userName=n; localStorage.setItem('fm_name',userName);
 animateIntoApp(); setTimeout(()=>startApp(),400);
 }
-
+// 10. Override startApp to use animated transition
+const _origStartApp = startApp;
+window.startApp = function() { animateIntoApp(); setTimeout(_origStartApp,400); };
 
 
 // Close modal on outside click
