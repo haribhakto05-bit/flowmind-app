@@ -7030,7 +7030,7 @@ function handleQuickEnter() {
   const n = document.getElementById('quickName').value.trim();
   if (!n) { toast('⚠️ Please enter your name'); return; }
   userName=n; localStorage.setItem('fm_name',userName);
-  startApp();
+animateIntoApp(); setTimeout(()=>startApp(),400);
 }
 
 
