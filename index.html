@@ -3470,15 +3470,19 @@ function startApp() {
   setInterval(updateClock, 1000);
 
   const greet = getGreeting();
-  document.getElementById('greeting').innerHTML = `${greet}, <strong>${esc(userName)}</strong>`;
-  document.getElementById('greetName').textContent = userName;
+  const greetEl = document.getElementById('greeting');
+  const greetNameEl = document.getElementById('greetName');
+  const welcomeEl = document.getElementById('welcomeBubble');
+  const apiKeyInputEl = document.getElementById('apiKeyInput');
+  const reportDateEl = document.getElementById('reportDate');
 
-  document.getElementById('welcomeBubble').innerHTML =
+  if (greetEl) greetEl.innerHTML = `${greet}, <strong>${esc(userName)}</strong>`;
+  if (greetNameEl) greetNameEl.textContent = userName;
+  if (welcomeEl) welcomeEl.innerHTML =
     `Hey ${esc(userName)}! 👋 I'm your FlowMind AI. ${apiKey
       ? "I'm connected and ready — what's on your mind? You can attach images, PDFs or text files using the attach button."
       : "Set your Groq API key (top right) to activate me, then let's get to work!"}`;
-
-  if (apiKey) document.getElementById('apiKeyInput').value = apiKey;
+  if (apiKey && apiKeyInputEl) apiKeyInputEl.value = apiKey;
 
   updateStatus(true);
   updatePlanUI();
@@ -3486,10 +3490,21 @@ function startApp() {
   renderWealth();
   renderGoals();
   updateSidebar();
-  document.getElementById('reportDate').textContent = 'All Time · ' + new Date().toLocaleDateString('en-US',
+  if (reportDateEl) reportDateEl.textContent = 'All Time · ' + new Date().toLocaleDateString('en-US',
     { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
-  document.getElementById('goalTitleInput').addEventListener('keydown', e => { if (e.key==='Enter') addGoal(); });
+  const goalTitleEl   = document.getElementById('goalTitleInput');
+  const goalDescEl    = document.getElementById('goalDescInput');
+  const assetNameEl   = document.getElementById('assetNameInput');
+  const assetValEl    = document.getElementById('assetValInput');
+  const taskTitleEl   = document.getElementById('taskTitleInput');
+
+  if (goalTitleEl)  goalTitleEl.addEventListener('keydown',  e => { if (e.key==='Enter') addGoal(); });
+  if (goalDescEl)   goalDescEl.addEventListener('keydown',   e => { if (e.key==='Enter') addGoal(); });
+  if (assetNameEl)  assetNameEl.addEventListener('keydown',  e => { if (e.key==='Enter') addAsset(); });
+  if (assetValEl)   assetValEl.addEventListener('keydown',   e => { if (e.key==='Enter') addAsset(); });
+  if (taskTitleEl)  taskTitleEl.addEventListener('keydown',  e => { if (e.key==='Enter') addTask(); });
+
   initQuiz();
   renderMotivationBanners();
 
@@ -3498,10 +3513,6 @@ function startApp() {
     const wrap = document.getElementById('attachWrap');
     if (wrap && !wrap.contains(e.target)) closeAttachMenu();
   });
-  document.getElementById('goalDescInput').addEventListener('keydown',  e => { if (e.key==='Enter') addGoal(); });
-  document.getElementById('assetNameInput').addEventListener('keydown', e => { if (e.key==='Enter') addAsset(); });
-  document.getElementById('assetValInput').addEventListener('keydown',  e => { if (e.key==='Enter') addAsset(); });
-  document.getElementById('taskTitleInput').addEventListener('keydown', e => { if (e.key==='Enter') addTask(); });
 }
 
 // ─── SIDEBAR & MOBILE ────────────────────────────────────────
@@ -5332,30 +5343,23 @@ VOICE RULES (non-negotiable):
   // Try Groq first (same key already connected, free & fast, no quota issues)
   if (apiKey) {
     try {
-     const token = await getAuthToken();
-if (!token) {
-  document.getElementById('typing').classList.remove('show');
-  addMsg('ai', '❌ Please sign in to use AI chat.');
-  document.getElementById('sendBtn').disabled = false;
-  return;
-}
-
-const res = await fetch(`${BACKEND_URL}/api/chat`, {
-  method: 'POST',
-  headers: {
-    'Content-Type':  'application/json',
-    'Authorization': `Bearer ${token}`,
-  },
-  body: JSON.stringify({
-    messages:         apiMessages,
-    attachmentBase64: currentAttachmentBase64 || undefined,
-    attachmentMime:   currentAttachmentMime   || undefined,
-  }),
-});
-const data = await res.json();
-if (!res.ok) throw new Error(data.message || 'Server error');
-let reply = data.reply;
-  liveChatHistory.push({ role: 'assistant', content: reply });
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [{ role: 'system', content: systemPrompt }, ...liveChatHistory],
+          temperature: 0.7,
+          max_tokens: 200
+        })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message || 'Groq error');
+      let reply = data.choices?.[0]?.message?.content || "Sorry, I didn't catch that.";
+      liveChatHistory.push({ role: 'assistant', content: reply });
       setLiveTranscript(reply, 'ai-text');
       speakLiveReply(reply);
       return;
@@ -6682,7 +6686,8 @@ async function startPayment(tier) {
     new Razorpay(options).open();
 
   } catch (err) {
-    toast('❌ Payment error: ' + err.message);
+    console.error('Payment error:', err);
+    toast('⚠️ Payment server unreachable. Please check your internet and try again. If the problem persists, contact support.');
   }
 }
 // ─── FREE PLAN LIMIT CHECKS ──────────────────────────────────
@@ -7009,21 +7014,24 @@ function animateIntoApp() {
   const landing = document.getElementById('landing');
   const app = document.getElementById('app');
   const card = document.getElementById('authBox');
-  // Stop listening to live stats — user is now inside the app
   detachLiveStatsListener();
+  // Show app immediately so DOM elements are accessible
+  app.classList.add('show');
+  app.style.display = 'flex';
+  app.style.opacity = '0';
+  app.style.transition = 'opacity 0.5s ease';
   if (card) {
-    card.style.transition='transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease';
-    card.style.transform='scale(1.03)';
-    card.style.boxShadow='0 0 80px rgba(245,200,66,0.25), 0 40px 100px rgba(0,0,0,0.6)';
+    card.style.transition = 'transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease';
+    card.style.transform = 'scale(1.03)';
+    card.style.boxShadow = '0 0 80px rgba(245,200,66,0.25), 0 40px 100px rgba(0,0,0,0.6)';
   }
   setTimeout(() => {
     landing.classList.add('hide');
-    app.classList.add('show');
-    app.style.display='flex';
-    app.style.opacity='0';
-    app.style.transition='opacity 0.5s ease';
-    setTimeout(() => { app.style.opacity='1'; setTimeout(()=>landing.classList.add('gone'),650); }, 80);
-  }, 350);
+    setTimeout(() => {
+      app.style.opacity = '1';
+      setTimeout(() => landing.classList.add('gone'), 650);
+    }, 80);
+  }, 300);
 }
 
 // 9. Wrappers
