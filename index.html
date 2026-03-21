@@ -3367,6 +3367,7 @@ async function firebaseLogout() {
   setBtnLoading('signInBtn', false, 'Sign In →');
   window.onFirebaseLogout();
 }
+
 window.onFirebaseLogin = async function(user) {
   userName = user.displayName || user.email.split('@')[0] || 'Friend';
 
@@ -3394,8 +3395,8 @@ window.onFirebaseLogin = async function(user) {
       if (data.apiKey) { apiKey = data.apiKey; localStorage.setItem('fm_apikey', apiKey); }
     }
   } catch(e) { console.log('Firestore load error', e); }
-  // Use window.startApp so the animated transition override is always called
-  window.startApp();
+  animateIntoApp();
+  setTimeout(startApp, 400);
 };
 
 window.onFirebaseLogout = function() {
@@ -3441,7 +3442,8 @@ function quickEnter() {
   const n = document.getElementById('quickName').value.trim();
   userName = n || 'Friend';
   localStorage.setItem('fm_name', userName);
-  window.startApp();
+  animateIntoApp();
+  setTimeout(startApp, 400);
 }
 
 function enterApp() {
@@ -7020,7 +7022,8 @@ function animateIntoApp() {
     app.style.display='flex';
     app.style.opacity='0';
     app.style.transition='opacity 0.5s ease';
-    setTimeout(() => { app.style.opacity='1'; setTimeout(()=>landing.classList.add('gone'),650); }, 80);350);
+    setTimeout(() => { app.style.opacity='1'; setTimeout(()=>landing.classList.add('gone'),650); }, 80);
+  }, 350);
 }
 
 // 9. Wrappers
@@ -7030,12 +7033,9 @@ function handleQuickEnter() {
   const n = document.getElementById('quickName').value.trim();
   if (!n) { toast('⚠️ Please enter your name'); return; }
   userName=n; localStorage.setItem('fm_name',userName);
-animateIntoApp(); setTimeout(()=>startApp(),400);
+  animateIntoApp();
+  setTimeout(startApp, 400);
 }
-// 10. Override startApp to use animated transition
-const _origStartApp = startApp;
-window.startApp = function() { animateIntoApp(); setTimeout(_origStartApp,400); };
-
 
 // Close modal on outside click
 document.getElementById('pricingModal').addEventListener('click', function(e) {
