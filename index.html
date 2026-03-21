@@ -56,7 +56,7 @@ function initFirebase() {
       }
     });
 
-    // ── Attach live stats listener now that _fbDb is definitely ready ──
+    // -- Attach live stats listener now that _fbDb is definitely ready --
     if (typeof attachLiveStatsListener === 'function') {
       attachLiveStatsListener();
     }
@@ -103,12 +103,12 @@ html, body {
   overflow: hidden;
 }
 
-/* ── SCROLLBARS ── */
+/* -- SCROLLBARS -- */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--line2); border-radius: 4px; }
 
-/* ── NOISE TEXTURE OVERLAY ── */
+/* -- NOISE TEXTURE OVERLAY -- */
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -118,7 +118,7 @@ body::before {
   opacity: 0.4;
 }
 
-/* ── AMBIENT GLOW ── */
+/* -- AMBIENT GLOW -- */
 .ambient {
   position: fixed;
   border-radius: 50%;
@@ -132,9 +132,9 @@ body::before {
 @keyframes drift1 { to { transform: translate(40px, 30px); } }
 @keyframes drift2 { to { transform: translate(-30px, -40px); } }
 
-/* ══════════════════════════════════════════
+/* ------------------------------------------
    FULLSCREEN TWO-COLUMN PREMIUM LANDING
-══════════════════════════════════════════ */
+------------------------------------------ */
 
 #landing {
   position: fixed; inset: 0;
@@ -151,7 +151,7 @@ body::before {
 .landing-left::-webkit-scrollbar { width: 0; }
 .landing-left { scrollbar-width: none; }
 
-/* ── Ambient orbs — now inside #landing so they auto-hide with it ── */
+/* -- Ambient orbs — now inside #landing so they auto-hide with it -- */
 .landing-orb { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(100px); opacity: 0; z-index: 0; }
 .landing-orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(245,200,66,0.14), transparent 70%); top: -200px; left: -200px; animation: orbReveal1 2s ease 0.3s forwards, orbFloat1 16s ease-in-out 2s infinite alternate; }
 .landing-orb-2 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(91,143,255,0.12), transparent 70%); bottom: -200px; right: -100px; animation: orbReveal2 2s ease 0.6s forwards, orbFloat2 19s ease-in-out 2s infinite alternate; }
@@ -163,7 +163,7 @@ body::before {
 @keyframes orbFloat2  { to { transform: translate(-50px, -60px); } }
 @keyframes orbFloat3  { to { transform: translate(calc(-50% + 40px), calc(-50% + 30px)); } }
 
-/* ── LEFT PANEL — Login ── */
+/* -- LEFT PANEL — Login -- */
 .landing-left {
   width: 480px;
   min-width: 420px;
@@ -197,7 +197,7 @@ body::before {
   background: linear-gradient(to bottom, transparent, rgba(245,200,66,0.15), rgba(91,143,255,0.12), transparent);
 }
 
-/* ── RIGHT PANEL — Preview ── */
+/* -- RIGHT PANEL — Preview -- */
 .landing-right {
   flex: 1;
   height: 100%;
@@ -225,7 +225,7 @@ body::before {
 }
 .preview-headline p { font-size: 12px; color: var(--silver); letter-spacing: 1px; text-transform: uppercase; }
 
-/* ── Preview grid ── */
+/* -- Preview grid -- */
 .preview-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -235,7 +235,7 @@ body::before {
   max-width: 620px;
 }
 
-/* ── Preview cards ── */
+/* -- Preview cards -- */
 .preview-card {
   background: rgba(22,22,31,0.65);
   border: 1px solid rgba(255,255,255,0.07);
@@ -297,7 +297,7 @@ body::before {
 }
 .preview-card-title span { font-size: 14px; }
 
-/* ── Pie charts ── */
+/* -- Pie charts -- */
 .pie-wrap {
   display: flex;
   align-items: center;
@@ -312,7 +312,7 @@ body::before {
 .pie-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .pie-legend-val { margin-left: auto; font-family: 'JetBrains Mono',monospace; font-size: 11px; color: var(--gold); font-weight: 600; }
 
-/* ── Future plan roadmap ── */
+/* -- Future plan roadmap -- */
 .roadmap { display: flex; gap: 0; width: 100%; position: relative; }
 .roadmap::before {
   content: '';
@@ -349,7 +349,7 @@ body::before {
 .roadmap-label-sub { font-size: 10px; color: var(--silver); }
 .roadmap-step:hover .roadmap-dot { transform: scale(1.15); box-shadow: 0 0 22px rgba(245,200,66,0.18); }
 
-/* ── Stat counters row ── */
+/* -- Stat counters row -- */
 .preview-stats-row {
   display: flex;
   gap: 16px;
@@ -377,7 +377,7 @@ body::before {
 }
 .preview-stat-label { font-size: 10px; color: var(--silver); letter-spacing: 0.5px; }
 
-/* ── Ticker / scroll text ── */
+/* -- Ticker / scroll text -- */
 .preview-ticker {
   width: 100%;
   max-width: 620px;
@@ -398,7 +398,7 @@ body::before {
 .ticker-item:hover { transform: translateY(-2px); border-color: rgba(245,200,66,0.18); color: var(--text2); }
 .ticker-item .ti-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0.7; box-shadow: 0 0 12px rgba(245,200,66,0.35); }
 
-/* ── Login card inner ── */
+/* -- Login card inner -- */
 .landing-inner {
   position: relative;
   text-align: center;
@@ -419,7 +419,7 @@ body::before {
 .landing-inner:hover { border-color: rgba(245,200,66,0.14); box-shadow: 0 40px 100px rgba(0,0,0,0.65), 0 0 50px rgba(245,200,66,0.06); }
 @keyframes loginReveal { to { opacity: 1; transform: translateX(0) scale(1); } }
 
-/* ── Logo mark ── */
+/* -- Logo mark -- */
 .landing-logo-wrap {
   display: flex; align-items: center; justify-content: center; gap: 10px;
   margin-bottom: 24px; opacity: 0;
@@ -478,7 +478,7 @@ body::before {
 
 .quick-enter-wrap { opacity:0; animation:fadeSlideUp 0.6s ease 2.4s forwards; }
 
-/* ── Mobile: stack vertically ── */
+/* -- Mobile: stack vertically -- */
 @media(max-width:900px) {
   #landing { flex-direction: column; overflow-y: auto; }
   .landing-left { width:100%; min-width:0; height:auto; padding:32px 20px; border-right:none; }
@@ -490,7 +490,7 @@ body::before {
   .roadmap::before { display:none; }
 }
 
-/* ── APP SHELL ── */
+/* -- APP SHELL -- */
 #app {
   display: none;
   height: 100vh;
@@ -498,7 +498,7 @@ body::before {
 }
 #app.show { display: flex; }
 
-/* ── TOPBAR ── */
+/* -- TOPBAR -- */
 .topbar {
   display: flex;
   align-items: center;
@@ -585,10 +585,10 @@ body::before {
 }
 .api-btn:hover { background: var(--gold2); transform: translateY(-1px); }
 
-/* ── MAIN LAYOUT ── */
+/* -- MAIN LAYOUT -- */
 .main { display: flex; flex: 1; overflow: hidden; position: relative; }
 
-/* ── SIDEBAR ── */
+/* -- SIDEBAR -- */
 .sidebar {
   width: 220px;
   background: var(--ink2);
@@ -653,12 +653,12 @@ body::before {
 .mini-stat-val.green { color: var(--green); }
 .mini-stat-val.blue { color: var(--blue); }
 
-/* ── CONTENT ── */
+/* -- CONTENT -- */
 .content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .panel { display: none; flex-direction: column; flex: 1; overflow: hidden; }
 .panel.active { display: flex; }
 
-/* ── CHAT PANEL ── */
+/* -- CHAT PANEL -- */
 .chat-header {
   padding: 16px 24px;
   border-bottom: 1px solid var(--line);
@@ -734,7 +734,7 @@ body::before {
   font-size: 12px;
   color: var(--green);
 }
-/* ── Markdown bullet lines in chat ── */
+/* -- Markdown bullet lines in chat -- */
 .msg-heading {
   font-weight: 700;
   color: var(--text);
@@ -930,7 +930,7 @@ body::before {
 }
 .clear-attach-btn:hover { transform: scale(1.15); }
 
-/* ── TASKS PANEL ── */
+/* -- TASKS PANEL -- */
 .panel-topbar {
   padding: 20px 24px;
   border-bottom: 1px solid var(--line);
@@ -1068,7 +1068,7 @@ body::before {
   cursor: pointer;
 }
 
-/* ── WEALTH PANEL ── */
+/* -- WEALTH PANEL -- */
 .wealth-overview {
   padding: 24px;
   background: linear-gradient(135deg, rgba(245,200,66,0.06), rgba(245,160,32,0.03));
@@ -1141,7 +1141,7 @@ body::before {
 }
 .asset-del:hover { color: var(--red); background: rgba(255,91,91,0.08); }
 
-/* ── GOALS PANEL ── */
+/* -- GOALS PANEL -- */
 .goals-grid {
   flex: 1;
   overflow-y: auto;
@@ -1202,7 +1202,7 @@ body::before {
 }
 .goal-update-btn:hover { border-color: var(--blue); color: var(--blue); }
 
-/* ── GOAL DONE BUTTON ── */
+/* -- GOAL DONE BUTTON -- */
 .goal-done-btn {
   margin-top: 8px;
   background: transparent;
@@ -1219,7 +1219,7 @@ body::before {
 }
 .goal-done-btn:hover { background: rgba(61,255,160,0.1); border-color: var(--green); }
 
-/* ── COMPLETED GOAL CARD ── */
+/* -- COMPLETED GOAL CARD -- */
 .goal-card.completed {
   opacity: 0.78;
   border-color: rgba(61,255,160,0.25);
@@ -1257,7 +1257,7 @@ body::before {
 }
 .goal-undo-btn:hover { border-color: var(--line2); color: var(--text); }
 
-/* ── SECTION DIVIDERS IN GOALS GRID ── */
+/* -- SECTION DIVIDERS IN GOALS GRID -- */
 .goals-section-label {
   grid-column: 1 / -1;
   font-size: 10px;
@@ -1288,7 +1288,7 @@ body::before {
 }
 .goal-card.pop { animation: goalPop 0.45s ease; }
 
-/* ── REPORT PANEL ── */
+/* -- REPORT PANEL -- */
 .report-body { flex: 1; overflow-y: auto; padding: 24px; }
 .report-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--silver); margin-bottom: 20px; }
 .report-section { margin-bottom: 28px; }
@@ -1330,7 +1330,7 @@ body::before {
 .gen-report-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(168,85,247,0.3); }
 .gen-report-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-/* ── AI LIFE SCORE ── */
+/* -- AI LIFE SCORE -- */
 .life-score-card {
   background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(91,143,255,0.08));
   border: 1px solid rgba(168,85,247,0.3);
@@ -1358,7 +1358,7 @@ body::before {
 .weekly-stat-label { font-size: 13px; color: var(--text2); }
 .weekly-stat-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--green); }
 
-/* ── EMPTY STATE ── */
+/* -- EMPTY STATE -- */
 .empty {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -1368,7 +1368,7 @@ body::before {
 .empty-icon { font-size: 48px; opacity: 0.25; }
 .empty-text { font-size: 14px; }
 
-/* ── MODAL ── */
+/* -- MODAL -- */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,0.75);
@@ -1436,7 +1436,7 @@ body::before {
 }
 .range-val { font-family: 'JetBrains Mono', monospace; font-size: 20px; color: var(--blue); text-align: center; margin-bottom: 16px; }
 
-/* ── MOBILE ── */
+/* -- MOBILE -- */
 @media (max-width: 680px) {
   .sidebar {
     position: absolute; top: 0; left: 0; height: 100%;
@@ -1504,7 +1504,7 @@ body::before {
   .quiz-opt { padding: 10px 12px; font-size: 13px; }
 }
 
-/* ── VOICE & TTS ── */
+/* -- VOICE & TTS -- */
 .mic-btn {
   width: 48px; height: 48px;
   background: var(--ink3);
@@ -1535,7 +1535,7 @@ body::before {
 .tts-btn:hover { color: var(--blue); background: rgba(91,143,255,0.1); }
 .tts-btn.speaking { color: var(--blue); }
 
-/* ── SAVED CHATS PANEL ── */
+/* -- SAVED CHATS PANEL -- */
 .saved-chats-panel {
   position: fixed; top: 58px; right: 0; bottom: 0;
   width: 320px;
@@ -1610,7 +1610,7 @@ body::before {
 .history-btn:hover { border-color: var(--gold); color: var(--gold); }
 .empty-saved { text-align: center; color: var(--silver); font-size: 13px; padding: 40px 20px; }
 
-/* ── CHARTS ── */
+/* -- CHARTS -- */
 .chart-wrapper {
   background: var(--ink2);
   border: 1px solid var(--line);
@@ -1628,7 +1628,7 @@ body::before {
 .chart-title-label { font-size: 11px; font-weight: 700; color: var(--silver); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
 .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
 
-/* ── VOICE STATUS ── */
+/* -- VOICE STATUS -- */
 .voice-status {
   display: none;
   font-size: 11px;
@@ -1650,7 +1650,7 @@ body::before {
   border-color: rgba(61,255,160,0.25);
 }
 
-/* ── SEND BUTTON ── */
+/* -- SEND BUTTON -- */
 .send-btn {
   width: 48px;
   height: 48px;
@@ -1681,7 +1681,7 @@ body::before {
   box-shadow: none;
 }
 
-/* ── ATTACH BUTTON & MENU ── */
+/* -- ATTACH BUTTON & MENU -- */
 .attach-wrap {
   position: relative;
   flex-shrink: 0;
@@ -1775,7 +1775,7 @@ body::before {
 }
 
 
-/* ── REPORT PERIOD TABS ── */
+/* -- REPORT PERIOD TABS -- */
 .report-period-tabs { display:flex; gap:6px; flex-wrap:wrap; }
 .rp-tab {
   background: var(--ink3); border: 1px solid var(--line);
@@ -1786,7 +1786,7 @@ body::before {
 .rp-tab:hover { border-color: var(--gold); color: var(--gold); }
 .rp-tab.active { background: var(--gold); color: var(--ink); border-color: var(--gold); font-weight: 700; }
 
-/* ── GAMES ── */
+/* -- GAMES -- */
 .games-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap:18px; align-content:start; }
 .game-card { background:var(--ink2); border:1px solid var(--line); border-radius:var(--r2); padding:22px; transition:all 0.2s; animation:fadeUp 0.3s ease; display:flex; flex-direction:column; gap:10px; }
 .game-card:hover { border-color:var(--line2); transform:translateY(-2px); box-shadow:var(--shadow); }
@@ -1854,7 +1854,7 @@ body::before {
 }
 .toast.show { opacity: 1; pointer-events: all; }
 
-/* ── LIVE VOICE CHAT ── */
+/* -- LIVE VOICE CHAT -- */
 .live-voice-btn {
   background: linear-gradient(135deg,#a855f7,#5b8fff);
   color:#fff; border:none; padding:6px 14px;
@@ -1976,7 +1976,7 @@ body::before {
 }
 .live-hint { font-size:12px; color:rgba(255,255,255,0.22); text-align:center; font-family:'Cabinet Grotesk',sans-serif; }
 
-/* ── PRICING MODAL ── */
+/* -- PRICING MODAL -- */
 .pricing-modal-overlay {
   position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;
   display:none;align-items:center;justify-content:center;padding:16px;
@@ -2076,7 +2076,7 @@ body::before {
 }
 .unlock-btn:hover { background:var(--gold2);transform:translateY(-2px); }
 
-/* ── LIGHT MODE ── */
+/* -- LIGHT MODE -- */
 body.light-mode {
   --ink:   #f5f5f7;
   --ink2:  #ffffff;
@@ -2098,11 +2098,11 @@ body.light-mode #chatInput { background: transparent; color: var(--text); }
 body.light-mode .card { background: #ffffff; border-color: rgba(0,0,0,0.08); }
 body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient-3 { opacity: 0.03; }
 
-/* ══════════════════════════════════════════
+/* ------------------------------------------
    MOBILE RESPONSIVE — COMPLETE OVERHAUL
-══════════════════════════════════════════ */
+------------------------------------------ */
 
-/* ── Topbar mobile ── */
+/* -- Topbar mobile -- */
 @media (max-width: 680px) {
   .topbar {
     padding: 0 12px;
@@ -2115,11 +2115,11 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   .status-pill { padding: 4px 8px; font-size: 11px; }
   #planBadge { font-size: 10px; padding: 3px 7px; }
 
-  /* ── App layout ── */
+  /* -- App layout -- */
   #app { height: 100dvh; }
   .main { height: calc(100dvh - 52px); }
 
-  /* ── Sidebar ── */
+  /* -- Sidebar -- */
   .sidebar {
     position: fixed;
     left: -260px;
@@ -2133,13 +2133,13 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   }
   .sidebar.open { left: 0; }
 
-  /* ── Content panels ── */
+  /* -- Content panels -- */
   .content { width: 100%; }
   .panel { padding: 0; }
   .panel-topbar { padding: 12px 14px; gap: 8px; flex-wrap: wrap; }
   .panel-heading { font-size: 16px; }
 
-  /* ── Chat panel ── */
+  /* -- Chat panel -- */
   .chat-header {
     padding: 10px 12px;
     flex-wrap: wrap;
@@ -2170,22 +2170,22 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   #chatInput { font-size: 14px; min-height: 38px; padding: 8px 10px; }
   .send-btn { width: 42px; height: 42px; font-size: 16px; border-radius: 12px; }
 
-  /* ── Tasks ── */
+  /* -- Tasks -- */
   .task-list { padding: 12px 10px; }
   .add-form { padding: 12px 14px; }
   .filter-tabs { padding: 8px 14px 0; }
 
-  /* ── Wealth ── */
+  /* -- Wealth -- */
   .wealth-overview { padding: 16px 14px; }
   .wealth-total-val { font-size: 32px; }
   .wealth-grid { padding: 12px 10px; grid-template-columns: 1fr 1fr; gap: 10px; }
   .asset-card { padding: 14px; }
   .asset-value { font-size: 20px; }
 
-  /* ── Goals ── */
+  /* -- Goals -- */
   .goals-grid { padding: 12px 10px; grid-template-columns: 1fr; gap: 12px; }
 
-  /* ── Reports ── */
+  /* -- Reports -- */
   .report-topbar { padding: 12px 14px; flex-wrap: wrap; gap: 8px; }
   .report-body { padding: 12px 10px; }
   .report-period-tabs { gap: 4px; }
@@ -2193,20 +2193,20 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   .charts-grid { grid-template-columns: 1fr; }
   #genReportBtn { font-size: 12px; padding: 8px 14px; }
 
-  /* ── Modals ── */
+  /* -- Modals -- */
   .modal { padding: 20px 16px; margin: 12px; border-radius: 16px; }
   .modal h2 { font-size: 18px; }
 
-  /* ── Pricing modal ── */
+  /* -- Pricing modal -- */
   .pricing-modal { padding: 20px 14px; border-radius: 16px; }
   .pricing-modal-headline { font-size: 22px; }
   .plans-grid { grid-template-columns: 1fr !important; gap: 12px; }
   .compare-table { font-size: 11px; }
 
-  /* ── Saved chats panel ── */
+  /* -- Saved chats panel -- */
   .saved-chats-panel { width: 100% !important; right: 0 !important; top: 52px !important; bottom: 0; border-radius: 0; }
 
-  /* ── Landing page ── */
+  /* -- Landing page -- */
   #landing { flex-direction: column; overflow-y: auto; }
   .landing-left {
     width: 100%;
@@ -2222,11 +2222,11 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   .auth-tabs { margin-bottom: 16px; }
   .landing-name-input { font-size: 14px; padding: 10px 14px; }
 
-  /* ── Toast ── */
+  /* -- Toast -- */
   .toast { bottom: 14px; right: 12px; left: 12px; max-width: unset; font-size: 12px; }
 }
 
-/* ── Small tablet adjustments ── */
+/* -- Small tablet adjustments -- */
 @media (min-width: 681px) and (max-width: 900px) {
   .sidebar { width: 200px; }
   .nav-item { font-size: 13px; }
@@ -2349,7 +2349,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   <div class="landing-orb landing-orb-3"></div>
   
 
-  <!-- ══ LEFT — Login ══ -->
+  <!-- -- LEFT — Login -- -->
   <div class="landing-left">
     <div class="landing-inner" id="authBox">
 
@@ -2414,7 +2414,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
     </div>
   </div>
 
-  <!-- ══ RIGHT — Live Preview ══ -->
+  <!-- -- RIGHT — Live Preview -- -->
   <div class="landing-right">
 
     <div class="preview-headline">
@@ -2567,7 +2567,6 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         <button class="nav-item" onclick="switchPanel('report',this)">
           <span class="nav-icon">📊</span> Reports
         </button>
-        <!-- Games & Quiz: hidden in v1 — re-enable when fully polished
         <button class="nav-item" onclick="switchPanel('games',this)">
           <span class="nav-icon">🎮</span> Games
         </button>
@@ -2575,7 +2574,6 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
           <span class="nav-icon">🧠</span> Daily Quiz
           <span class="nav-badge" id="quizBadge" style="display:none;background:var(--green);color:var(--ink);">NEW</span>
         </button>
-        -->
       </div>
       <div class="sidebar-section">
         <div class="sidebar-label">Live Stats</div>
@@ -2901,7 +2899,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   </div>
 </div>
 
-<!-- ── LIMIT REACHED OVERLAY (with full pricing) ── -->
+<!-- -- LIMIT REACHED OVERLAY (with full pricing) -- -->
 <div id="limitOverlay" style="display:none;position:fixed;inset:0;z-index:2500;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);align-items:flex-start;justify-content:center;overflow-y:auto;padding:20px 16px;">
   <div style="background:var(--ink2);border:1px solid var(--line2);border-radius:var(--r3);padding:32px 28px;max-width:680px;width:100%;animation:fadeUp 0.4s ease;margin:auto;">
 
@@ -3102,7 +3100,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
 </div>
 
 <script>
-// ─── BACKEND CONFIG ─────────────────────────
+// --- BACKEND CONFIG -------------------------
 const BACKEND_URL = 'https://flowmind-backend-production.up.railway.app';
 
 async function getAuthToken() {
@@ -3110,7 +3108,7 @@ async function getAuthToken() {
   try { return await window._fbCurrentUser.getIdToken(true); }
   catch { return null; }
 }
-// ─── STATE ──────────────────────────────────────────────────
+// --- STATE --------------------------------------------------
 let userName   = localStorage.getItem('fm_name')   || '';
 let apiKey     = localStorage.getItem('fm_apikey') || '';
 let tasks      = JSON.parse(localStorage.getItem('fm_tasks')  || '[]');
@@ -3140,7 +3138,7 @@ let currentAttachmentBase64 = null;
 let currentAttachmentMime = null;
 let currentAttachmentIsText = false;
 
-// ─── HELPERS ─────────────────────────────────────────────────
+// --- HELPERS -------------------------------------------------
 function esc(str) {
   return String(str)
     .replace(/&/g,'&amp;')
@@ -3171,7 +3169,7 @@ function getChatTitle() {
   return title;
 }
 
-// ─── INIT ────────────────────────────────────────────────────
+// --- INIT ----------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
   // Always show login screen first
   const landing = document.getElementById('landing');
@@ -3183,7 +3181,7 @@ document.addEventListener('DOMContentLoaded', () => {
   app.classList.remove('show');
 });
 
-// ─── FIREBASE AUTH ────────────────────────────────────────────
+// --- FIREBASE AUTH --------------------------------------------
 
 function switchAuthTab(tab) {
   const isLogin = tab === 'login';
@@ -3246,7 +3244,7 @@ async function firebaseSignup() {
       await window._fbDb.collection('users').doc(cred.user.uid).set({
         name, email, createdAt: new Date().toISOString()
       });
-      // ── Increment global user count ──
+      // -- Increment global user count --
       incrementGlobalStat('totalUsers', 1);
     } catch(fe) { console.log('Firestore save skipped', fe); }
   } catch(e) {
@@ -3371,7 +3369,7 @@ async function firebaseLogout() {
 window.onFirebaseLogin = async function(user) {
   userName = user.displayName || user.email.split('@')[0] || 'Friend';
 
-  // ── Wipe any stale data from previous session / different account FIRST ──
+  // -- Wipe any stale data from previous session / different account FIRST --
   const prevUid = localStorage.getItem('fm_uid');
   if (prevUid && prevUid !== user.uid) {
     // Different user — clear everything before loading new user's data
@@ -3393,6 +3391,8 @@ window.onFirebaseLogin = async function(user) {
       if (data.assets) { assets = data.assets; localStorage.setItem('fm_assets', JSON.stringify(assets)); }
       if (data.goals)  { goals  = data.goals;  localStorage.setItem('fm_goals',  JSON.stringify(goals));  }
       if (data.apiKey) { apiKey = data.apiKey; localStorage.setItem('fm_apikey', apiKey); }
+      // ✅ CRITICAL: Read plan from Firestore so Premium/Pro persists after login
+      if (data.plan) { localStorage.setItem('fm_plan', data.plan); }
     }
   } catch(e) { console.log('Firestore load error', e); }
   animateIntoApp();
@@ -3400,7 +3400,7 @@ window.onFirebaseLogin = async function(user) {
 };
 
 window.onFirebaseLogout = function() {
-  // ── Clear ALL user-specific data from localStorage on logout ──
+  // -- Clear ALL user-specific data from localStorage on logout --
   // This prevents data from one account leaking into another account
   const keysToWipe = [
     'fm_name', 'fm_tasks', 'fm_assets', 'fm_goals', 'fm_apikey',
@@ -3432,8 +3432,9 @@ window.onFirebaseLogout = function() {
 async function saveToCloud() {
   if (!window._fbCurrentUser) return;
   try {
+    const plan = localStorage.getItem('fm_plan') || 'free';
     await window._fbDb.collection('users').doc(window._fbCurrentUser.uid).update({
-      tasks, assets, goals, apiKey
+      tasks, assets, goals, apiKey, plan
     });
   } catch(e) { console.log('Cloud save error', e); }
 }
@@ -3442,8 +3443,7 @@ function quickEnter() {
   const n = document.getElementById('quickName').value.trim();
   userName = n || 'Friend';
   localStorage.setItem('fm_name', userName);
-  animateIntoApp();
-  setTimeout(startApp, 400);
+  window.startApp();
 }
 
 function enterApp() {
@@ -3470,19 +3470,15 @@ function startApp() {
   setInterval(updateClock, 1000);
 
   const greet = getGreeting();
-  const greetEl = document.getElementById('greeting');
-  const greetNameEl = document.getElementById('greetName');
-  const welcomeEl = document.getElementById('welcomeBubble');
-  const apiKeyInputEl = document.getElementById('apiKeyInput');
-  const reportDateEl = document.getElementById('reportDate');
+  document.getElementById('greeting').innerHTML = `${greet}, <strong>${esc(userName)}</strong>`;
+  document.getElementById('greetName').textContent = userName;
 
-  if (greetEl) greetEl.innerHTML = `${greet}, <strong>${esc(userName)}</strong>`;
-  if (greetNameEl) greetNameEl.textContent = userName;
-  if (welcomeEl) welcomeEl.innerHTML =
+  document.getElementById('welcomeBubble').innerHTML =
     `Hey ${esc(userName)}! 👋 I'm your FlowMind AI. ${apiKey
       ? "I'm connected and ready — what's on your mind? You can attach images, PDFs or text files using the attach button."
       : "Set your Groq API key (top right) to activate me, then let's get to work!"}`;
-  if (apiKey && apiKeyInputEl) apiKeyInputEl.value = apiKey;
+
+  if (apiKey) document.getElementById('apiKeyInput').value = apiKey;
 
   updateStatus(true);
   updatePlanUI();
@@ -3490,21 +3486,10 @@ function startApp() {
   renderWealth();
   renderGoals();
   updateSidebar();
-  if (reportDateEl) reportDateEl.textContent = 'All Time · ' + new Date().toLocaleDateString('en-US',
+  document.getElementById('reportDate').textContent = 'All Time · ' + new Date().toLocaleDateString('en-US',
     { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
-  const goalTitleEl   = document.getElementById('goalTitleInput');
-  const goalDescEl    = document.getElementById('goalDescInput');
-  const assetNameEl   = document.getElementById('assetNameInput');
-  const assetValEl    = document.getElementById('assetValInput');
-  const taskTitleEl   = document.getElementById('taskTitleInput');
-
-  if (goalTitleEl)  goalTitleEl.addEventListener('keydown',  e => { if (e.key==='Enter') addGoal(); });
-  if (goalDescEl)   goalDescEl.addEventListener('keydown',   e => { if (e.key==='Enter') addGoal(); });
-  if (assetNameEl)  assetNameEl.addEventListener('keydown',  e => { if (e.key==='Enter') addAsset(); });
-  if (assetValEl)   assetValEl.addEventListener('keydown',   e => { if (e.key==='Enter') addAsset(); });
-  if (taskTitleEl)  taskTitleEl.addEventListener('keydown',  e => { if (e.key==='Enter') addTask(); });
-
+  document.getElementById('goalTitleInput').addEventListener('keydown', e => { if (e.key==='Enter') addGoal(); });
   initQuiz();
   renderMotivationBanners();
 
@@ -3513,9 +3498,13 @@ function startApp() {
     const wrap = document.getElementById('attachWrap');
     if (wrap && !wrap.contains(e.target)) closeAttachMenu();
   });
+  document.getElementById('goalDescInput').addEventListener('keydown',  e => { if (e.key==='Enter') addGoal(); });
+  document.getElementById('assetNameInput').addEventListener('keydown', e => { if (e.key==='Enter') addAsset(); });
+  document.getElementById('assetValInput').addEventListener('keydown',  e => { if (e.key==='Enter') addAsset(); });
+  document.getElementById('taskTitleInput').addEventListener('keydown', e => { if (e.key==='Enter') addTask(); });
 }
 
-// ─── SIDEBAR & MOBILE ────────────────────────────────────────
+// --- SIDEBAR & MOBILE ----------------------------------------
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('sidebarOverlay').classList.toggle('show');
@@ -3549,14 +3538,14 @@ function switchPanel(name, btn) {
   }
 }
 
-// ─── MODAL ───────────────────────────────────────────────────
+// --- MODAL ---------------------------------------------------
 function openModal(id) { document.getElementById(id).classList.add('show'); }
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 document.addEventListener('click', e => {
   if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('show');
 });
 
-// ─── TOAST ───────────────────────────────────────────────────
+// --- TOAST ---------------------------------------------------
 let _toastTimer = null;
 function toast(msg) {
   const t = document.getElementById('toast');
@@ -3568,10 +3557,17 @@ function toast(msg) {
 // ✅ Bug fix: showToast was called in many places but never defined
 function showToast(msg) { toast(msg); }
 
-// ─── API KEY ─────────────────────────────────────────────────
+// --- API KEY -------------------------------------------------
 function saveApiKey() {
+  const keyVal = document.getElementById('apiKeyInput').value.trim();
+  if (!keyVal) { toast('⚠️ Please enter your Groq API key'); return; }
+  apiKey = keyVal;
+  localStorage.setItem('fm_apikey', apiKey);
   closeModal('apiModal');
-  toast('✅ AI is ready — powered by secure backend!');
+  // Update welcome message
+  const welcomeEl = document.getElementById('welcomeBubble');
+  if (welcomeEl) welcomeEl.innerHTML = `Hey ${esc(userName)}! 👋 I'm connected and ready — what's on your mind?`;
+  toast('✅ Groq API key saved — AI is ready!');
   updateStatus(true);
 }
 function updateStatus(online) {
@@ -3579,7 +3575,7 @@ function updateStatus(online) {
   document.getElementById('statusText').textContent = online ? 'Connected' : 'No Key';
 }
 
-// ─── FILE UPLOAD (VISION) ────────────────────────────────────
+// --- FILE UPLOAD (VISION) ------------------------------------
 function toggleAttachMenu() {
   const menu = document.getElementById('attachMenu');
   const btn  = document.getElementById('attachBtn');
@@ -3684,7 +3680,7 @@ function clearAttachment() {
 }
 
 
-// ─── CHAT ────────────────────────────────────────────────────
+// --- CHAT ----------------------------------------------------
 function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 }
@@ -3698,7 +3694,7 @@ function chipSend(el) {
   sendMessage();
 }
 
-// ─── NEW CHAT (replaces clearChat) ────────────────────────────
+// --- NEW CHAT (replaces clearChat) ----------------------------
 function newChat() {
   if (window.speechSynthesis) stopTTS();
 
@@ -3753,7 +3749,7 @@ function newChat() {
 // Keep clearChat as alias for backward compat
 function clearChat() { newChat(); }
 
-// ─── LIMIT OVERLAY ─────────────────────────────────────────────
+// --- LIMIT OVERLAY ---------------------------------------------
 function showLimitOverlay() {
   const overlay = document.getElementById('limitOverlay');
   overlay.style.display = 'flex';
@@ -3779,7 +3775,7 @@ function closeLimitOverlay() {
   if (window._limitTimer) { clearInterval(window._limitTimer); window._limitTimer = null; }
 }
 
-// ─── MAGIC COMMAND PARSER ───
+// --- MAGIC COMMAND PARSER ---
 function processAiCommands(replyText) {
   let processedText = replyText;
 
@@ -3860,7 +3856,7 @@ async function sendMessage() {
   msgCount++;
   localStorage.setItem('fm_msgs', msgCount);
   updateSidebar();
-  // ── Increment global chat count live ──
+  // -- Increment global chat count live --
   incrementGlobalStat('totalChats', 1);
 
   document.getElementById('typing').classList.add('show');
@@ -3874,9 +3870,9 @@ async function sendMessage() {
   
   const systemPrompt = `You are FlowMind — ${userName}'s elite AI Personal Life Operating System. You combine the sharpness of a seasoned founder, the precision of a wealth strategist, and the care of a personal coach. Direct, practical, deeply insightful, always outcome-focused. Never sound like a chatbot.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------
 ${userName}'s LIVE CONTEXT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------
 Net Worth / Assets tracked: $${totalWealth.toLocaleString()}
 Active Tasks (${tasks.filter(t=>!t.done).length}):
 ${tasks.filter(t=>!t.done).map(t => `  • [ID:${t.id}] ${t.title}`).join('\n') || '  None active'}
@@ -3886,9 +3882,9 @@ Goals (${goals.length}):
 ${goals.map(g => `  → [ID:${g.id}] ${g.title} — ${g.progress}% complete`).join('\n') || '  No goals set yet'}
 Plan: ${getUserPlan().toUpperCase()}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------
 YOUR CORE ROLES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------
 1. AI DAILY LIFE PLANNER — Time-blocking, daily roadmaps, prioritisation, energy management, turning chaos into a clear productivity plan.
 2. AI WEALTH GROWTH ADVISOR — Cash flow, savings strategy, investment frameworks, wealth building habits. Always note: verify major financial/legal decisions with a licensed professional.
 3. PRODUCTIVITY ROADMAP BUILDER — Goal tracking, habit systems, deep work strategies, 90-day sprints, weekly reviews.
@@ -3897,9 +3893,9 @@ YOUR CORE ROLES
 6. DOCUMENT & IMAGE ANALYST — Extract insights, red flags, and action items from any file or image shared.
 7. COMMUNICATOR — Emails, proposals, pitches, negotiations, team feedback, client messages.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------
 HOW YOU RESPOND
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------
 Structure EVERY response:
 ▸ DIRECT ANSWER — Lead with the result/solution in 1-3 sentences. No preamble.
 ▸ KEY INSIGHTS — 3-5 sharp, non-obvious observations tailored to ${userName}'s context.
@@ -3923,9 +3919,9 @@ Match ${userName}'s energy — quick question = quick answer. Deep question = de
 Do the math when numbers matter. Show brief working.
 State assumptions clearly when info is missing — don\'t stall with questions unless truly critical.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------
 STRICT COMMAND RULES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------
 ONLY use these commands when ${userName} EXPLICITLY asks to add/delete a task or goal.
 NEVER auto-add tasks or goals. NEVER suggest adding them unless asked.
 
@@ -3946,7 +3942,7 @@ To DELETE a goal: [DELETE_GOAL: <ID>]
     const mime = currentAttachmentMime;
 
     if (mime.startsWith('image/')) {
-      // ── IMAGE: use vision model ──
+      // -- IMAGE: use vision model --
       modelToUse = 'meta-llama/llama-4-scout-17b-16e-instruct';
       apiMessages[apiMessages.length - 1] = {
         role: 'user',
@@ -3956,7 +3952,7 @@ To DELETE a goal: [DELETE_GOAL: <ID>]
         ]
       };
     } else if (mime === 'application/pdf') {
-      // ── PDF: extract as base64 document ──
+      // -- PDF: extract as base64 document --
       modelToUse = 'meta-llama/llama-4-scout-17b-16e-instruct';
       const base64Data = currentAttachmentBase64.split(',')[1];
       apiMessages[apiMessages.length - 1] = {
@@ -3970,7 +3966,7 @@ To DELETE a goal: [DELETE_GOAL: <ID>]
         ]
       };
     } else if (currentAttachmentIsText) {
-      // ── TEXT FILE: inject content directly into prompt ──
+      // -- TEXT FILE: inject content directly into prompt --
       const textContent = currentAttachmentBase64;
       apiMessages[apiMessages.length - 1] = {
         role: 'user',
@@ -4097,7 +4093,7 @@ function scrollChat() {
   setTimeout(() => { const c = document.getElementById('messages'); c.scrollTop = c.scrollHeight; }, 80);
 }
 
-// ─── TASKS ───────────────────────────────────────────────────
+// --- TASKS ---------------------------------------------------
 function toggleForm(id) {
   const form = document.getElementById(id);
   const isOpening = !form.classList.contains('show');
@@ -4108,7 +4104,7 @@ function toggleForm(id) {
   }
 }
 
-// ─── DAILY MOTIVATIONAL QUOTES ───────────────────────────────
+// --- DAILY MOTIVATIONAL QUOTES -------------------------------
 const TASK_QUOTES = [
   "✦ What you do today is the foundation of who you become tomorrow.",
   "✦ One completed task is worth more than a hundred plans.",
@@ -4257,7 +4253,7 @@ function renderTasks() {
   }).join('');
 }
 
-// ─── WEALTH ──────────────────────────────────────────────────
+// --- WEALTH --------------------------------------------------
 function addAsset() {
   const name  = document.getElementById('assetNameInput').value.trim();
   const value = parseFloat(document.getElementById('assetValInput').value);
@@ -4266,7 +4262,7 @@ function addAsset() {
   if (isNaN(value) || value < 0) { toast('⚠️ Please enter a valid value'); return; }
   assets.push({ id: genId(), name, value, cat });
   save();
-  // ── Increment global wealth sessions counter ──
+  // -- Increment global wealth sessions counter --
   incrementGlobalStat('totalWealth', 1);
   document.getElementById('assetNameInput').value = '';
   document.getElementById('assetValInput').value  = '';
@@ -4313,7 +4309,7 @@ function renderWealth() {
     </div>`).join('');
 }
 
-// ─── GOALS ───────────────────────────────────────────────────
+// --- GOALS ---------------------------------------------------
 let goalFilter = 'active';
 
 function filterGoals(f, btn) {
@@ -4336,7 +4332,7 @@ function addGoal() {
     created: new Date().toISOString()
   });
   save();
-  // ── Increment global goal count live ──
+  // -- Increment global goal count live --
   incrementGlobalStat('totalGoals', 1);
   document.getElementById('goalTitleInput').value = '';
   document.getElementById('goalDescInput').value  = '';
@@ -4468,7 +4464,7 @@ function goalCardHTML(g) {
     </div>`;
 }
 
-// ─── REPORT ──────────────────────────────────────────────────
+// --- REPORT --------------------------------------------------
 let reportPeriod = 'all';
 function setReportPeriod(p, btn) {
   reportPeriod = p;
@@ -4593,7 +4589,7 @@ Write 3-4 punchy sentences as a friend, not a consultant. Acknowledge wins, call
   toast('📊 Report ready!');
 }
 
-// ─── SIDEBAR STATS ───────────────────────────────────────────
+// --- SIDEBAR STATS -------------------------------------------
 function updateSidebar() {
   const total   = assets.reduce((s,a) => s + a.value, 0);
   const done    = tasks.filter(t => t.done).length;
@@ -4620,7 +4616,7 @@ function updateSidebar() {
   }
 }
 
-// ─── SAVE (auto + manual) ─────────────────────────────────────
+// --- SAVE (auto + manual) -------------------------------------
 function save() {
   try {
     localStorage.setItem('fm_tasks',  JSON.stringify(tasks));
@@ -4665,7 +4661,7 @@ window.addEventListener('beforeunload', () => {
 
 setInterval(() => { if (userName) save(); }, 120000);
 
-// ─── SAVED CHATS ─────────────────────────────────────────────
+// --- SAVED CHATS ---------------------------------------------
 let savedChats = JSON.parse(localStorage.getItem('fm_saved_chats') || '[]');
 
 function toggleSavedChats() {
@@ -4818,7 +4814,7 @@ function deleteSavedChat(id) {
   toast('🗑 Saved chat deleted');
 }
 
-// ─── VOICE INPUT ─────────────────────────────────────────────
+// --- VOICE INPUT ---------------------------------------------
 let recognition = null;
 let isListening = false;
 
@@ -4933,7 +4929,7 @@ function startListening() {
   }
 }
 
-// ─── TTS ENGINE ────────────────────────────────────────────────
+// --- TTS ENGINE ------------------------------------------------
 let ttsActive    = null;
 let ttsKeepAlive = null;
 let _voiceCache  = null;
@@ -5097,7 +5093,7 @@ function speakText(text, btn) {
   setTimeout(next, 160);
 }
 
-// ─── REPORT CHARTS ───────────────────────────────────────────
+// --- REPORT CHARTS -------------------------------------------
 let reportCharts = [];
 
 function renderReportCharts(filteredTasks, filteredGoals, filteredAssets) {
@@ -5157,7 +5153,7 @@ function renderReportCharts(filteredTasks, filteredGoals, filteredAssets) {
   }
 }
 
-// ─── LIVE VOICE CHAT ─────────────────────────────────────────
+// --- LIVE VOICE CHAT -----------------------------------------
 let geminiKey       = localStorage.getItem('fm_gemini_key') || '';
 let liveRecog       = null;
 let liveListening   = false;
@@ -5485,7 +5481,7 @@ function speakLiveReply(text) {
   setTimeout(speakNext, 150);
 }
 
-// ─── GAMES ───────────────────────────────────────────────────
+// --- GAMES ---------------------------------------------------
 function resetGameAreas(exceptId) {
   ['wqArea','ceoArea','habitArea','mmArea'].forEach(id => {
     if (id !== exceptId) {
@@ -5843,10 +5839,10 @@ function toggleHabit(i) {
   renderHabits(state, document.getElementById('habitArea'));
 }
 
-// ─── DAILY QUIZ SYSTEM ───────────────────────────────────────
+// --- DAILY QUIZ SYSTEM ---------------------------------------
 
 const ALL_QUIZ_QUESTIONS = [
-  // ── FINANCE (20) ──
+  // -- FINANCE (20) --
   { q: "What does 'ROI' stand for?", opts: ["Return On Investment","Rate Of Inflation","Revenue Over Income","Risk Of Investment"], ans: 0, cat: "💰 Finance" },
   { q: "What is a mutual fund?", opts: ["A government bond","A pooled investment vehicle","A type of bank account","A stock exchange"], ans: 1, cat: "💰 Finance" },
   { q: "What does 'bull market' mean?", opts: ["Market is falling","Market is rising","Market is stable","Market is closed"], ans: 1, cat: "💰 Finance" },
@@ -5867,7 +5863,7 @@ const ALL_QUIZ_QUESTIONS = [
   { q: "What is net worth?", opts: ["Monthly income","Total assets minus total liabilities","Annual salary","Credit score"], ans: 1, cat: "💰 Finance" },
   { q: "What is an IPO?", opts: ["International Payment Order","Initial Public Offering","Index Portfolio Option","Investor Profit Outcome"], ans: 1, cat: "💰 Finance" },
   { q: "What is portfolio rebalancing?", opts: ["Selling all investments","Adjusting asset allocation back to target","Adding new assets only","Switching brokers"], ans: 1, cat: "💰 Finance" },
-  // ── PRODUCTIVITY (20) ──
+  // -- PRODUCTIVITY (20) --
   { q: "What is the Pomodoro Technique?", opts: ["25-min work, 5-min break cycles","Working 8 hours straight","Meditating before work","Doing hardest task first"], ans: 0, cat: "🧠 Productivity" },
   { q: "What does 'GTD' stand for?", opts: ["Get Things Done","Go To Dashboard","Goal Tracking Daily","Group Task Delegation"], ans: 0, cat: "🧠 Productivity" },
   { q: "What is 'deep work'?", opts: ["Working overnight","Focused distraction-free work on complex tasks","Working underwater","Delegating tasks"], ans: 1, cat: "🧠 Productivity" },
@@ -5888,7 +5884,7 @@ const ALL_QUIZ_QUESTIONS = [
   { q: "What is a 'done list'?", opts: ["A to-do list","Record of completed tasks to boost motivation","List of failed tasks","Shopping list"], ans: 1, cat: "🧠 Productivity" },
   { q: "What is 'single-tasking'?", opts: ["Working alone","Focusing on one task at a time for better results","Using one app","Having one goal"], ans: 1, cat: "🧠 Productivity" },
   { q: "What is 'productive procrastination'?", opts: ["Never procrastinating","Doing useful tasks to avoid the most important one","Procrastinating productively","Planning while procrastinating"], ans: 1, cat: "🧠 Productivity" },
-  // ── TECH (20) ──
+  // -- TECH (20) --
   { q: "What does API stand for?", opts: ["Application Programming Interface","Advanced Protocol Integration","Automated Process Input","Applied Program Index"], ans: 0, cat: "💻 Tech" },
   { q: "What is 'the cloud' in tech?", opts: ["Weather forecasting system","Remote servers accessed via internet","A type of RAM","Local storage"], ans: 1, cat: "💻 Tech" },
   { q: "What does SaaS stand for?", opts: ["Software as a Service","System and Application Setup","Secure Access and Storage","Server and App Software"], ans: 0, cat: "💻 Tech" },
@@ -5909,7 +5905,7 @@ const ALL_QUIZ_QUESTIONS = [
   { q: "What does CPU stand for?", opts: ["Central Processing Unit","Computer Power Utility","Core Program Unit","Current Processing Update"], ans: 0, cat: "💻 Tech" },
   { q: "What is version control?", opts: ["Software pricing","System to track changes in code over time","Hardware versioning","App store management"], ans: 1, cat: "💻 Tech" },
   { q: "What is a startup unicorn?", opts: ["A mythical company","A private startup valued at $1 billion+","A profitable small business","A tech company with AI"], ans: 1, cat: "💻 Tech" },
-  // ── BUSINESS (20) ──
+  // -- BUSINESS (20) --
   { q: "What is a startup's MVP?", opts: ["Most Valuable Player","Minimum Viable Product","Maximum Value Proposition","Market Verification Plan"], ans: 1, cat: "🏢 Business" },
   { q: "What does B2B mean?", opts: ["Business to Business","Bank to Bank","Buyer to Buyer","Brand to Brand"], ans: 0, cat: "🏢 Business" },
   { q: "What is 'burn rate'?", opts: ["Rate of product sales","Speed at which a company spends cash","Employee turnover rate","Marketing spend rate"], ans: 1, cat: "🏢 Business" },
@@ -5930,7 +5926,7 @@ const ALL_QUIZ_QUESTIONS = [
   { q: "What is angel investing?", opts: ["Charity donations","Early-stage investment by wealthy individuals in startups","Government investment","Bank loans"], ans: 1, cat: "🏢 Business" },
   { q: "What is a go-to-market strategy?", opts: ["GPS for salespeople","Plan to launch a product to market","Company travel policy","Marketing budget plan"], ans: 1, cat: "🏢 Business" },
   { q: "What is scalability in business?", opts: ["Company size","Ability to grow revenue without proportional cost increase","Scaling down operations","Employee training"], ans: 1, cat: "🏢 Business" },
-  // ── MINDSET & HEALTH (20) ──
+  // -- MINDSET & HEALTH (20) --
   { q: "What is 'growth mindset'?", opts: ["Belief that abilities are fixed","Belief that abilities can be developed","Focus on making money","Avoiding failure"], ans: 1, cat: "🔥 Mindset" },
   { q: "What hormone is known as the 'stress hormone'?", opts: ["Dopamine","Serotonin","Cortisol","Oxytocin"], ans: 2, cat: "💪 Health" },
   { q: "How many hours of sleep do most adults need?", opts: ["4-5 hours","6-7 hours","7-9 hours","10-12 hours"], ans: 2, cat: "💪 Health" },
@@ -5952,7 +5948,7 @@ const ALL_QUIZ_QUESTIONS = [
   { q: "What is cognitive load?", opts: ["Computer processing power","Mental effort being used in working memory","Weight of a laptop","Learning speed"], ans: 1, cat: "🔥 Mindset" },
   { q: "What is 'social proof' in psychology?", opts: ["Legal proof","Tendency to follow others' actions in uncertain situations","Social media followers","Academic proof"], ans: 1, cat: "🔥 Mindset" },
 
-  // ── FINANCE PART 2 (20) ──
+  // -- FINANCE PART 2 (20) --
   { q: "What does 'asset' mean in finance?", opts: ["A monthly expense","Something owned that has economic value","A type of loan","A government tax"], ans: 1, cat: "💰 Finance" },
   { q: "What is a liability?", opts: ["An investment account","A financial obligation or debt owed","A type of asset","A savings goal"], ans: 1, cat: "💰 Finance" },
   { q: "What is 'net income'?", opts: ["Total revenue before costs","Income remaining after all expenses and taxes","Gross salary","Annual bonus"], ans: 1, cat: "💰 Finance" },
@@ -5973,7 +5969,7 @@ const ALL_QUIZ_QUESTIONS = [
   { q: "What is 'working capital'?", opts: ["Employee wages","Current assets minus current liabilities — measures short-term financial health","Total company equity","Long-term investment funds"], ans: 1, cat: "💰 Finance" },
   { q: "What is a 'stock market index'?", opts: ["A list of all companies","A measure tracking the performance of a group of stocks","A government bond registry","A daily currency exchange rate"], ans: 1, cat: "💰 Finance" },
 
-  // ── PRODUCTIVITY PART 2 (20) ──
+  // -- PRODUCTIVITY PART 2 (20) --
   { q: "What is 'Parkinson's Law'?", opts: ["A law about motion","Work expands to fill the time available for its completion","A productivity hack","A health principle"], ans: 1, cat: "🧠 Productivity" },
   { q: "What does 'asynchronous communication' mean?", opts: ["Real-time messaging","Communication where responses don't need to happen immediately","Video calls","In-person meetings"], ans: 1, cat: "🧠 Productivity" },
   { q: "What is 'decision fatigue'?", opts: ["Being tired from exercise","Declining quality of decisions after making many choices","Fatigue from commuting","Burnout from a job"], ans: 1, cat: "🧠 Productivity" },
@@ -5995,7 +5991,7 @@ const ALL_QUIZ_QUESTIONS = [
   { q: "What does 'active listening' involve?", opts: ["Listening while doing other tasks","Fully concentrating on the speaker, understanding and responding thoughtfully","Nodding during conversations","Listening to music while working"], ans: 1, cat: "🧠 Productivity" },
   { q: "What is 'time audit'?", opts: ["A financial review","Tracking exactly how you spend your time to identify waste and improve habits","A payroll check","A work contract review"], ans: 1, cat: "🧠 Productivity" },
 
-  // ── TECH PART 2 (20) ──
+  // -- TECH PART 2 (20) --
   { q: "What is 'open AI' in the context of artificial intelligence?", opts: ["A government AI programme","AI systems whose models and research are made accessible to the public","A paid AI service only","A hardware company"], ans: 1, cat: "💻 Tech" },
   { q: "What does 'latency' mean in tech?", opts: ["Battery life","The delay between a request and the response in a network","Processing speed","File storage size"], ans: 1, cat: "💻 Tech" },
   { q: "What is 'two-factor authentication' (2FA)?", opts: ["Using two passwords","A security process requiring two forms of verification to access an account","A double login screen","Biometric-only login"], ans: 1, cat: "💻 Tech" },
@@ -6017,7 +6013,7 @@ const ALL_QUIZ_QUESTIONS = [
   { q: "What is 'A/B testing' in tech?", opts: ["Testing two programming languages","Comparing two versions of something to see which performs better with users","A software security test","A type of database query"], ans: 1, cat: "💻 Tech" },
   { q: "What is 'technical debt'?", opts: ["Money owed to software vendors","The cost of shortcuts taken in coding that need to be fixed later","A developer loan","Server infrastructure costs"], ans: 1, cat: "💻 Tech" },
 
-  // ── BUSINESS PART 2 (20) ──
+  // -- BUSINESS PART 2 (20) --
   { q: "What is 'brand equity'?", opts: ["A company's stock value","The commercial value a brand gains from consumer perception and recognition","Total company assets","Marketing budget"], ans: 1, cat: "🏢 Business" },
   { q: "What does 'B2G' mean?", opts: ["Business to Government","Back to Basics","Business to Generation Z","Brand to Group"], ans: 0, cat: "🏢 Business" },
   { q: "What is a 'value proposition'?", opts: ["A company's price list","The clear statement of benefits a product/service offers to customers","A sales discount","A business partnership offer"], ans: 1, cat: "🏢 Business" },
@@ -6039,7 +6035,7 @@ const ALL_QUIZ_QUESTIONS = [
   { q: "What is a 'content marketing' strategy?", opts: ["Buying advertising space","Creating and sharing valuable content to attract and engage a target audience","A social media paid campaign","A product packaging design"], ans: 1, cat: "🏢 Business" },
   { q: "What is 'inbound marketing'?", opts: ["Cold calling customers","Attracting customers through valuable content, SEO and experiences they seek out","Paid billboard advertising","Door-to-door sales"], ans: 1, cat: "🏢 Business" },
 
-  // ── MINDSET & HEALTH PART 2 (20) ──
+  // -- MINDSET & HEALTH PART 2 (20) --
   { q: "What is 'emotional intelligence' (EQ)?", opts: ["A type of IQ test","The ability to recognise, understand and manage your own and others' emotions","A personality type","A leadership qualification"], ans: 1, cat: "🔥 Mindset" },
   { q: "What does 'resilience' mean in personal development?", opts: ["Physical strength","The ability to recover quickly from difficulties and adapt to adversity","Avoiding challenges","Being emotionally numb"], ans: 1, cat: "🔥 Mindset" },
   { q: "What is 'cognitive dissonance'?", opts: ["A learning disability","The mental discomfort of holding two conflicting beliefs or values at the same time","A type of meditation","A decision-making model"], ans: 1, cat: "🔥 Mindset" },
@@ -6440,7 +6436,7 @@ function answerMM(i) {
 }
 </script>
 <script>
-// ─── AI LIFE SCORE ────────────────────────────────────────────
+// --- AI LIFE SCORE --------------------------------------------
 function renderLifeScore() {
   const bigEl    = document.getElementById('lifeScoreBig');
   const labelEl  = document.getElementById('lifeScoreLabel');
@@ -6502,7 +6498,7 @@ function renderLifeScore() {
     </div>`).join('');
 }
 
-// ─── AI WEEKLY REPORT ─────────────────────────────────────────
+// --- AI WEEKLY REPORT -----------------------------------------
 function renderWeeklyReport() {
   const bodyEl = document.getElementById('weeklyReportBody');
   if (!bodyEl) return;
@@ -6539,7 +6535,7 @@ function renderWeeklyReport() {
     </div>`).join('');
 }
 
-// ─── PLAN SYSTEM ─────────────────────────────────────────────
+// --- PLAN SYSTEM ---------------------------------------------
 // FREE: 5 tasks, 5 goals, 10 AI chats/day, 10 quiz/day, no wealth
 // PRO ₹299/mo: unlimited everything + wealth + reports + weekly AI report
 // PREMIUM ₹699/mo: everything in Pro + AI Life Score + Decision Assistant + early access
@@ -6667,6 +6663,8 @@ async function startPayment(tier) {
           renderLifeScore();
           toast('🎉 ' + verifyData.message);
           closePricing();
+          // ✅ Save plan to Firestore so it persists across devices/logins
+          saveToCloud();
         } else {
           toast('❌ Payment verification failed. Contact support.');
         }
@@ -6686,11 +6684,10 @@ async function startPayment(tier) {
     new Razorpay(options).open();
 
   } catch (err) {
-    console.error('Payment error:', err);
-    toast('⚠️ Payment server unreachable. Please check your internet and try again. If the problem persists, contact support.');
+    toast('❌ Payment error: ' + err.message);
   }
 }
-// ─── FREE PLAN LIMIT CHECKS ──────────────────────────────────
+// --- FREE PLAN LIMIT CHECKS ----------------------------------
 const FREE_TASK_LIMIT = 5;
 const FREE_GOAL_LIMIT = 5;
 const FREE_CHAT_LIMIT = 25; // 25 free chats per day
@@ -6725,7 +6722,7 @@ function checkChatLimit() {
   return true;
 }
 
-// ─── THEME TOGGLE ─────────────────────────────────────────────
+// --- THEME TOGGLE ---------------------------------------------
 function toggleTheme() {
   const body = document.body;
   const btn = document.getElementById('themeToggleBtn');
@@ -6743,7 +6740,7 @@ function initTheme() {
   }
 }
 
-// ─── LANDING ANIMATIONS ──────────────────────────────────────
+// --- LANDING ANIMATIONS --------------------------------------
 
 // 1. Word-by-word headline
 (function initHeadline() {
@@ -6867,7 +6864,7 @@ function buildTicker() {
 }
 
 // 6. Initialize all right-side preview content after delay
-// ─── REAL LIVE STATS FROM FIREBASE ───────────────────────────
+// --- REAL LIVE STATS FROM FIREBASE ---------------------------
 // Global stats doc: firestore → 'app_stats/global'
 // Fields: totalUsers, totalChats, totalGoals
 // onSnapshot keeps landing page numbers live in real-time
@@ -6954,7 +6951,7 @@ function detachLiveStatsListener() {
   if (_statsUnsubscribe) { _statsUnsubscribe(); _statsUnsubscribe = null; }
 }
 
-// ── Increment global stat in Firestore ──
+// -- Increment global stat in Firestore --
 async function incrementGlobalStat(field, amount) {
   if (!window._fbDb) return;
   try {
@@ -6984,7 +6981,7 @@ setTimeout(() => {
   }
 }, 4000);
 
-// ─── INIT PREVIEW (pies + ticker) ────────────────────────────
+// --- INIT PREVIEW (pies + ticker) ----------------------------
 setTimeout(() => {
   // Pie chart 2 (wealth allocation) — always fixed visual
   buildPie('pieChart2', [
@@ -7014,24 +7011,21 @@ function animateIntoApp() {
   const landing = document.getElementById('landing');
   const app = document.getElementById('app');
   const card = document.getElementById('authBox');
+  // Stop listening to live stats — user is now inside the app
   detachLiveStatsListener();
-  // Show app immediately so DOM elements are accessible
-  app.classList.add('show');
-  app.style.display = 'flex';
-  app.style.opacity = '0';
-  app.style.transition = 'opacity 0.5s ease';
   if (card) {
-    card.style.transition = 'transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease';
-    card.style.transform = 'scale(1.03)';
-    card.style.boxShadow = '0 0 80px rgba(245,200,66,0.25), 0 40px 100px rgba(0,0,0,0.6)';
+    card.style.transition='transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease';
+    card.style.transform='scale(1.03)';
+    card.style.boxShadow='0 0 80px rgba(245,200,66,0.25), 0 40px 100px rgba(0,0,0,0.6)';
   }
   setTimeout(() => {
     landing.classList.add('hide');
-    setTimeout(() => {
-      app.style.opacity = '1';
-      setTimeout(() => landing.classList.add('gone'), 650);
-    }, 80);
-  }, 300);
+    app.classList.add('show');
+    app.style.display='flex';
+    app.style.opacity='0';
+    app.style.transition='opacity 0.5s ease';
+    setTimeout(() => { app.style.opacity='1'; setTimeout(()=>landing.classList.add('gone'),650); }, 80);
+  }, 350);
 }
 
 // 9. Wrappers
@@ -7041,9 +7035,10 @@ function handleQuickEnter() {
   const n = document.getElementById('quickName').value.trim();
   if (!n) { toast('⚠️ Please enter your name'); return; }
   userName=n; localStorage.setItem('fm_name',userName);
-  animateIntoApp();
-  setTimeout(startApp, 400);
+  startApp();
 }
+
+
 
 // Close modal on outside click
 document.getElementById('pricingModal').addEventListener('click', function(e) {
