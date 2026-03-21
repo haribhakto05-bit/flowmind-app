@@ -2569,11 +2569,11 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         </button>
         <button class="nav-item" onclick="switchPanel('games',this)">
           <span class="nav-icon">🎮</span> Games
-          <span id="gamesNavLock" style="font-size:10px;margin-left:4px;opacity:0.6;">🔒</span>
+          <span id="gamesNavLock" style="font-size:10px;margin-left:4px;opacity:0.6;"></span>
         </button>
         <button class="nav-item" onclick="switchPanel('quiz',this)">
           <span class="nav-icon">🧠</span> Daily Quiz
-          <span id="quizNavLock" style="font-size:10px;margin-left:4px;opacity:0.6;">🔒</span>
+          <span id="quizNavLock" style="font-size:10px;margin-left:4px;opacity:0.6;"></span>
           <span class="nav-badge" id="quizBadge" style="display:none;background:var(--green);color:var(--ink);">NEW</span>
         </button>
       </div>
@@ -2736,7 +2736,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
       <div class="panel" id="panel-wealth" style="position:relative;">
         <!-- PRO LOCK OVERLAY -->
         <div class="locked-overlay" id="wealthLock">
-          <div style="font-size:40px;">🔒</div>
+          <div style="font-size:40px;"></div>
           <h3>Pro Feature</h3>
           <p>Wealth Tracker is available on the Pro plan. Upgrade for ₹600/month!</p>
           <button class="unlock-btn" onclick="openPricing()">Upgrade to Pro →</button>
@@ -2907,7 +2907,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
 
     <!-- Header -->
     <div style="text-align:center;margin-bottom:24px;">
-      <div style="font-size:44px;margin-bottom:12px;">🔒</div>
+      <div style="font-size:44px;margin-bottom:12px;"></div>
       <div style="font-family:'Instrument Serif',serif;font-size:28px;margin-bottom:6px;background:linear-gradient(135deg,var(--text) 40%,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Daily Limit Reached</div>
       <div style="color:var(--silver);font-size:14px;line-height:1.7;">You've used all <strong style="color:var(--text)">25 free AI chats</strong> for today.</div>
       <div style="margin-top:10px;display:inline-flex;align-items:center;gap:8px;background:var(--ink3);border:1px solid var(--line2);border-radius:20px;padding:6px 16px;">
@@ -3569,7 +3569,7 @@ function switchPanel(name, btn) {
       const container = document.getElementById('quizContainer');
       if (container) container.innerHTML = `
         <div style="text-align:center;padding:60px 20px;">
-          <div style="font-size:56px;margin-bottom:16px;">🔒</div>
+          <div style="font-size:56px;margin-bottom:16px;"></div>
           <div style="font-size:22px;font-weight:800;color:var(--text1);margin-bottom:8px;">Daily Quiz is Premium</div>
           <div style="font-size:14px;color:var(--silver);margin-bottom:24px;max-width:300px;margin-left:auto;margin-right:auto;">
             Upgrade to Pro or Premium to unlock Daily Quiz, track your streak, and challenge your knowledge every day!
@@ -3600,7 +3600,7 @@ function switchPanel(name, btn) {
           lockDiv.className = 'games-lock';
           lockDiv.style.cssText = 'text-align:center;padding:60px 20px;';
           lockDiv.innerHTML = `
-            <div style="font-size:56px;margin-bottom:16px;">🔒</div>
+            <div style="font-size:56px;margin-bottom:16px;"></div>
             <div style="font-size:22px;font-weight:800;color:var(--text1);margin-bottom:8px;">Games are Premium</div>
             <div style="font-size:14px;color:var(--silver);margin-bottom:24px;">Upgrade to Pro or Premium to unlock all games!</div>
             <button onclick="openPricing()" style="
@@ -6430,7 +6430,7 @@ function renderQuizResults(container) {
       ">🔥 Premium: Play Again with New Questions</button>
       ` : `
       <div style="margin-top:12px;padding:10px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);border-radius:var(--r);text-align:center;font-size:12px;color:var(--purple);">
-        🔒 Upgrade to <strong>Premium</strong> to replay today's quiz anytime!
+         Upgrade to <strong>Premium</strong> to replay today's quiz anytime!
       </div>
       `}
     </div>
@@ -6626,7 +6626,7 @@ function renderLifeScore() {
   const bars = [
     { name: '🧠 Productivity',     score: taskScore,   color: 'var(--blue)',   note: '' },
     { name: '🎯 Goal Progress',    score: goalScore,   color: 'var(--gold)',   note: '' },
-    { name: '💰 Wealth Tracking',  score: wealthScore, color: 'var(--green)',  note: planUnlocked ? '' : '🔒 Upgrade to Pro' },
+    { name: '💰 Wealth Tracking',  score: wealthScore, color: 'var(--green)',  note: planUnlocked ? '' : 'Upgrade to Pro' },
     { name: '🔥 Habit Discipline', score: habitScore,  color: 'var(--purple)', note: '' },
     { name: '📚 Learning',         score: learnScore,  color: 'var(--blue)',   note: quizCount === 0 ? 'Answer quiz questions to grow' : `${quizCount} answered today` },
   ];
