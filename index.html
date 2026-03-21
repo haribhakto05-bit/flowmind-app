@@ -2533,10 +2533,10 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
     <div class="topbar-right">
       <div id="liveClock" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--silver); margin-right: 8px;"></div>
       <div class="status-pill">
-        <div class="status-dot" id="statusDot"></div>
-        <span id="statusText">No Key</span>
+        <div class="status-dot online" id="statusDot"></div>
+        <span id="statusText">Connected</span>
       </div>
-      <button class="api-btn" onclick="openModal('apiModal')">⚙ API Key</button>
+      
       <span id="planBadge" class="free-badge" onclick="openPricing()" title="Upgrade to Pro">FREE</span>
       <button class="api-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Light/Dark Mode">🌙</button>
       <button class="api-btn" onclick="firebaseLogout()" style="background:var(--ink3);color:var(--silver);border:1px solid var(--line2);" title="Sign Out">Sign Out</button>
@@ -3039,35 +3039,9 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   </div>
 </div>
 
-<div class="modal-overlay" id="geminiKeyModal">
-  <div class="modal">
-    <h2>✨ Connect Gemini Live</h2>
-    <p class="modal-sub">Enter your free Gemini API key to enable smooth live voice chat. Your key stays in your browser only.</p>
-    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="modal-link">🔗 Get free key at aistudio.google.com →</a><br>
-    <input class="modal-input" id="geminiKeyInput" type="password" placeholder="AIza..." />
-    <div style="background:rgba(91,143,255,0.08);border:1px solid rgba(91,143,255,0.2);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--silver);line-height:1.7;">
-      🎤 <strong style="color:var(--text)">Fix mic permission (one time):</strong><br>
-      Since you're using a local file, open Edge/Chrome settings → <em>Privacy & Security</em> → <em>Site Settings</em> → <em>Microphone</em> → Add <code style="color:var(--green)">file:///*</code> to Allowed sites. Then mic will never ask again.
-    </div>
-    <div class="modal-actions">
-      <button class="modal-save" onclick="saveGeminiKey()">✅ Connect</button>
-      <button class="modal-cancel" onclick="closeModal('geminiKeyModal')">Cancel</button>
-    </div>
-  </div>
-</div>
 
-<div class="modal-overlay" id="apiModal">
-  <div class="modal">
-    <h2>🔑 Connect Groq API</h2>
-    <p class="modal-sub">Your key is stored only in your browser — never sent anywhere else. Get a free key at Groq.</p>
-    <a href="https://console.groq.com/keys" target="_blank" class="modal-link">🔗 Get free key at console.groq.com →</a><br>
-    <input class="modal-input" id="apiKeyInput" type="password" placeholder="gsk_xxxxxxxxxxxxxxxxxxxx" />
-    <div class="modal-actions">
-      <button class="modal-save" onclick="saveApiKey()">✅ Connect</button>
-      <button class="modal-cancel" onclick="closeModal('apiModal')">Cancel</button>
-    </div>
-  </div>
-</div>
+
+
 
 <div class="modal-overlay" id="goalModal">
   <div class="modal">
@@ -3390,13 +3364,27 @@ window.onFirebaseLogin = async function(user) {
       if (data.tasks)  { tasks  = data.tasks;  localStorage.setItem('fm_tasks',  JSON.stringify(tasks));  }
       if (data.assets) { assets = data.assets; localStorage.setItem('fm_assets', JSON.stringify(assets)); }
       if (data.goals)  { goals  = data.goals;  localStorage.setItem('fm_goals',  JSON.stringify(goals));  }
-      if (data.apiKey) { apiKey = data.apiKey; localStorage.setItem('fm_apikey', apiKey); }
-      // ✅ CRITICAL: Read plan from Firestore so Premium/Pro persists after login
-      if (data.plan) { localStorage.setItem('fm_plan', data.plan); }
+      if (data.apiKey) { 
+        apiKey = data.apiKey; 
+        localStorage.setItem('fm_apikey', apiKey);
+        const apiInput = document.getElementById('apiKeyInput');
+        if (apiInput) apiInput.value = apiKey;
+      }
+      // ✅ CRITICAL: Always read plan from Firestore - it's the source of truth
+      const firestorePlan = data.plan || 'free';
+      localStorage.setItem('fm_plan', firestorePlan);
+      console.log('Plan loaded from Firestore:', firestorePlan);
+    } else {
+      // No Firestore doc yet — keep free plan
+      localStorage.setItem('fm_plan', 'free');
     }
   } catch(e) { console.log('Firestore load error', e); }
   animateIntoApp();
-  setTimeout(startApp, 400);
+  setTimeout(() => {
+    startApp();
+    // updatePlanUI is called inside startApp, but call again to be sure plan badge is correct
+    setTimeout(updatePlanUI, 200);
+  }, 400);
 };
 
 window.onFirebaseLogout = function() {
@@ -3478,9 +3466,14 @@ function startApp() {
       ? "I'm connected and ready — what's on your mind? You can attach images, PDFs or text files using the attach button."
       : "Set your Groq API key (top right) to activate me, then let's get to work!"}`;
 
-  if (apiKey) document.getElementById('apiKeyInput').value = apiKey;
+  // Always reload apiKey fresh from localStorage
+  apiKey = localStorage.getItem('fm_apikey') || apiKey || '';
+  if (apiKey) {
+    const apiInput = document.getElementById('apiKeyInput');
+    if (apiInput) apiInput.value = apiKey;
+  }
 
-  updateStatus(true);
+  updateStatus(!!apiKey);
   updatePlanUI();
   renderTasks();
   renderWealth();
@@ -3563,16 +3556,20 @@ function saveApiKey() {
   if (!keyVal) { toast('⚠️ Please enter your Groq API key'); return; }
   apiKey = keyVal;
   localStorage.setItem('fm_apikey', apiKey);
+  console.log('API key saved:', apiKey.substring(0,8) + '...');
+  // Sync to cloud so key persists across devices
+  if (window._fbCurrentUser) {
+    window._fbDb.collection('users').doc(window._fbCurrentUser.uid).update({ apiKey }).catch(()=>{});
+  }
   closeModal('apiModal');
-  // Update welcome message
   const welcomeEl = document.getElementById('welcomeBubble');
-  if (welcomeEl) welcomeEl.innerHTML = `Hey ${esc(userName)}! 👋 I'm connected and ready — what's on your mind?`;
+  if (welcomeEl) welcomeEl.innerHTML = `Hey ${esc(userName)}! 👋 I'm connected and ready — what's on your mind? You can attach images, PDFs or text files using the attach button.`;
   toast('✅ Groq API key saved — AI is ready!');
   updateStatus(true);
 }
 function updateStatus(online) {
-  document.getElementById('statusDot').className = 'status-dot' + (online ? ' online' : '');
-  document.getElementById('statusText').textContent = online ? 'Connected' : 'No Key';
+  document.getElementById("statusDot").className = "status-dot online";
+  document.getElementById("statusText").textContent = "Connected";
 }
 
 // --- FILE UPLOAD (VISION) ------------------------------------
@@ -3836,7 +3833,7 @@ async function sendMessage() {
   const msg   = input.value.trim();
   
   if (!msg && !currentAttachmentBase64) return;
-  if (!apiKey) { openModal('apiModal'); return; }
+  // No API key needed — backend handles it
   if (!checkChatLimit()) return;
 
   input.value = '';
@@ -3980,20 +3977,33 @@ To DELETE a goal: [DELETE_GOAL: <ID>]
   clearAttachment();
 
   try {
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    // Use YOUR backend Groq key — users need no API key!
+    const authToken = await getAuthToken();
+    const reqHeaders = { 'Content-Type': 'application/json' };
+    if (authToken) reqHeaders['Authorization'] = 'Bearer ' + authToken;
+
+    const res = await fetch(BACKEND_URL + '/api/chat', {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      headers: reqHeaders,
       body: JSON.stringify({
         model: modelToUse,
         messages: apiMessages,
-        temperature: 0.65,
         max_tokens: 2000
       })
     });
     const data = await res.json();
+    if (!res.ok) {
+      if (res.status === 429 && data.limitReached) {
+        document.getElementById('typing').classList.remove('show');
+        document.getElementById('sendBtn').disabled = false;
+        showLimitOverlay();
+        return;
+      }
+      throw new Error(data.message || 'Server error ' + res.status);
+    }
     if (data.error) {
       const errMsg = (typeof data.error === 'object')
-        ? (data.error.message || data.error.error?.message || JSON.stringify(data.error))
+        ? (data.error.message || JSON.stringify(data.error))
         : String(data.error);
       throw new Error(errMsg);
     }
@@ -4485,7 +4495,6 @@ function getDateBoundary(period) {
 }
 
 async function generateReport() {
-  if (!apiKey) { openModal('apiModal'); return; }
   const btn = document.getElementById('genReportBtn');
   btn.disabled = true; btn.textContent = '⏳ Generating...';
 
@@ -4570,12 +4579,16 @@ async function generateReport() {
 - AI Conversations used: ${msgCount}
 Write 3-4 punchy sentences as a friend, not a consultant. Acknowledge wins, call out the #1 priority, give ONE specific actionable next step for this ${reportPeriod === 'day' ? 'day' : reportPeriod === 'week' ? 'week' : 'period'}. Be direct and personal.`;
 
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const reportToken = await getAuthToken();
+    const reportHeaders = { 'Content-Type': 'application/json' };
+    if (reportToken) reportHeaders['Authorization'] = 'Bearer ' + reportToken;
+    const res = await fetch(BACKEND_URL + '/api/chat', {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model:'llama-3.3-70b-versatile', messages:[{role:'user',content:prompt}], max_tokens:400, temperature:0.7 })
+      headers: reportHeaders,
+      body: JSON.stringify({ messages:[{role:'user',content:prompt}], max_tokens:400 })
     });
     const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Report generation failed');
     if (data.error) {
       const errMsg = typeof data.error === 'object' ? (data.error.message || JSON.stringify(data.error)) : String(data.error);
       throw new Error(errMsg);
@@ -5173,7 +5186,6 @@ function saveGeminiKey() {
 }
 
 function openLiveChat() {
-  if (!geminiKey) { openModal('geminiKeyModal'); return; }
   document.getElementById('liveOverlay').style.display = 'flex';
   liveActive     = true;
   liveAutoListen = true;
@@ -5336,82 +5348,35 @@ VOICE RULES (non-negotiable):
 - For business/financial questions: give the key insight first, recommend they follow up in the chat for full detail.`;
 
 
-  // Try Groq first (same key already connected, free & fast, no quota issues)
-  if (apiKey) {
-    try {
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-          messages: [{ role: 'system', content: systemPrompt }, ...liveChatHistory],
-          temperature: 0.7,
-          max_tokens: 200
-        })
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error.message || 'Groq error');
-      let reply = data.choices?.[0]?.message?.content || "Sorry, I didn't catch that.";
-      liveChatHistory.push({ role: 'assistant', content: reply });
-      setLiveTranscript(reply, 'ai-text');
-      speakLiveReply(reply);
-      return;
-    } catch(err) {
-      if (!geminiKey) {
-        setLiveOrb('idle');
-        setLiveStatus('Connection error — check your API key');
-        liveSpeaking_ = false;
-        if (liveAutoListen) setTimeout(startLiveListening, 1500);
-        return;
-      }
-    }
-  }
+  // Use YOUR backend — no user API key needed!
+  try {
+    const liveToken = await getAuthToken();
+    const liveHeaders = { 'Content-Type': 'application/json' };
+    if (liveToken) liveHeaders['Authorization'] = 'Bearer ' + liveToken;
 
-  // Fallback: Gemini (only if Groq not available)
-  if (geminiKey) {
-    try {
-      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + geminiKey, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: liveChatHistory.map(m => ({
-            role: m.role === 'assistant' ? 'model' : 'user',
-            parts: [{ text: m.content }]
-          })),
-          systemInstruction: { parts: [{ text: systemPrompt }] }
-        })
-      });
-      const data = await res.json();
-      if (data.error) {
-        const msg = data.error.message || '';
-        if (msg.toLowerCase().includes('quota') || msg.includes('RESOURCE_EXHAUSTED')) {
-          setLiveOrb('idle');
-          setLiveStatus('Gemini quota exceeded — connect Groq key to continue');
-          liveSpeaking_ = false;
-          return;
-        }
-        throw new Error(msg);
-      }
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I didn't catch that.";
-      liveChatHistory.push({ role: 'assistant', content: reply });
-      setLiveTranscript(reply, 'ai-text');
-      speakLiveReply(reply);
-    } catch(err) {
-      setLiveOrb('idle');
-      setLiveStatus('Connection error — tap mic to retry');
-      liveSpeaking_ = false;
-      if (liveAutoListen) setTimeout(startLiveListening, 2000);
-    }
-    return;
-  }
+    const res = await fetch(BACKEND_URL + '/api/chat', {
+      method: 'POST',
+      headers: liveHeaders,
+      body: JSON.stringify({
+        messages: [{ role: 'system', content: systemPrompt }, ...liveChatHistory],
+        max_tokens: 200
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Backend error');
+    if (data.error) throw new Error(data.error.message || 'AI error');
 
-  // No API key at all
-  setLiveOrb('idle');
-  setLiveStatus('Connect your Groq API key first');
-  liveSpeaking_ = false;
+    let reply = data.choices?.[0]?.message?.content || "Sorry, I didn't catch that.";
+    liveChatHistory.push({ role: 'assistant', content: reply });
+    setLiveTranscript(reply, 'ai-text');
+    speakLiveReply(reply);
+  } catch(err) {
+    console.error('Live chat error:', err.message);
+    setLiveOrb('idle');
+    setLiveStatus('Connection error — tap mic to retry');
+    liveSpeaking_ = false;
+    if (liveAutoListen) setTimeout(startLiveListening, 2000);
+  }
 }
 
 // Speaks the AI reply naturally, then auto-restarts mic when done
@@ -6658,13 +6623,20 @@ async function startPayment(tier) {
         });
         const verifyData = await verifyRes.json();
         if (verifyRes.ok && verifyData.success) {
-          localStorage.setItem('fm_plan', verifyData.plan);
+          // Save plan to localStorage AND Firestore immediately
+          const newPlan = verifyData.plan || 'premium';
+          localStorage.setItem('fm_plan', newPlan);
+          // Directly write plan to Firestore - don't rely on saveToCloud
+          if (window._fbCurrentUser && window._fbDb) {
+            window._fbDb.collection('users').doc(window._fbCurrentUser.uid)
+              .set({ plan: newPlan, planActivatedAt: new Date().toISOString() }, { merge: true })
+              .then(() => console.log('Plan saved to Firestore:', newPlan))
+              .catch(e => console.log('Firestore plan save error:', e));
+          }
           updatePlanUI();
           renderLifeScore();
           toast('🎉 ' + verifyData.message);
           closePricing();
-          // ✅ Save plan to Firestore so it persists across devices/logins
-          saveToCloud();
         } else {
           toast('❌ Payment verification failed. Contact support.');
         }
