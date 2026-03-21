@@ -2614,7 +2614,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
           <div class="msg ai" id="welcomeMsg">
             <div class="msg-avatar">⚡</div>
             <div class="msg-content">
-              <div class="msg-bubble" id="welcomeBubble">Hey! I'm your FlowMind AI. Set your Groq API key to get started — then I'm ready to help with strategy, wealth, goals, or anything on your mind.</div>
+              <div class="msg-bubble" id="welcomeBubble">Hey! I'm your FlowMind AI. I'm connected and ready — ask me anything about strategy, wealth, goals, or anything on your mind! 🚀</div>
               <div class="msg-meta"><span class="msg-time">Just now</span></div>
             </div>
           </div>
@@ -3218,6 +3218,7 @@ async function firebaseSignup() {
       await window._fbDb.collection('users').doc(cred.user.uid).set({
         name, email, createdAt: new Date().toISOString()
       });
+      incrementGlobalStat('totalUsers', 1);
       // -- Increment global user count --
       incrementGlobalStat('totalUsers', 1);
     } catch(fe) { console.log('Firestore save skipped', fe); }
@@ -3350,7 +3351,7 @@ window.onFirebaseLogin = async function(user) {
     ['fm_tasks','fm_assets','fm_goals','fm_msgs','fm_saved_chats',
      'fm_chat_count','fm_plan','fm_apikey','fm_gemini_key','fm_autosave_ts'].forEach(k => localStorage.removeItem(k));
     // Clear previous user's quiz data
-    Object.keys(localStorage).filter(k => k.startsWith('fm_quiz_' + prevUid + '_')).forEach(k => localStorage.removeItem(k));
+    // Quiz data preserved even on account switch
     tasks = []; assets = []; goals = []; msgCount = 0; apiKey = '';
   }
   // Track current UID so we can detect account switches
@@ -3370,20 +3371,62 @@ window.onFirebaseLogin = async function(user) {
         const apiInput = document.getElementById('apiKeyInput');
         if (apiInput) apiInput.value = apiKey;
       }
-      // ✅ CRITICAL: Always read plan from Firestore - it's the source of truth
-      const firestorePlan = data.plan || 'free';
-      localStorage.setItem('fm_plan', firestorePlan);
-      console.log('Plan loaded from Firestore:', firestorePlan);
+      // ✅ CRITICAL: Smart plan loading — never downgrade
+      const firestorePlan = data.plan || null;
+      const localPlan = localStorage.getItem('fm_plan') || 'free';
+      
+      if (firestorePlan) {
+        // Firestore has a plan — use it (most reliable source)
+        localStorage.setItem('fm_plan', firestorePlan);
+        console.log('Plan loaded from Firestore:', firestorePlan);
+      } else if (localPlan === 'pro' || localPlan === 'premium') {
+        // No plan in Firestore BUT localStorage has premium/pro
+        // Save it UP to Firestore so it persists next time
+        window._fbDb.collection('users').doc(user.uid)
+          .set({ plan: localPlan }, { merge: true })
+          .then(() => console.log('Plan saved to Firestore from localStorage:', localPlan))
+          .catch(() => {});
+        console.log('Plan kept from localStorage:', localPlan);
+      } else {
+        // Neither has a plan — set free
+        localStorage.setItem('fm_plan', 'free');
+        console.log('Plan set to free (no plan found)');
+      }
+      // Restore quiz data from Firestore
+      if (data.quizData) {
+        Object.entries(data.quizData).forEach(([date, state]) => {
+          const key = 'fm_quiz_' + user.uid + '_' + date;
+          localStorage.setItem(key, JSON.stringify(state));
+        });
+        console.log('Quiz data restored from Firestore');
+      }
     } else {
-      // No Firestore doc yet — keep free plan
-      localStorage.setItem('fm_plan', 'free');
+      // No Firestore doc yet — NEVER overwrite existing premium/pro plan
+      const existingPlan = localStorage.getItem('fm_plan');
+      if (!existingPlan || (existingPlan !== 'pro' && existingPlan !== 'premium')) {
+        localStorage.setItem('fm_plan', 'free');
+      }
+      // If they have premium/pro in localStorage, save it to Firestore
+      if (existingPlan === 'pro' || existingPlan === 'premium') {
+        window._fbDb.collection('users').doc(user.uid)
+          .set({ plan: existingPlan, name: userName, email: user.email || '' }, { merge: true })
+          .catch(() => {});
+        console.log('Created Firestore doc with existing plan:', existingPlan);
+      }
     }
   } catch(e) { console.log('Firestore load error', e); }
   animateIntoApp();
   setTimeout(() => {
     startApp();
-    // updatePlanUI is called inside startApp, but call again to be sure plan badge is correct
-    setTimeout(updatePlanUI, 200);
+    // Force-read plan from Firestore to guarantee correct badge
+    setTimeout(() => {
+      forceUpdatePlanFromFirestore();
+      syncRealStatsToGlobal(); // sync real user/goal/wealth counts
+    }, 500);
+    // Double-check after 2 seconds in case Firestore was slow
+    setTimeout(() => {
+      forceUpdatePlanFromFirestore();
+    }, 2000);
   }, 400);
 };
 
@@ -3397,11 +3440,7 @@ window.onFirebaseLogout = function() {
     'fm_gemini_key', 'fm_autosave_ts', 'fm_theme'
   ];
   keysToWipe.forEach(k => localStorage.removeItem(k));
-  // Clear this user's quiz data on logout
-  const logoutUid = localStorage.getItem('fm_uid') || '';
-  if (logoutUid) {
-    Object.keys(localStorage).filter(k => k.startsWith('fm_quiz_' + logoutUid + '_')).forEach(k => localStorage.removeItem(k));
-  }
+  // NOTE: Quiz data is preserved on logout — users keep their progress
 
   // Reset in-memory variables so stale data doesn't persist in RAM
   tasks = []; assets = []; goals = [];
@@ -3421,10 +3460,16 @@ async function saveToCloud() {
   if (!window._fbCurrentUser) return;
   try {
     const plan = localStorage.getItem('fm_plan') || 'free';
-    await window._fbDb.collection('users').doc(window._fbCurrentUser.uid).update({
-      tasks, assets, goals, apiKey, plan
-    });
-  } catch(e) { console.log('Cloud save error', e); }
+    const totalWealth = assets.reduce((s,a) => s + (parseFloat(a.value)||0), 0);
+    await window._fbDb.collection('users').doc(window._fbCurrentUser.uid).set({
+      tasks, assets, goals, plan,
+      totalWealth,
+      chatCount: { date: new Date().toISOString().split('T')[0], count: msgCount },
+      lastSeen: new Date().toISOString()
+    }, { merge: true });
+    // Update global stats
+    incrementGlobalStat('totalGoals', 0); // triggers recalc
+  } catch(e) { console.log('Cloud save error:', e.message); }
 }
 
 function quickEnter() {
@@ -4680,7 +4725,11 @@ let savedChats = JSON.parse(localStorage.getItem('fm_saved_chats') || '[]');
 function toggleSavedChats() {
   const panel = document.getElementById('savedChatsPanel');
   panel.classList.toggle('open');
-  if (panel.classList.contains('open')) renderSavedChats();
+  if (panel.classList.contains('open')) {
+    // Always reload fresh from localStorage so live chats appear immediately
+    savedChats = JSON.parse(localStorage.getItem('fm_saved_chats') || '[]');
+    renderSavedChats();
+  }
 }
 
 function saveCurrentChat() {
@@ -5204,6 +5253,35 @@ function closeLiveChat() {
   liveSpeechQueue = [];
   liveSpeaking_   = false;
   if (window.speechSynthesis) window.speechSynthesis.cancel();
+
+  // Save live chat to history if there were messages
+  if (liveChatHistory && liveChatHistory.length > 0) {
+    try {
+      const savedChatsArr = JSON.parse(localStorage.getItem('fm_saved_chats') || '[]');
+      const liveId = 'live_' + Date.now();
+      const liveName = '🎙 Live Chat · ' + new Date().toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+      savedChatsArr.unshift({
+        id: liveId,
+        name: liveName,
+        date: new Date().toISOString(),
+        history: liveChatHistory.map(m => ({ role: m.role, content: m.content })),
+        msgCount: liveChatHistory.length,
+        autoSaved: true,
+        isLive: true
+      });
+      if (savedChatsArr.length > 50) savedChatsArr.length = 50;
+      localStorage.setItem('fm_saved_chats', JSON.stringify(savedChatsArr));
+      // Reload savedChats in memory so History panel shows it immediately
+      savedChats = savedChatsArr;
+      renderSavedChats();
+      toast('🎙 Live chat saved to History!');
+    } catch(e) {
+      console.log('Could not save live chat:', e);
+    }
+    liveChatHistory = [];
+  }
 }
 
 function setLiveOrb(state) {
@@ -6098,6 +6176,32 @@ function getQuizStorageKey(suffix) {
   return 'fm_quiz_' + uid + '_' + suffix;
 }
 
+function resetQuizForPremium() {
+  if (!isPro()) {
+    openPricing();
+    return;
+  }
+  // Premium users can replay with fresh questions
+  const today = getTodayDateStr();
+  // Get new questions (different from today's)
+  const usedKey = getQuizStorageKey('used_indices');
+  let usedData = JSON.parse(localStorage.getItem(usedKey) || '{"indices":[],"lastReset":""}');
+  // Temporarily remove today's indices so they get new ones
+  usedData.indices = usedData.indices.slice(0, -10);
+  localStorage.setItem(usedKey, JSON.stringify(usedData));
+
+  quizState = {
+    date: today + '_replay_' + Date.now(),
+    questions: getDailyQuestions(),
+    answers: [],
+    score: null,
+    currentQ: 0,
+    finished: false
+  };
+  renderQuiz();
+  toast('🔥 Premium Quiz Replay started!');
+}
+
 function initQuiz() {
   const today = getTodayDateStr();
   const saved = JSON.parse(localStorage.getItem(getQuizStorageKey(today)) || 'null');
@@ -6122,7 +6226,15 @@ function initQuiz() {
 }
 
 function saveQuizState() {
-  localStorage.setItem(getQuizStorageKey(quizState.date), JSON.stringify(quizState));
+  const key = getQuizStorageKey(quizState.date);
+  localStorage.setItem(key, JSON.stringify(quizState));
+  // Also save to Firestore so it survives logout/login
+  if (window._fbCurrentUser && window._fbDb) {
+    const uid = window._fbCurrentUser.uid;
+    window._fbDb.collection('users').doc(uid).set({
+      quizData: { [quizState.date]: quizState }
+    }, { merge: true }).catch(() => {});
+  }
 }
 
 function renderQuiz() {
@@ -6254,6 +6366,19 @@ function renderQuizResults(container) {
       <div style="color:var(--silver);font-size:13px;padding:12px;background:var(--ink3);border-radius:var(--r);border:1px solid var(--line2);">
         🔄 New questions will appear <strong style="color:var(--gold);">tomorrow!</strong> Come back daily to keep your streak! 
       </div>
+      ${isPro() ? `
+      <button onclick="resetQuizForPremium()" style="
+        margin-top:12px;width:100%;padding:12px;
+        background:linear-gradient(135deg,var(--purple),#7c3aed);
+        color:#fff;border:none;border-radius:var(--r2);
+        font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:14px;
+        cursor:pointer;transition:all 0.2s;
+      ">🔥 Premium: Play Again with New Questions</button>
+      ` : `
+      <div style="margin-top:12px;padding:10px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);border-radius:var(--r);text-align:center;font-size:12px;color:var(--purple);">
+        🔒 Upgrade to <strong>Premium</strong> to replay today's quiz anytime!
+      </div>
+      `}
     </div>
   `;
 
@@ -6509,7 +6634,24 @@ const PRO_AMOUNT    = 29900;   // ₹299 in paise
 const PREMIUM_AMOUNT = 69900;  // ₹699 in paise
 
 function getUserPlan() {
+  // Always read fresh from localStorage (gets updated by Firestore listener)
   return localStorage.getItem('fm_plan') || 'free';
+}
+
+// Call this after Firestore data is confirmed loaded
+function forceUpdatePlanFromFirestore() {
+  if (!window._fbCurrentUser || !window._fbDb) return;
+  window._fbDb.collection('users').doc(window._fbCurrentUser.uid).get()
+    .then(snap => {
+      if (snap.exists) {
+        const data = snap.data();
+        const plan = data.plan || 'free';
+        // ALWAYS update localStorage and UI regardless of plan value
+        localStorage.setItem('fm_plan', plan);
+        updatePlanUI();
+        console.log('Plan force-updated from Firestore:', plan);
+      }
+    }).catch(e => console.log('Plan fetch error:', e.message));
 }
 function isPro() {
   const p = getUserPlan(); return p === 'pro' || p === 'premium';
@@ -6872,10 +7014,14 @@ function attachLiveStatsListener() {
       .collection('app_stats').doc('global')
       .onSnapshot(snap => {
         if (!snap.exists) {
-          // Doc doesn't exist yet — create it with zeros
+          // Doc doesn't exist yet — create it
           window._fbDb.collection('app_stats').doc('global').set({
-            totalUsers: 0, totalChats: 0, totalGoals: 0,
+            totalUsers: 0, totalChats: 0, totalGoals: 0, totalWealth: 0,
             createdAt: new Date().toISOString()
+          }).catch(()=>{});
+          // Also count actual users from users collection
+          window._fbDb.collection('users').get().then(s => {
+            window._fbDb.collection('app_stats').doc('global').set({ totalUsers: s.size }, { merge: true });
           }).catch(()=>{});
           return;
         }
@@ -6942,6 +7088,26 @@ async function incrementGlobalStat(field, amount) {
       }, { merge: true });
     } catch(e2) { console.log('stat increment failed', e2); }
   }
+}
+
+// Sync REAL counts from all users to app_stats
+function syncRealStatsToGlobal() {
+  if (!window._fbDb) return;
+  window._fbDb.collection('users').get().then(snapshot => {
+    let totalGoals = 0, totalWealth = 0, totalChats = 0;
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      totalGoals  += (d.goals  || []).length;
+      totalWealth += (d.totalWealth || 0);
+      totalChats  += (d.chatCount?.count || 0);
+    });
+    window._fbDb.collection('app_stats').doc('global').set({
+      totalUsers:  snapshot.size,
+      totalGoals,
+      totalWealth: Math.round(totalWealth),
+      totalChats
+    }, { merge: true });
+  }).catch(() => {});
 }
 
 // Live stats listener is now started directly inside initFirebase() above
