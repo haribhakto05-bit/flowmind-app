@@ -2293,7 +2293,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
           <li><span class="fi">✓</span> Smart Habit Tracker</li>
           <li><span class="fi">✓</span> Priority AI Response</li>
         </ul>
-        <button class="plan-btn plan-btn-pro" onclick="startPayment('pro');closePricing();">Upgrade to Pro →</button>
+        <button class="plan-btn plan-btn-pro" onclick="startPayment('pro')">Upgrade to Pro →</button>
       </div>
       <!-- PREMIUM PLAN -->
       <div class="plan-card premium">
@@ -2310,7 +2310,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
           <li><span class="fi">✓</span> AI Life Score Tracker</li>
           <li><span class="fi">✓</span> Early Access to New Features</li>
         </ul>
-        <button class="plan-btn plan-btn-premium" onclick="startPayment('premium');closePricing();">Go Premium →</button>
+        <button class="plan-btn plan-btn-premium" onclick="startPayment('premium')">Go Premium →</button>
       </div>
     </div>
 
@@ -3077,7 +3077,13 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
 
 <script>
 // --- BACKEND CONFIG -------------------------
-const BACKEND_URL = 'https://flowmind-backend-production.up.railway.app';
+const CONFIG = {
+  BACKEND_URL: window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://flowmind-backend-production.up.railway.app',
+  REQUEST_TIMEOUT: 15000
+};
+const BACKEND_URL = CONFIG.BACKEND_URL;
 
 async function getAuthToken() {
   if (!window._fbCurrentUser) return null;
@@ -3086,7 +3092,7 @@ async function getAuthToken() {
 }
 // --- STATE --------------------------------------------------
 let userName   = localStorage.getItem('fm_name')   || '';
-let apiKey     = localStorage.getItem('fm_apikey') || '';
+let apiKey     = 'backend-managed';
 let tasks      = JSON.parse(localStorage.getItem('fm_tasks')  || '[]');
 let assets     = JSON.parse(localStorage.getItem('fm_assets') || '[]');
 let goals      = JSON.parse(localStorage.getItem('fm_goals')  || '[]');
@@ -3221,8 +3227,6 @@ async function firebaseSignup() {
         name, email, createdAt: new Date().toISOString()
       });
       incrementGlobalStat('totalUsers', 1);
-      // -- Increment global user count --
-      incrementGlobalStat('totalUsers', 1);
     } catch(fe) { console.log('Firestore save skipped', fe); }
   } catch(e) {
     setBtnLoading('signUpBtn', false, 'Create Account →');
@@ -3277,7 +3281,7 @@ async function sendPasswordReset() {
 }
 
 async function firebaseGoogleLogin() {
-  if (!window._fbAuth) { showToast('⏳ Firebase loading... try again!'); return; }
+  if (!window._fbAuth) { toast('⏳ Firebase loading... try again!'); return; }
   const errEl = document.getElementById('loginError');
   const btn = document.getElementById('googleLoginBtn');
   if (errEl) { errEl.style.display = 'none'; }
@@ -3351,7 +3355,7 @@ window.onFirebaseLogin = async function(user) {
   if (prevUid && prevUid !== user.uid) {
     // Different user — clear everything before loading new user's data
     ['fm_tasks','fm_assets','fm_goals','fm_msgs','fm_saved_chats',
-     'fm_chat_count','fm_plan','fm_apikey','fm_gemini_key','fm_autosave_ts'].forEach(k => localStorage.removeItem(k));
+     'fm_chat_count','fm_plan','fm_gemini_key','fm_autosave_ts'].forEach(k => localStorage.removeItem(k));
     // Clear previous user's quiz data
     // Quiz data preserved even on account switch
     tasks = []; assets = []; goals = []; msgCount = 0; apiKey = '';
@@ -3367,12 +3371,6 @@ window.onFirebaseLogin = async function(user) {
       if (data.tasks)  { tasks  = data.tasks;  localStorage.setItem('fm_tasks',  JSON.stringify(tasks));  }
       if (data.assets) { assets = data.assets; localStorage.setItem('fm_assets', JSON.stringify(assets)); }
       if (data.goals)  { goals  = data.goals;  localStorage.setItem('fm_goals',  JSON.stringify(goals));  }
-      if (data.apiKey) { 
-        apiKey = data.apiKey; 
-        localStorage.setItem('fm_apikey', apiKey);
-        const apiInput = document.getElementById('apiKeyInput');
-        if (apiInput) apiInput.value = apiKey;
-      }
       // ✅ CRITICAL: Smart plan loading — never downgrade
       const firestorePlan = data.plan || null;
       const localPlan = localStorage.getItem('fm_plan') || 'free';
@@ -3436,7 +3434,7 @@ window.onFirebaseLogout = function() {
   // -- Clear ALL user-specific data from localStorage on logout --
   // This prevents data from one account leaking into another account
   const keysToWipe = [
-    'fm_name', 'fm_tasks', 'fm_assets', 'fm_goals', 'fm_apikey',
+    'fm_name', 'fm_tasks', 'fm_assets', 'fm_goals',
     'fm_msgs', 'fm_saved_chats', 'fm_chat_count', 'fm_plan',
     'fm_wq_best', 'fm_ceo_best', 'fm_mm_portfolio', 'fm_habits',
     'fm_gemini_key', 'fm_autosave_ts', 'fm_theme'
@@ -3509,18 +3507,9 @@ function startApp() {
   document.getElementById('greetName').textContent = userName;
 
   document.getElementById('welcomeBubble').innerHTML =
-    `Hey ${esc(userName)}! 👋 I'm your FlowMind AI. ${apiKey
-      ? "I'm connected and ready — what's on your mind? You can attach images, PDFs or text files using the attach button."
-      : "Set your Groq API key (top right) to activate me, then let's get to work!"}`;
+    `Hey ${esc(userName)}! 👋 I'm your FlowMind AI — connected and ready. You can attach images, PDFs or text files using the attach button.`;
 
-  // Always reload apiKey fresh from localStorage
-  apiKey = localStorage.getItem('fm_apikey') || apiKey || '';
-  if (apiKey) {
-    const apiInput = document.getElementById('apiKeyInput');
-    if (apiInput) apiInput.value = apiKey;
-  }
-
-  updateStatus(!!apiKey);
+  updateStatus(true);
   updatePlanUI();
   renderTasks();
   renderWealth();
@@ -3646,24 +3635,9 @@ function toast(msg) {
   clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
 }
-// ✅ Bug fix: showToast was called in many places but never defined
-function showToast(msg) { toast(msg); }
-
-// --- API KEY -------------------------------------------------
+// --- BACKEND STATUS ------------------------------------------
 function saveApiKey() {
-  const keyVal = document.getElementById('apiKeyInput').value.trim();
-  if (!keyVal) { toast('⚠️ Please enter your Groq API key'); return; }
-  apiKey = keyVal;
-  localStorage.setItem('fm_apikey', apiKey);
-  console.log('API key saved:', apiKey.substring(0,8) + '...');
-  // Sync to cloud so key persists across devices
-  if (window._fbCurrentUser) {
-    window._fbDb.collection('users').doc(window._fbCurrentUser.uid).update({ apiKey }).catch(()=>{});
-  }
-  closeModal('apiModal');
-  const welcomeEl = document.getElementById('welcomeBubble');
-  if (welcomeEl) welcomeEl.innerHTML = `Hey ${esc(userName)}! 👋 I'm connected and ready — what's on your mind? You can attach images, PDFs or text files using the attach button.`;
-  toast('✅ Groq API key saved — AI is ready!');
+  toast('✅ FlowMind already uses your backend AI key — no user API key is needed.');
   updateStatus(true);
 }
 function updateStatus(online) {
@@ -3832,7 +3806,7 @@ function newChat() {
   div.innerHTML = `
     <div class="msg-avatar">⚡</div>
     <div class="msg-content">
-      <div class="msg-bubble" id="welcomeBubble">Hey ${esc(userName)}! 👋 New chat started — previous conversation saved to History. ${apiKey ? "What's on your mind?" : "Set your Groq API key (top right) to activate me!"}</div>
+      <div class="msg-bubble" id="welcomeBubble">Hey ${esc(userName)}! 👋 New chat started — previous conversation saved to History. What's on your mind?</div>
       <div class="msg-meta"><span class="msg-time">${time}</span></div>
     </div>`;
   msgs.insertBefore(div, typing);
@@ -6680,12 +6654,44 @@ function renderWeeklyReport() {
 }
 
 // --- PLAN SYSTEM ---------------------------------------------
-// FREE: 5 tasks, 5 goals, 10 AI chats/day, 10 quiz/day, no wealth
+// FREE: 5 tasks, 5 goals, 25 AI chats/day, no wealth
 // PRO ₹299/mo: unlimited everything + wealth + reports + weekly AI report
 // PREMIUM ₹699/mo: everything in Pro + AI Life Score + Decision Assistant + early access
-const RAZORPAY_KEY = 'rzp_test_YourKeyHere';
-const PRO_AMOUNT    = 29900;   // ₹299 in paise
-const PREMIUM_AMOUNT = 69900;  // ₹699 in paise
+
+async function fetchJSON(url, options = {}, timeout = CONFIG.REQUEST_TIMEOUT) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    let data = {};
+    try { data = await res.json(); } catch (e) { data = {}; }
+    return { res, data };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function refreshPlanFromCloud() {
+  if (!window._fbCurrentUser || !window._fbDb) {
+    updatePlanUI();
+    return getUserPlan();
+  }
+
+  try {
+    const snap = await window._fbDb.collection('users').doc(window._fbCurrentUser.uid).get();
+    const plan = snap.exists ? (snap.data().plan || 'free') : 'free';
+    localStorage.setItem('fm_plan', plan);
+    updatePlanUI();
+    return plan;
+  } catch (e) {
+    console.log('Plan refresh error:', e.message);
+    updatePlanUI();
+    return getUserPlan();
+  }
+}
+
+let paymentInProgress = false;
 
 function getUserPlan() {
   // Always read fresh from localStorage (gets updated by Firestore listener)
@@ -6783,82 +6789,101 @@ function closePricing() {
 }
 
 async function startPayment(tier) {
+  if (paymentInProgress) return;
+
   const token = await getAuthToken();
-  if (!token) { toast('⚠️ Please sign in first to upgrade.'); return; }
+  if (!token) {
+    toast('⚠️ Please sign in first to upgrade.');
+    return;
+  }
+
+  paymentInProgress = true;
 
   try {
-    const orderRes = await fetch(`${BACKEND_URL}/api/payment/create-order`, {
-      method:  'POST',
+    const { res: orderRes, data: orderData } = await fetchJSON(`${BACKEND_URL}/api/payment/create-order`, {
+      method: 'POST',
       headers: {
-        'Content-Type':  'application/json',
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({ tier }),
     });
-    const orderData = await orderRes.json();
+
     if (!orderRes.ok) {
       toast('❌ ' + (orderData.message || 'Could not start payment.'));
       return;
     }
 
-    const options = {
-      key:         orderData.keyId,
-      amount:      orderData.amount,
-      currency:    orderData.currency,
-      name:        'FlowMind AI',
-      description: `${tier.charAt(0).toUpperCase() + tier.slice(1)} Plan`,
-      order_id:    orderData.orderId,
+    if (typeof Razorpay === 'undefined') {
+      toast('⚠️ Payment system not loaded. Please refresh and try again.');
+      return;
+    }
 
+    const razor = new Razorpay({
+      key: orderData.keyId,
+      amount: orderData.amount,
+      currency: orderData.currency,
+      name: 'FlowMind AI',
+      description: `${tier.charAt(0).toUpperCase() + tier.slice(1)} Plan`,
+      order_id: orderData.orderId,
       handler: async function(response) {
-        const verifyRes = await fetch(`${BACKEND_URL}/api/payment/verify`, {
-          method:  'POST',
-          headers: {
-            'Content-Type':  'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            orderId:   response.razorpay_order_id,
-            paymentId: response.razorpay_payment_id,
-            signature: response.razorpay_signature,
-            tier,
-          }),
-        });
-        const verifyData = await verifyRes.json();
-        if (verifyRes.ok && verifyData.success) {
-          // Save plan to localStorage AND Firestore immediately
-          const newPlan = verifyData.plan || 'premium';
-          localStorage.setItem('fm_plan', newPlan);
-          // Directly write plan to Firestore - don't rely on saveToCloud
-          if (window._fbCurrentUser && window._fbDb) {
-            window._fbDb.collection('users').doc(window._fbCurrentUser.uid)
-              .set({ plan: newPlan, planActivatedAt: new Date().toISOString() }, { merge: true })
-              .then(() => console.log('Plan saved to Firestore:', newPlan))
-              .catch(e => console.log('Firestore plan save error:', e));
+        try {
+          const { res: verifyRes, data: verifyData } = await fetchJSON(`${BACKEND_URL}/api/payment/verify`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+              tier,
+            }),
+          });
+
+          if (!verifyRes.ok || !verifyData.success) {
+            toast('❌ ' + (verifyData.message || 'Payment verification failed. Contact support.'));
+            return;
           }
+
+          const newPlan = verifyData.plan || tier;
+          localStorage.setItem('fm_plan', newPlan);
+
+          let cloudPlan = await refreshPlanFromCloud();
+          if (cloudPlan !== newPlan && window._fbCurrentUser && window._fbDb) {
+            await window._fbDb.collection('users').doc(window._fbCurrentUser.uid)
+              .set({ plan: newPlan, planActivatedAt: new Date().toISOString() }, { merge: true });
+            cloudPlan = await refreshPlanFromCloud();
+          }
+
+          localStorage.setItem('fm_plan', cloudPlan || newPlan);
           updatePlanUI();
           renderLifeScore();
-          toast('🎉 ' + verifyData.message);
+          toast('🎉 ' + (verifyData.message || 'Payment successful!'));
           closePricing();
-        } else {
-          toast('❌ Payment verification failed. Contact support.');
+        } catch (err) {
+          toast('❌ Payment verification error: ' + err.message);
+        } finally {
+          paymentInProgress = false;
         }
       },
-
+      modal: {
+        ondismiss: function() {
+          paymentInProgress = false;
+        }
+      },
       prefill: {
-        name:  userName || '',
+        name: userName || '',
         email: window._fbCurrentUser?.email || '',
       },
       theme: { color: tier === 'premium' ? '#a855f7' : '#f5c842' },
-    };
+    });
 
-    if (typeof Razorpay === 'undefined') {
-      toast('⚠️ Payment system loading — please try again.');
-      return;
-    }
-    new Razorpay(options).open();
-
+    razor.open();
   } catch (err) {
-    toast('❌ Payment error: ' + err.message);
+    paymentInProgress = false;
+    toast('❌ Payment error: ' + (err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message));
   }
 }
 // --- FREE PLAN LIMIT CHECKS ----------------------------------
@@ -6869,7 +6894,7 @@ const FREE_CHAT_LIMIT = 25; // 25 free chats per day
 function checkTaskLimit() {
   if (isPro()) return true;
   if (tasks.length >= FREE_TASK_LIMIT) {
-    showToast(`⚠️ Free plan limit: ${FREE_TASK_LIMIT} tasks max. Upgrade to Pro for unlimited!`);
+    toast(`⚠️ Free plan limit: ${FREE_TASK_LIMIT} tasks max. Upgrade to Pro for unlimited!`);
     setTimeout(openPricing, 1000);
     return false;
   }
@@ -6879,7 +6904,7 @@ function checkTaskLimit() {
 function checkGoalLimit() {
   if (isPro()) return true;
   if (goals.length >= FREE_GOAL_LIMIT) {
-    showToast(`⚠️ Free plan limit: ${FREE_GOAL_LIMIT} goals max. Upgrade to Pro for unlimited!`);
+    toast(`⚠️ Free plan limit: ${FREE_GOAL_LIMIT} goals max. Upgrade to Pro for unlimited!`);
     setTimeout(openPricing, 1000);
     return false;
   }
