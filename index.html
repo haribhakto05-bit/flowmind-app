@@ -2134,8 +2134,8 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   .sidebar.open { left: 0; }
 
   /* -- Content panels -- */
-  .content { width: 100%; }
-  .panel { padding: 0; }
+  .content { width: 100%; min-width: 0; }
+  .panel { padding: 0; min-width: 0; }
   .panel-topbar { padding: 12px 14px; gap: 8px; flex-wrap: wrap; }
   .panel-heading { font-size: 16px; }
 
@@ -2151,10 +2151,10 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   }
   .chat-model-badge { display: none; }
   #chatLimitBadge { font-size: 10px !important; }
-  .live-voice-btn { display: none; } /* hide live chat on mobile — needs mic setup */
+  .live-voice-btn { display: inline-flex; align-items:center; justify-content:center; padding: 6px 10px; font-size: 11px; min-height: 34px; }
   .save-chat-btn, .history-btn, .clear-btn { padding: 4px 8px; font-size: 11px; }
 
-  .messages { padding: 12px 10px; }
+  .messages { padding: 12px 10px 18px; }
   .msg { gap: 8px; margin-bottom: 10px; }
   .msg-avatar { width: 28px; height: 28px; font-size: 13px; flex-shrink: 0; }
   .msg-bubble { font-size: 13px; padding: 10px 12px; border-radius: 12px 12px 12px 4px; max-width: 92vw; }
@@ -2164,7 +2164,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   .chips-row::-webkit-scrollbar { display: none; }
   .chip { white-space: nowrap; font-size: 11px; padding: 5px 10px; flex-shrink: 0; }
 
-  .chat-input-wrap { padding: 8px 10px; }
+  .chat-input-wrap { padding: 10px; position: sticky; bottom: 0; background: linear-gradient(180deg, rgba(8,11,18,0.92), rgba(8,11,18,0.98)); backdrop-filter: blur(12px); z-index: 3; }
   .chat-input-bar { gap: 6px; }
   .mic-btn { width: 38px; height: 38px; }
   #chatInput { font-size: 14px; min-height: 38px; padding: 8px 10px; }
@@ -2216,7 +2216,9 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
     flex-shrink: 0;
   }
   .landing-left::after { display: none; }
-  .landing-right { display: none; } /* hide preview on mobile for cleaner login */
+  .landing-right { display: none; } /* keep clean auth flow on mobile */
+  .landing-hero-kpis, .landing-proof { grid-template-columns: 1fr; }
+  .pricing-modal-tagline, .pricing-modal-sub { max-width: 100%; }
   .landing-inner { padding: 24px 18px; }
   .landing-headline { font-size: 22px; }
   .auth-tabs { margin-bottom: 16px; }
@@ -2258,23 +2260,23 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
 <!-- PRICING MODAL -->
 <div class="pricing-modal-overlay" id="pricingModal">
   <div class="pricing-modal">
-    <div class="pricing-modal-headline">🚀 Upgrade Your Life With AI</div>
-    <p class="pricing-modal-tagline">Your AI partner for productivity, wealth building, and life planning.</p>
-    <p class="pricing-modal-sub">Turn Your Daily Actions Into Wealth &amp; Growth</p>
+    <div class="pricing-modal-headline">🚀 Upgrade Your Focus, Output & Growth</div>
+    <p class="pricing-modal-tagline">Plan smarter. Execute harder. Grow faster.</p>
+    <p class="pricing-modal-sub">Built to turn clarity into momentum and momentum into results</p>
     <div class="plans-grid">
       <!-- FREE PLAN -->
       <div class="plan-card">
         <div class="plan-name">🟢 Free</div>
         <div class="plan-price">₹0 <span>/month</span></div>
-        <div class="plan-save">&nbsp;</div>
+        <div class="plan-save">Start strong with real daily value</div>
         <ul class="plan-features">
           <li><span class="fi">✓</span> 25 AI chats/day</li>
-          <li><span class="fi">✓</span> Basic Daily Planning</li>
-          <li><span class="fi">✓</span> Basic Task Tracking</li>
-          <li><span class="fi">✓</span> Simple Notes</li>
-          <li><span class="fi">✓</span> Daily Quiz (10/day)</li>
-          <li><span class="fi" style="color:var(--silver)">✗</span> No Wealth Strategy</li>
-          <li><span class="fi" style="color:var(--silver)">✗</span> No AI Reports</li>
+          <li><span class="fi">✓</span> 10 tasks + 5 goals</li>
+          <li><span class="fi">✓</span> 1 quiz play/day</li>
+          <li><span class="fi">✓</span> Basic planner + notes</li>
+          <li><span class="fi">✓</span> Demo dashboard access</li>
+          <li><span class="fi" style="color:var(--silver)">✗</span> Navigation games locked</li>
+          <li><span class="fi" style="color:var(--silver)">✗</span> No wealth intelligence</li>
         </ul>
         <button class="plan-btn plan-btn-free" onclick="closePricing()">Current Plan</button>
       </div>
@@ -2283,15 +2285,15 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         <div class="plan-card-badge">⭐ MOST POPULAR</div>
         <div class="plan-name" style="color:var(--gold)">🔵 Pro</div>
         <div class="plan-price">₹299 <span>/month</span></div>
-        <div class="plan-save">or ₹199/mo billed yearly · Save 33%</div>
+        <div class="plan-save">Built for focused execution and momentum</div>
         <ul class="plan-features">
-          <li><span class="fi">✓</span> Unlimited AI Conversations</li>
-          <li><span class="fi">✓</span> AI Daily Life Planner</li>
-          <li><span class="fi">✓</span> Wealth Growth Suggestions</li>
-          <li><span class="fi">✓</span> Monthly Productivity Report</li>
-          <li><span class="fi">✓</span> Goal Tracking System</li>
-          <li><span class="fi">✓</span> Smart Habit Tracker</li>
-          <li><span class="fi">✓</span> Priority AI Response</li>
+          <li><span class="fi">✓</span> Unlimited AI conversations</li>
+          <li><span class="fi">✓</span> Unlimited tasks + goals</li>
+          <li><span class="fi">✓</span> All navigation games unlocked</li>
+          <li><span class="fi">✓</span> 5 quiz plays/day</li>
+          <li><span class="fi">✓</span> Smart weekly review + planner</li>
+          <li><span class="fi">✓</span> Priority AI mode</li>
+          <li><span class="fi">✓</span> Cleaner premium workspace</li>
         </ul>
         <button class="plan-btn plan-btn-pro" onclick="startPayment('pro')">Upgrade to Pro →</button>
       </div>
@@ -2300,15 +2302,15 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         <div class="plan-card-badge premium-badge">🔥 BEST VALUE</div>
         <div class="plan-name" style="color:var(--purple)">🟡 Premium</div>
         <div class="plan-price purple">₹699 <span>/month</span></div>
-        <div class="plan-save">or ₹499/mo billed yearly · Save 29%</div>
+        <div class="plan-save">For users who want deep insight, speed, and scale</div>
         <ul class="plan-features">
           <li><span class="fi">✓</span> Everything in Pro</li>
-          <li><span class="fi">✓</span> AI Wealth Strategy Planner</li>
-          <li><span class="fi">✓</span> Advanced Monthly Reports</li>
-          <li><span class="fi">✓</span> Personal Growth Dashboard</li>
-          <li><span class="fi">✓</span> AI Decision Assistant</li>
-          <li><span class="fi">✓</span> AI Life Score Tracker</li>
-          <li><span class="fi">✓</span> Early Access to New Features</li>
+          <li><span class="fi">✓</span> Unlimited quiz plays/day</li>
+          <li><span class="fi">✓</span> Wealth intelligence + deeper reports</li>
+          <li><span class="fi">✓</span> Personalized memory-based guidance</li>
+          <li><span class="fi">✓</span> Advanced decision support</li>
+          <li><span class="fi">✓</span> Premium report depth</li>
+          <li><span class="fi">✓</span> Early access to new features</li>
         </ul>
         <button class="plan-btn plan-btn-premium" onclick="startPayment('premium')">Go Premium →</button>
       </div>
@@ -2327,12 +2329,12 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
       </thead>
       <tbody>
         <tr><td>AI Chat</td><td>25/day</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
-        <tr><td>Daily Planner</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>Wealth Strategy</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>Monthly Reports</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>AI Weekly Report</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>AI Decision Assistant</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
-        <tr><td>AI Life Score</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
+        <tr><td>Tasks / Goals</td><td>10 / 5</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Daily Quiz</td><td>1 play/day</td><td>5 plays/day</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Navigation Games</td><td class="no">Locked</td><td class="yes">Unlocked</td><td class="yes">Unlocked</td></tr>
+        <tr><td>Smart Weekly Review</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+        <tr><td>Wealth Intelligence</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">Advanced</td></tr>
+        <tr><td>Memory-Based Guidance</td><td class="no">✗</td><td class="no">Light</td><td class="yes">Deep</td></tr>
         <tr><td>Early Feature Access</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
       </tbody>
     </table>
@@ -2604,7 +2606,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         <div class="chat-header">
           <div class="chat-title">AI Chat</div>
           <div style="display:flex;gap:8px;align-items:center;">
-            <div class="chat-model-badge">llama-3.3-70b</div>
+            <div class="chat-model-badge">FlowMind Smart AI</div>
             <div id="chatLimitBadge" style="font-size:11px;color:var(--silver);font-family:'JetBrains Mono',monospace;white-space:nowrap;padding:4px 8px;background:var(--ink3);border:1px solid var(--line);border-radius:8px;display:none;"></div>
             <button class="live-voice-btn" onclick="openLiveChat()" title="Live Voice Chat">🎙 Live</button>
             <button class="save-chat-btn" onclick="saveCurrentChat()">💾 Save</button>
@@ -2982,12 +2984,12 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
       </thead>
       <tbody>
         <tr><td>AI Chat</td><td>25/day</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
-        <tr><td>Daily Planner</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>Wealth Strategy</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>Monthly Reports</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>AI Weekly Report</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>AI Decision Assistant</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
-        <tr><td>AI Life Score</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
+        <tr><td>Tasks / Goals</td><td>10 / 5</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Daily Quiz</td><td>1 play/day</td><td>5 plays/day</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Navigation Games</td><td class="no">Locked</td><td class="yes">Unlocked</td><td class="yes">Unlocked</td></tr>
+        <tr><td>Smart Weekly Review</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+        <tr><td>Wealth Intelligence</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">Advanced</td></tr>
+        <tr><td>Memory-Based Guidance</td><td class="no">✗</td><td class="no">Light</td><td class="yes">Deep</td></tr>
         <tr><td>Early Feature Access</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
       </tbody>
     </table>
@@ -3078,10 +3080,8 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
 <script>
 // --- BACKEND CONFIG -------------------------
 const CONFIG = {
-  BACKEND_URL: window.location.hostname === 'localhost'
-    ? 'http://localhost:3000'
-    : 'https://flowmind-backend-production.up.railway.app',
-  REQUEST_TIMEOUT: 15000
+  BACKEND_URL: 'https://flowmind-backend-production.up.railway.app',
+  REQUEST_TIMEOUT: 20000
 };
 const BACKEND_URL = CONFIG.BACKEND_URL;
 
@@ -3110,6 +3110,7 @@ let taskFilter = 'all';
 let editingGoalId  = null;
 let activePanelName = 'chat';
 let currentChatId = null; // Tracks the currently active/saved chat session
+let planSyncUnsub = null;
 
 const MAX_HISTORY  = 20; 
 let _idCounter = Date.now();
@@ -3227,6 +3228,8 @@ async function firebaseSignup() {
         name, email, createdAt: new Date().toISOString()
       });
       incrementGlobalStat('totalUsers', 1);
+      // -- Increment global user count --
+      incrementGlobalStat('totalUsers', 1);
     } catch(fe) { console.log('Firestore save skipped', fe); }
   } catch(e) {
     setBtnLoading('signUpBtn', false, 'Create Account →');
@@ -3281,7 +3284,7 @@ async function sendPasswordReset() {
 }
 
 async function firebaseGoogleLogin() {
-  if (!window._fbAuth) { toast('⏳ Firebase loading... try again!'); return; }
+  if (!window._fbAuth) { showToast('⏳ Firebase loading... try again!'); return; }
   const errEl = document.getElementById('loginError');
   const btn = document.getElementById('googleLoginBtn');
   if (errEl) { errEl.style.display = 'none'; }
@@ -3355,14 +3358,15 @@ window.onFirebaseLogin = async function(user) {
   if (prevUid && prevUid !== user.uid) {
     // Different user — clear everything before loading new user's data
     ['fm_tasks','fm_assets','fm_goals','fm_msgs','fm_saved_chats',
-     'fm_chat_count','fm_plan','fm_gemini_key','fm_autosave_ts'].forEach(k => localStorage.removeItem(k));
+     'fm_chat_count','fm_plan','fm_apikey','fm_gemini_key','fm_autosave_ts'].forEach(k => localStorage.removeItem(k));
     // Clear previous user's quiz data
     // Quiz data preserved even on account switch
-    tasks = []; assets = []; goals = []; msgCount = 0; apiKey = '';
+    tasks = []; assets = []; goals = []; msgCount = 0; apiKey = 'backend-managed';
   }
   // Track current UID so we can detect account switches
   localStorage.setItem('fm_uid', user.uid);
   localStorage.setItem('fm_name', userName);
+  const planBackup = readPlanBackup(user.uid);
 
   try {
     const snap = await window._fbDb.collection('users').doc(user.uid).get();
@@ -3371,25 +3375,27 @@ window.onFirebaseLogin = async function(user) {
       if (data.tasks)  { tasks  = data.tasks;  localStorage.setItem('fm_tasks',  JSON.stringify(tasks));  }
       if (data.assets) { assets = data.assets; localStorage.setItem('fm_assets', JSON.stringify(assets)); }
       if (data.goals)  { goals  = data.goals;  localStorage.setItem('fm_goals',  JSON.stringify(goals));  }
-      // ✅ CRITICAL: Smart plan loading — never downgrade
-      const firestorePlan = data.plan || null;
-      const localPlan = localStorage.getItem('fm_plan') || 'free';
+            // ✅ CRITICAL: Smart plan loading — never downgrade
+      const firestorePlan = data.plan || data.billing?.currentPlan || null;
+      const localPlan = (planBackup?.plan) || localStorage.getItem('fm_plan') || 'free';
       
       if (firestorePlan) {
         // Firestore has a plan — use it (most reliable source)
         localStorage.setItem('fm_plan', firestorePlan);
+        backupPlanLocally(firestorePlan, user.uid);
         console.log('Plan loaded from Firestore:', firestorePlan);
       } else if (localPlan === 'pro' || localPlan === 'premium') {
         // No plan in Firestore BUT localStorage has premium/pro
         // Save it UP to Firestore so it persists next time
         window._fbDb.collection('users').doc(user.uid)
-          .set({ plan: localPlan }, { merge: true })
+          .set({ plan: localPlan, billing: { currentPlan: localPlan, restoredFromBackupAt: new Date().toISOString() } }, { merge: true })
           .then(() => console.log('Plan saved to Firestore from localStorage:', localPlan))
           .catch(() => {});
         console.log('Plan kept from localStorage:', localPlan);
       } else {
         // Neither has a plan — set free
         localStorage.setItem('fm_plan', 'free');
+        backupPlanLocally('free', user.uid);
         console.log('Plan set to free (no plan found)');
       }
       // Restore quiz data from Firestore
@@ -3402,19 +3408,30 @@ window.onFirebaseLogin = async function(user) {
       }
     } else {
       // No Firestore doc yet — NEVER overwrite existing premium/pro plan
-      const existingPlan = localStorage.getItem('fm_plan');
+      const existingPlan = (planBackup?.plan) || localStorage.getItem('fm_plan');
       if (!existingPlan || (existingPlan !== 'pro' && existingPlan !== 'premium')) {
         localStorage.setItem('fm_plan', 'free');
       }
       // If they have premium/pro in localStorage, save it to Firestore
       if (existingPlan === 'pro' || existingPlan === 'premium') {
         window._fbDb.collection('users').doc(user.uid)
-          .set({ plan: existingPlan, name: userName, email: user.email || '' }, { merge: true })
+          .set({ plan: existingPlan, name: userName, email: user.email || '', billing: { currentPlan: existingPlan, restoredFromBackupAt: new Date().toISOString() } }, { merge: true })
           .catch(() => {});
         console.log('Created Firestore doc with existing plan:', existingPlan);
       }
     }
   } catch(e) { console.log('Firestore load error', e); }
+
+  if (planSyncUnsub) { try { planSyncUnsub(); } catch(_) {} }
+  planSyncUnsub = window._fbDb.collection('users').doc(user.uid).onSnapshot((snap) => {
+    if (!snap.exists) return;
+    const livePlan = snap.data()?.plan || snap.data()?.billing?.currentPlan;
+    if (!livePlan) return;
+    localStorage.setItem('fm_plan', livePlan);
+    backupPlanLocally(livePlan, user.uid);
+    updatePlanUI();
+  }, (e) => console.log('Plan sync listener error:', e));
+
   animateIntoApp();
   setTimeout(() => {
     startApp();
@@ -3434,17 +3451,18 @@ window.onFirebaseLogout = function() {
   // -- Clear ALL user-specific data from localStorage on logout --
   // This prevents data from one account leaking into another account
   const keysToWipe = [
-    'fm_name', 'fm_tasks', 'fm_assets', 'fm_goals',
+    'fm_name', 'fm_tasks', 'fm_assets', 'fm_goals', 'fm_apikey',
     'fm_msgs', 'fm_saved_chats', 'fm_chat_count', 'fm_plan',
     'fm_wq_best', 'fm_ceo_best', 'fm_mm_portfolio', 'fm_habits',
     'fm_gemini_key', 'fm_autosave_ts', 'fm_theme'
   ];
   keysToWipe.forEach(k => localStorage.removeItem(k));
+  if (planSyncUnsub) { try { planSyncUnsub(); } catch(_) {} planSyncUnsub = null; }
   // NOTE: Quiz data is preserved on logout — users keep their progress
 
   // Reset in-memory variables so stale data doesn't persist in RAM
   tasks = []; assets = []; goals = [];
-  msgCount = 0; userName = ''; apiKey = '';
+  msgCount = 0; userName = ''; apiKey = 'backend-managed';
 
   const landing = document.getElementById('landing');
   const app = document.getElementById('app');
@@ -3507,7 +3525,9 @@ function startApp() {
   document.getElementById('greetName').textContent = userName;
 
   document.getElementById('welcomeBubble').innerHTML =
-    `Hey ${esc(userName)}! 👋 I'm your FlowMind AI — connected and ready. You can attach images, PDFs or text files using the attach button.`;
+    `Hey ${esc(userName)}! 👋 I'm your FlowMind AI. ${apiKey
+      ? "I'm connected and ready — what's on your mind? You can attach images, PDFs or text files using the attach button."
+      : "Your personal AI OS is ready — ask, plan, track, and grow."}`;
 
   updateStatus(true);
   updatePlanUI();
@@ -3552,28 +3572,6 @@ function switchPanel(name, btn) {
     badge.style.display = 'none';
   }
   if (name === 'quiz') {
-    // Block free users from quiz
-    if (!isPro()) {
-      // Show locked state instead
-      const container = document.getElementById('quizContainer');
-      if (container) container.innerHTML = `
-        <div style="text-align:center;padding:60px 20px;">
-          <div style="font-size:56px;margin-bottom:16px;"></div>
-          <div style="font-size:22px;font-weight:800;color:var(--text1);margin-bottom:8px;">Daily Quiz is Premium</div>
-          <div style="font-size:14px;color:var(--silver);margin-bottom:24px;max-width:300px;margin-left:auto;margin-right:auto;">
-            Upgrade to Pro or Premium to unlock Daily Quiz, track your streak, and challenge your knowledge every day!
-          </div>
-          <button onclick="openPricing()" style="
-            padding:14px 32px;
-            background:linear-gradient(135deg,var(--purple),#7c3aed);
-            color:#fff;border:none;border-radius:var(--r2);
-            font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:15px;
-            cursor:pointer;box-shadow:0 4px 20px rgba(168,85,247,0.4);
-          ">🚀 Upgrade to Unlock Quiz</button>
-        </div>
-      `;
-      return;
-    }
     initQuiz();
     renderQuiz();
   }
@@ -3590,8 +3588,8 @@ function switchPanel(name, btn) {
           lockDiv.style.cssText = 'text-align:center;padding:60px 20px;';
           lockDiv.innerHTML = `
             <div style="font-size:56px;margin-bottom:16px;"></div>
-            <div style="font-size:22px;font-weight:800;color:var(--text1);margin-bottom:8px;">Games are Premium</div>
-            <div style="font-size:14px;color:var(--silver);margin-bottom:24px;">Upgrade to Pro or Premium to unlock all games!</div>
+            <div style="font-size:22px;font-weight:800;color:var(--text1);margin-bottom:8px;">Navigation Games are Pro</div>
+            <div style="font-size:14px;color:var(--silver);margin-bottom:24px;">Upgrade to Pro or Premium to unlock all navigation games!</div>
             <button onclick="openPricing()" style="
               padding:14px 32px;
               background:linear-gradient(135deg,var(--purple),#7c3aed);
@@ -3635,14 +3633,18 @@ function toast(msg) {
   clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
 }
-// --- BACKEND STATUS ------------------------------------------
+// ✅ Bug fix: showToast was called in many places but never defined
+function showToast(msg) { toast(msg); }
+
+// --- API KEY -------------------------------------------------
 function saveApiKey() {
-  toast('✅ FlowMind already uses your backend AI key — no user API key is needed.');
+  closeModal('apiModal');
+  toast('✅ FlowMind AI already uses your secure backend connection.');
   updateStatus(true);
 }
 function updateStatus(online) {
   document.getElementById("statusDot").className = "status-dot online";
-  document.getElementById("statusText").textContent = "Connected";
+  document.getElementById("statusText").textContent = online === false ? "Reconnecting" : "Connected";
 }
 
 // --- FILE UPLOAD (VISION) ------------------------------------
@@ -3806,7 +3808,7 @@ function newChat() {
   div.innerHTML = `
     <div class="msg-avatar">⚡</div>
     <div class="msg-content">
-      <div class="msg-bubble" id="welcomeBubble">Hey ${esc(userName)}! 👋 New chat started — previous conversation saved to History. What's on your mind?</div>
+      <div class="msg-bubble" id="welcomeBubble">Hey ${esc(userName)}! 👋 New chat started — previous conversation saved to History. ${apiKey ? "What should we solve first today?" : "Your AI workspace is ready — ask anything."}</div>
       <div class="msg-meta"><span class="msg-time">${time}</span></div>
     </div>`;
   msgs.insertBefore(div, typing);
@@ -3962,6 +3964,7 @@ YOUR CORE ROLES
 5. DECISION ENGINE — First Principles, Pre-Mortem, SWOT, 10/10/10, Opportunity Cost. Surface blind spots and second-order effects.
 6. DOCUMENT & IMAGE ANALYST — Extract insights, red flags, and action items from any file or image shared.
 7. COMMUNICATOR — Emails, proposals, pitches, negotiations, team feedback, client messages.
+8. MEMORY-LED COACH — Use the user's tasks, goals, recent activity, plan tier, and tracked wealth to make advice feel personalized and practical.
 
 --------------------------------
 HOW YOU RESPOND
@@ -3971,6 +3974,7 @@ Structure EVERY response:
 ▸ KEY INSIGHTS — 3-5 sharp, non-obvious observations tailored to ${userName}'s context.
 ▸ ACTION PLAN — Specific numbered steps with timelines where relevant.
 ▸ RISKS & WATCH-OUTS — What could go wrong? What assumptions need checking?
+▸ NEXT BEST MOVE — End with the single highest-leverage next action when useful.
 
 AUTO-DETECT special requests:
 - "plan my day/week" → Time-blocked schedule + P1/P2/P3 priority matrix + energy allocation
@@ -3988,6 +3992,7 @@ Never say "Great question!" or "Certainly!" Just answer. No filler. No fluff.
 Match ${userName}'s energy — quick question = quick answer. Deep question = deep answer.
 Do the math when numbers matter. Show brief working.
 State assumptions clearly when info is missing — don\'t stall with questions unless truly critical.
+When possible, connect advice to previous goals, unfinished tasks, recent wins, recent misses, or life score signals.
 
 --------------------------------
 STRICT COMMAND RULES
@@ -4049,22 +4054,31 @@ To DELETE a goal: [DELETE_GOAL: <ID>]
   // Clear attachment right after sending payload
   clearAttachment();
 
+  const recentContext = [
+    tasks.filter(t => !t.done).slice(0, 5).map(t => `Open task: ${t.title}`).join('\n'),
+    goals.slice(0, 4).map(g => `Goal: ${g.title} (${g.progress || 0}% done)`).join('\n'),
+    (JSON.parse(localStorage.getItem('fm_saved_chats') || '[]').slice(0, 2).map(c => `Saved chat: ${c.name}`).join('\n'))
+  ].filter(Boolean).join('\n');
+  if (recentContext) {
+    apiMessages.unshift({ role: 'system', content: `Recent working memory for ${userName}:\n${recentContext}` });
+  }
+
   try {
     // Use YOUR backend Groq key — users need no API key!
     const authToken = await getAuthToken();
     const reqHeaders = { 'Content-Type': 'application/json' };
     if (authToken) reqHeaders['Authorization'] = 'Bearer ' + authToken;
 
-    const res = await fetch(BACKEND_URL + '/api/chat', {
+    const { res, data } = await fetchJSON(BACKEND_URL + '/api/chat', {
       method: 'POST',
       headers: reqHeaders,
       body: JSON.stringify({
         model: modelToUse,
         messages: apiMessages,
-        max_tokens: 2000
+        max_tokens: isPremium() ? 2600 : isPro() ? 2200 : 1800,
+        temperature: isPremium() ? 0.65 : 0.55
       })
     });
-    const data = await res.json();
     if (!res.ok) {
       if (res.status === 429 && data.limitReached) {
         document.getElementById('typing').classList.remove('show');
@@ -4102,9 +4116,10 @@ To DELETE a goal: [DELETE_GOAL: <ID>]
     document.getElementById('typing').classList.remove('show');
     const errText = err?.message || String(err) || 'Unknown error';
     let e = '❌ ' + errText;
-    if (errText.includes('401')) e = '❌ Invalid API key — please check it in the top-right button.';
+    if (errText.includes('401')) e = '❌ Session expired. Please sign in again and retry.';
     else if (errText.includes('429') || errText.toLowerCase().includes('rate limit') || errText.toLowerCase().includes('tokens per minute'))
       e = '⏳ Rate limit hit — message too large or too many requests. Wait a moment and try again with a shorter message.';
+    else if (errText.includes('AbortError')) e = '⏳ FlowMind took too long to answer. Please retry.';
     else if (errText.includes('fetch') || errText.includes('Failed to fetch')) e = '🌐 Network error. Check your internet connection.';
     addMsg('ai', e);
   } finally {
@@ -6204,48 +6219,64 @@ function getQuizStorageKey(suffix) {
   return 'fm_quiz_' + uid + '_' + suffix;
 }
 
-function resetQuizForPremium() {
-  if (!isPro()) {
-    openPricing();
-    return;
-  }
-  // Premium users can replay with fresh questions
-  const today = getTodayDateStr();
-  // Get new questions (different from today's)
-  const usedKey = getQuizStorageKey('used_indices');
-  let usedData = JSON.parse(localStorage.getItem(usedKey) || '{"indices":[],"lastReset":""}');
-  // Temporarily remove today's indices so they get new ones
-  usedData.indices = usedData.indices.slice(0, -10);
-  localStorage.setItem(usedKey, JSON.stringify(usedData));
 
-  quizState = {
-    date: today + '_replay_' + Date.now(),
+function createQuizState(sessionKey) {
+  return {
+    date: sessionKey,
     questions: getDailyQuestions(),
     answers: [],
     score: null,
     currentQ: 0,
     finished: false
   };
+}
+
+function getActiveQuizSessionKey() {
+  const uid = window._fbCurrentUser?.uid || 'guest';
+  return 'fm_quiz_active_' + uid + '_' + getTodayDateStr();
+}
+
+function startFreshQuizSession() {
+  const today = getTodayDateStr();
+  const nextIndex = getQuizSessionCount() + 1;
+  const sessionKey = nextIndex === 1 ? today : `${today}_replay_${nextIndex}`;
+  quizState = createQuizState(sessionKey);
+  localStorage.setItem(getActiveQuizSessionKey(), sessionKey);
+  incrementDailyCount('fm_quiz_sessions');
+  saveQuizState();
+  return true;
+}
+
+function resetQuizForPremium() {
+  if (!canStartAnotherQuizSession()) {
+    toast(isPremium() ? 'Unable to start a new quiz right now.' : `⚠️ Quiz limit reached for today. ${isPro() ? 'Premium gives you unlimited plays.' : 'Upgrade to Pro for 5 plays/day or Premium for unlimited.'}`);
+    if (!isPremium()) setTimeout(openPricing, 700);
+    return;
+  }
+  startFreshQuizSession();
   renderQuiz();
-  toast('🔥 Premium Quiz Replay started!');
+  toast(isPremium() ? '🔥 Premium quiz replay started!' : '⚡ Pro quiz replay started!');
 }
 
 function initQuiz() {
-  const today = getTodayDateStr();
-  const saved = JSON.parse(localStorage.getItem(getQuizStorageKey(today)) || 'null');
-  if (saved) {
+  const activeSessionKey = localStorage.getItem(getActiveQuizSessionKey());
+  const saved = activeSessionKey ? JSON.parse(localStorage.getItem(getQuizStorageKey(activeSessionKey)) || 'null') : null;
+
+  if (saved && !saved.finished) {
+    quizState = saved;
+  } else if (saved && saved.finished) {
     quizState = saved;
   } else {
-    quizState = {
-      date: today,
-      questions: getDailyQuestions(),
-      answers: [],
-      score: null,
-      currentQ: 0,
-      finished: false
-    };
+    const todayKey = getTodayDateStr();
+    const firstSaved = JSON.parse(localStorage.getItem(getQuizStorageKey(todayKey)) || 'null');
+    if (firstSaved && !canStartAnotherQuizSession()) {
+      quizState = firstSaved;
+      localStorage.setItem(getActiveQuizSessionKey(), quizState.date);
+    } else {
+      startFreshQuizSession();
+    }
   }
-  // Show NEW badge if not finished
+
   const badge = document.getElementById('quizBadge');
   if (badge) {
     badge.style.display = quizState.finished ? 'none' : 'inline-block';
@@ -6256,7 +6287,7 @@ function initQuiz() {
 function saveQuizState() {
   const key = getQuizStorageKey(quizState.date);
   localStorage.setItem(key, JSON.stringify(quizState));
-  // Also save to Firestore so it survives logout/login
+  localStorage.setItem(getActiveQuizSessionKey(), quizState.date);
   if (window._fbCurrentUser && window._fbDb) {
     const uid = window._fbCurrentUser.uid;
     window._fbDb.collection('users').doc(uid).set({
@@ -6271,7 +6302,11 @@ function renderQuiz() {
   if (!container) return;
 
   const today = new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
-  if (dateLabel) dateLabel.textContent = today;
+  if (dateLabel) dateLabel.textContent = `${today} · ${getQuizSessionProgressText()}`;
+
+  if (!quizState) {
+    initQuiz();
+  }
 
   if (quizState.finished) {
     renderQuizResults(container);
@@ -6279,7 +6314,6 @@ function renderQuiz() {
   }
 
   if (quizState.currentQ >= quizState.questions.length) {
-    // Calculate score
     quizState.score = quizState.answers.filter((a, i) => a === quizState.questions[i].ans).length;
     quizState.finished = true;
     saveQuizState();
@@ -6292,7 +6326,7 @@ function renderQuiz() {
 
   container.innerHTML = `
     <div style="margin-bottom:20px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
         <span style="font-size:12px;color:var(--silver);">Question ${quizState.currentQ + 1} of ${quizState.questions.length}</span>
         <span style="font-size:12px;color:var(--gold);font-weight:700;">${q.cat}</span>
       </div>
@@ -6327,8 +6361,6 @@ function renderQuiz() {
 function answerQuiz(selectedIdx) {
   const q = quizState.questions[quizState.currentQ];
   quizState.answers.push(selectedIdx);
-
-  // Show feedback
   const container = document.getElementById('quizContainer');
   const btns = container.querySelectorAll('button');
   btns.forEach((btn, i) => {
@@ -6346,7 +6378,6 @@ function answerQuiz(selectedIdx) {
     }
   });
 
-  // Add feedback message
   const feedback = document.createElement('div');
   feedback.style.cssText = 'margin-top:16px;padding:12px 16px;border-radius:12px;font-size:13px;font-weight:700;text-align:center;';
   if (selectedIdx === q.ans) {
@@ -6362,10 +6393,8 @@ function answerQuiz(selectedIdx) {
 
   quizState.currentQ++;
   saveQuizState();
-  // Track for Life Score learning bar
   incrementDailyCount('fm_quiz_count');
-
-  setTimeout(() => renderQuiz(), 1500);
+  setTimeout(() => renderQuiz(), 1100);
 }
 
 function renderQuizResults(container) {
@@ -6373,7 +6402,9 @@ function renderQuizResults(container) {
   const score = quizState.score;
   const pct = Math.round(score / total * 100);
   const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '👍' : pct >= 40 ? '💪' : '📚';
-  const msg = pct >= 80 ? 'Excellent! You\'re a genius!' : pct >= 60 ? 'Great job! Keep it up!' : pct >= 40 ? 'Good effort! Keep learning!' : 'Keep studying — you\'ll get better!';
+  const msg = pct >= 80 ? 'Excellent! You're a genius!' : pct >= 60 ? 'Great job! Keep it up!' : pct >= 40 ? 'Good effort! Keep learning!' : 'Keep studying — you'll get better!';
+  const canReplay = canStartAnotherQuizSession();
+  const replayLabel = isPremium() ? '🔥 Premium: Play Again' : '⚡ Pro: Play Again';
 
   container.innerHTML = `
     <div style="text-align:center;padding:20px 0;">
@@ -6392,29 +6423,27 @@ function renderQuizResults(container) {
         }).join('')}
       </div>
       <div style="color:var(--silver);font-size:13px;padding:12px;background:var(--ink3);border-radius:var(--r);border:1px solid var(--line2);">
-        🔄 New questions will appear <strong style="color:var(--gold);">tomorrow!</strong> Come back daily to keep your streak! 
+        ${canReplay ? `You can play again today — ${getQuizSessionProgressText()}.` : `You've used today's quiz quota. ${isPremium() ? '' : 'Upgrade for more plays and richer learning.'}`}
       </div>
-      ${isPro() ? `
+      ${canReplay && isPro() ? `
       <button onclick="resetQuizForPremium()" style="
         margin-top:12px;width:100%;padding:12px;
         background:linear-gradient(135deg,var(--purple),#7c3aed);
         color:#fff;border:none;border-radius:var(--r2);
         font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:14px;
         cursor:pointer;transition:all 0.2s;
-      ">🔥 Premium: Play Again with New Questions</button>
-      ` : `
+      ">${replayLabel}</button>
+      ` : !isPremium() ? `
       <div style="margin-top:12px;padding:10px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);border-radius:var(--r);text-align:center;font-size:12px;color:var(--purple);">
-         Upgrade to <strong>Premium</strong> to replay today's quiz anytime!
+        ${isPro() ? 'Premium unlocks unlimited quiz plays every day.' : 'Upgrade to Pro for 5 plays/day or Premium for unlimited quiz practice.'}
       </div>
-      `}
+      ` : ''}
     </div>
   `;
 
-  // Hide NEW badge
   const badge = document.getElementById('quizBadge');
   if (badge) badge.style.display = 'none';
 }
-
 // Market Mind
 const mmScenarios = [
   { q:"The Fed just raised rates 0.5%. What do you do?", opts:[{t:"Buy bonds",outcome:8},{t:"Buy tech stocks",outcome:-12},{t:"Hold cash",outcome:2},{t:"Buy gold",outcome:5}], best:0 },
@@ -6654,44 +6683,57 @@ function renderWeeklyReport() {
 }
 
 // --- PLAN SYSTEM ---------------------------------------------
-// FREE: 5 tasks, 5 goals, 25 AI chats/day, no wealth
-// PRO ₹299/mo: unlimited everything + wealth + reports + weekly AI report
-// PREMIUM ₹699/mo: everything in Pro + AI Life Score + Decision Assistant + early access
+// FREE: 10 tasks, 5 goals, 25 AI chats/day, 1 quiz play/day, demo access
+// PRO ₹299/mo: unlimited chat/tasks/goals + games + 5 quiz plays/day
+// PREMIUM ₹699/mo: everything in Pro + unlimited quiz plays + advanced reports
+const PRO_AMOUNT    = 29900;   // ₹299 in paise
+const PREMIUM_AMOUNT = 69900;  // ₹699 in paise
 
+
+function getPlanStorageKey(uid) {
+  return 'fm_plan_backup_' + uid;
+}
+function backupPlanLocally(plan, uid) {
+  const targetUid = uid || window._fbCurrentUser?.uid || localStorage.getItem('fm_uid');
+  if (!targetUid || !plan) return;
+  localStorage.setItem(getPlanStorageKey(targetUid), JSON.stringify({ plan, savedAt: new Date().toISOString() }));
+}
+function readPlanBackup(uid) {
+  try {
+    const raw = localStorage.getItem(getPlanStorageKey(uid || window._fbCurrentUser?.uid || ''));
+    return raw ? JSON.parse(raw) : null;
+  } catch (_) {
+    return null;
+  }
+}
+function getQuizSessionLimit() {
+  if (isPremium()) return Infinity;
+  if (isPro()) return 5;
+  return 1;
+}
+function getQuizSessionCount() {
+  return getDailyCount('fm_quiz_sessions');
+}
+function canStartAnotherQuizSession() {
+  return getQuizSessionCount() < getQuizSessionLimit();
+}
+function getQuizSessionProgressText() {
+  const limit = getQuizSessionLimit();
+  const used = getQuizSessionCount();
+  return limit === Infinity ? `${used} played · unlimited today` : `${Math.max(0, limit - used)} left today`;
+}
 async function fetchJSON(url, options = {}, timeout = CONFIG.REQUEST_TIMEOUT) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
-
   try {
     const res = await fetch(url, { ...options, signal: controller.signal });
     let data = {};
-    try { data = await res.json(); } catch (e) { data = {}; }
+    try { data = await res.json(); } catch (_) {}
     return { res, data };
   } finally {
     clearTimeout(timer);
   }
 }
-
-async function refreshPlanFromCloud() {
-  if (!window._fbCurrentUser || !window._fbDb) {
-    updatePlanUI();
-    return getUserPlan();
-  }
-
-  try {
-    const snap = await window._fbDb.collection('users').doc(window._fbCurrentUser.uid).get();
-    const plan = snap.exists ? (snap.data().plan || 'free') : 'free';
-    localStorage.setItem('fm_plan', plan);
-    updatePlanUI();
-    return plan;
-  } catch (e) {
-    console.log('Plan refresh error:', e.message);
-    updatePlanUI();
-    return getUserPlan();
-  }
-}
-
-let paymentInProgress = false;
 
 function getUserPlan() {
   // Always read fresh from localStorage (gets updated by Firestore listener)
@@ -6708,6 +6750,7 @@ function forceUpdatePlanFromFirestore() {
         const plan = data.plan || 'free';
         // ALWAYS update localStorage and UI regardless of plan value
         localStorage.setItem('fm_plan', plan);
+        backupPlanLocally(plan);
         updatePlanUI();
         console.log('Plan force-updated from Firestore:', plan);
       }
@@ -6744,7 +6787,7 @@ function updatePlanUI() {
   // Show/hide lock badges on nav items
   const quizLock = document.getElementById('quizNavLock');
   const gamesLock = document.getElementById('gamesNavLock');
-  if (quizLock) quizLock.style.display = isPro() ? 'none' : 'inline';
+  if (quizLock) quizLock.style.display = 'none';
   if (gamesLock) gamesLock.style.display = isPro() ? 'none' : 'inline';
 
   if (isPremium()) {
@@ -6788,113 +6831,113 @@ function closePricing() {
   if (modal) modal.classList.remove('show');
 }
 
+let paymentInProgress = false;
 async function startPayment(tier) {
-  if (paymentInProgress) return;
-
   const token = await getAuthToken();
-  if (!token) {
-    toast('⚠️ Please sign in first to upgrade.');
-    return;
-  }
-
+  if (!token) { toast('⚠️ Please sign in first to upgrade.'); return; }
+  if (paymentInProgress) return;
   paymentInProgress = true;
 
   try {
     const { res: orderRes, data: orderData } = await fetchJSON(`${BACKEND_URL}/api/payment/create-order`, {
-      method: 'POST',
+      method:  'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type':  'application/json',
         'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({ tier }),
     });
-
     if (!orderRes.ok) {
       toast('❌ ' + (orderData.message || 'Could not start payment.'));
+      paymentInProgress = false;
       return;
     }
 
-    if (typeof Razorpay === 'undefined') {
-      toast('⚠️ Payment system not loaded. Please refresh and try again.');
-      return;
-    }
-
-    const razor = new Razorpay({
-      key: orderData.keyId,
-      amount: orderData.amount,
-      currency: orderData.currency,
-      name: 'FlowMind AI',
+    const options = {
+      key:         orderData.keyId,
+      amount:      orderData.amount,
+      currency:    orderData.currency,
+      name:        'FlowMind AI',
       description: `${tier.charAt(0).toUpperCase() + tier.slice(1)} Plan`,
-      order_id: orderData.orderId,
+      order_id:    orderData.orderId,
+      modal: { ondismiss: function() { paymentInProgress = false; } },
+
       handler: async function(response) {
         try {
           const { res: verifyRes, data: verifyData } = await fetchJSON(`${BACKEND_URL}/api/payment/verify`, {
-            method: 'POST',
+            method:  'POST',
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type':  'application/json',
               'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({
-              orderId: response.razorpay_order_id,
+              orderId:   response.razorpay_order_id,
               paymentId: response.razorpay_payment_id,
               signature: response.razorpay_signature,
               tier,
             }),
           });
-
-          if (!verifyRes.ok || !verifyData.success) {
-            toast('❌ ' + (verifyData.message || 'Payment verification failed. Contact support.'));
-            return;
+          if (verifyRes.ok && verifyData.success) {
+            const newPlan = verifyData.plan || tier;
+            localStorage.setItem('fm_plan', newPlan);
+            backupPlanLocally(newPlan);
+            if (window._fbCurrentUser && window._fbDb) {
+              window._fbDb.collection('users').doc(window._fbCurrentUser.uid)
+                .set({
+                  plan: newPlan,
+                  planActivatedAt: new Date().toISOString(),
+                  billing: {
+                    currentPlan: newPlan,
+                    lastVerifiedAt: new Date().toISOString(),
+                    lastOrderId: response.razorpay_order_id,
+                    lastPaymentId: response.razorpay_payment_id
+                  }
+                }, { merge: true })
+                .then(() => console.log('Plan saved to Firestore:', newPlan))
+                .catch(e => console.log('Firestore plan save error:', e));
+            }
+            forceUpdatePlanFromFirestore();
+            updatePlanUI();
+            renderLifeScore();
+            toast('🎉 ' + (verifyData.message || 'Subscription activated successfully!'));
+            closePricing();
+            closeLimitOverlay();
+          } else {
+            toast('❌ Payment verification failed. Contact support.');
           }
-
-          const newPlan = verifyData.plan || tier;
-          localStorage.setItem('fm_plan', newPlan);
-
-          let cloudPlan = await refreshPlanFromCloud();
-          if (cloudPlan !== newPlan && window._fbCurrentUser && window._fbDb) {
-            await window._fbDb.collection('users').doc(window._fbCurrentUser.uid)
-              .set({ plan: newPlan, planActivatedAt: new Date().toISOString() }, { merge: true });
-            cloudPlan = await refreshPlanFromCloud();
-          }
-
-          localStorage.setItem('fm_plan', cloudPlan || newPlan);
-          updatePlanUI();
-          renderLifeScore();
-          toast('🎉 ' + (verifyData.message || 'Payment successful!'));
-          closePricing();
-        } catch (err) {
-          toast('❌ Payment verification error: ' + err.message);
         } finally {
           paymentInProgress = false;
         }
       },
-      modal: {
-        ondismiss: function() {
-          paymentInProgress = false;
-        }
-      },
+
       prefill: {
-        name: userName || '',
+        name:  userName || '',
         email: window._fbCurrentUser?.email || '',
       },
       theme: { color: tier === 'premium' ? '#a855f7' : '#f5c842' },
-    });
+    };
 
-    razor.open();
+    if (typeof Razorpay === 'undefined') {
+      toast('⚠️ Payment system loading — please refresh and try again.');
+      paymentInProgress = false;
+      return;
+    }
+    new Razorpay(options).open();
+
   } catch (err) {
     paymentInProgress = false;
-    toast('❌ Payment error: ' + (err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message));
+    toast('❌ Payment error: ' + err.message);
   }
 }
 // --- FREE PLAN LIMIT CHECKS ----------------------------------
-const FREE_TASK_LIMIT = 5;
+const FREE_TASK_LIMIT = 10;
 const FREE_GOAL_LIMIT = 5;
 const FREE_CHAT_LIMIT = 25; // 25 free chats per day
 
 function checkTaskLimit() {
   if (isPro()) return true;
   if (tasks.length >= FREE_TASK_LIMIT) {
-    toast(`⚠️ Free plan limit: ${FREE_TASK_LIMIT} tasks max. Upgrade to Pro for unlimited!`);
+    showToast(`⚠️ Free plan limit: ${FREE_TASK_LIMIT} tasks max. Upgrade to Pro for unlimited!`);
     setTimeout(openPricing, 1000);
     return false;
   }
@@ -6904,7 +6947,7 @@ function checkTaskLimit() {
 function checkGoalLimit() {
   if (isPro()) return true;
   if (goals.length >= FREE_GOAL_LIMIT) {
-    toast(`⚠️ Free plan limit: ${FREE_GOAL_LIMIT} goals max. Upgrade to Pro for unlimited!`);
+    showToast(`⚠️ Free plan limit: ${FREE_GOAL_LIMIT} goals max. Upgrade to Pro for unlimited!`);
     setTimeout(openPricing, 1000);
     return false;
   }
