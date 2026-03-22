@@ -49,7 +49,12 @@ function initFirebase() {
     window._fbAuth.onAuthStateChanged(function(user) {
       if (user) {
         window._fbCurrentUser = user;
-        if (typeof window.onFirebaseLogin === 'function') window.onFirebaseLogin(user);
+        // Only auto-enter app if user explicitly triggered a login action
+        // (prevents onAuthStateChanged from silently entering app on page load
+        //  when the session is restored from a previous visit)
+        if (window._fmManualLoginPending) {
+          if (typeof window.onFirebaseLogin === 'function') window.onFirebaseLogin(user);
+        }
       } else {
         window._fbCurrentUser = null;
         window._fmManualLoginPending = false;
@@ -2377,6 +2382,12 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
           <input class="landing-name-input" id="loginPassword" type="password" placeholder="Password" />
           <div id="loginError" style="color:var(--red);font-size:12px;margin-bottom:8px;display:none;"></div>
           <button class="landing-btn" id="signInBtn" onclick="handleSignIn()">Sign In →</button>
+          <div style="display:flex;align-items:center;gap:10px;margin:10px 0 4px;">
+            <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+            <span style="font-size:11px;color:var(--silver);letter-spacing:1px;">or</span>
+            <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+          </div>
+          <button id="googleLoginBtn" onclick="firebaseGoogleLogin()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r2);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.2s;margin-bottom:2px;" onmouseover="this.style.background='rgba(255,255,255,0.1)';this.style.borderColor='rgba(255,255,255,0.22)'" onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.3 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 35.5 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.4 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.6 4.6-4.8 6l6.2 5.2C40.5 35.7 44 30.3 44 24c0-1.3-.1-2.7-.4-4z"/></svg> Continue with Google</button>
         </div>
 
         <div id="signupForm" style="display:none;">
@@ -2385,6 +2396,12 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
           <input class="landing-name-input" id="signupPassword" type="password" placeholder="Password (min 6 chars)" />
           <div id="signupError" style="color:var(--red);font-size:12px;margin-bottom:8px;display:none;"></div>
           <button class="landing-btn" id="signUpBtn" onclick="handleSignUp()">Create Account →</button>
+          <div style="display:flex;align-items:center;gap:10px;margin:10px 0 4px;">
+            <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+            <span style="font-size:11px;color:var(--silver);letter-spacing:1px;">or</span>
+            <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+          </div>
+          <button onclick="firebaseGoogleLogin()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r2);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.2s;margin-bottom:2px;" onmouseover="this.style.background='rgba(255,255,255,0.1)';this.style.borderColor='rgba(255,255,255,0.22)'" onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.3 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 35.5 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.4 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.6 4.6-4.8 6l6.2 5.2C40.5 35.7 44 30.3 44 24c0-1.3-.1-2.7-.4-4z"/></svg> Sign up with Google</button>
         </div>
 
         <div id="forgotSection" style="text-align:center;margin-top:8px;">
@@ -3169,6 +3186,19 @@ function switchAuthTab(tab) {
   document.getElementById('tabLogin').style.color = isLogin ? 'var(--ink)' : 'var(--silver)';
   document.getElementById('tabSignup').style.background = isLogin ? 'transparent' : 'var(--gold)';
   document.getElementById('tabSignup').style.color = isLogin ? 'var(--silver)' : 'var(--ink)';
+  // Hide forgot password section on signup tab, restore on login tab
+  const forgotSection = document.getElementById('forgotSection');
+  const forgotForm = document.getElementById('forgotForm');
+  if (forgotSection) forgotSection.style.display = isLogin ? '' : 'none';
+  if (forgotForm) forgotForm.style.display = 'none';
+  // Clear any error messages when switching tabs
+  ['loginError','signupError'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  // Reset button states
+  setBtnLoading('signInBtn', false, 'Sign In →');
+  setBtnLoading('signUpBtn', false, 'Create Account →');
 }
 
 async function firebaseLogin() {
@@ -3241,15 +3271,28 @@ async function firebaseSignup() {
     window.startApp(); return;
   }
   try {
+    window._fmManualLoginPending = true;
     const cred = await window._fbAuth.createUserWithEmailAndPassword(email, pass);
     await cred.user.updateProfile({ displayName: name });
+    window._fbCurrentUser = cred.user;
     try {
       await window._fbDb.collection('users').doc(cred.user.uid).set({
-        name, email, createdAt: new Date().toISOString()
+        name, email, createdAt: new Date().toISOString(), plan: 'free'
       });
       incrementGlobalStat('totalUsers', 1);
     } catch(fe) { console.log('Firestore save skipped', fe); }
+    // Manually trigger login flow — onAuthStateChanged fires AFTER this resolves
+    // and would be deduped, so we call it directly here
+    if (typeof window.onFirebaseLogin === 'function') {
+      await window.onFirebaseLogin(cred.user);
+    } else {
+      userName = name;
+      localStorage.setItem('fm_name', userName);
+      animateIntoApp();
+      startApp();
+    }
   } catch(e) {
+    window._fmManualLoginPending = false;
     setBtnLoading('signUpBtn', false, 'Create Account →');
     errEl.style.color = 'var(--red)';
     errEl.textContent = e.message.replace('Firebase: ','').replace(/\(.*\)/,'');
@@ -3310,8 +3353,10 @@ async function firebaseGoogleLogin() {
   try {
     if (btn) { btn.innerHTML = '⏳ Connecting to Google...'; btn.disabled = true; }
     window._fbAuth.useDeviceLanguage();
+    window._fmManualLoginPending = true;
     const result = await window._fbAuth.signInWithPopup(window._fbGoogleProvider);
     if (result.user) {
+      window._fbCurrentUser = result.user;
       // Save user to Firestore
       try {
         const ref = window._fbDb.collection('users').doc(result.user.uid);
@@ -3320,12 +3365,22 @@ async function firebaseGoogleLogin() {
           await ref.set({
             name: result.user.displayName,
             email: result.user.email,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            plan: 'free'
           });
+          incrementGlobalStat('totalUsers', 1);
         }
       } catch(fe) { console.log('Firestore skip', fe); }
+      // Manually trigger app entry - onAuthStateChanged fires too late / gets deduped
+      if (typeof window.onFirebaseLogin === 'function') {
+        await window.onFirebaseLogin(result.user);
+      } else {
+        animateIntoApp();
+        startApp();
+      }
     }
   } catch(e) {
+    window._fmManualLoginPending = false;
     if (btn) { btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.3 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 35.5 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.4 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.6 4.6-4.8 6l6.2 5.2C40.5 35.7 44 30.3 44 24c0-1.3-.1-2.7-.4-4z"/></svg> Continue with Google'; btn.disabled = false; }
     
     const code = e.code || '';
@@ -3365,7 +3420,10 @@ async function firebaseLogout() {
     try { await window._fbAuth.signOut(); } catch(e) {}
   }
   setBtnLoading('signInBtn', false, 'Sign In →');
-  window.onFirebaseLogout();
+  setBtnLoading('signUpBtn', false, 'Create Account →');
+  window._fmManualLoginPending = false;
+  window._fmLoginInFlight = null;
+  if (typeof window.onFirebaseLogout === 'function') window.onFirebaseLogout();
 }
 
 window.onFirebaseLogin = async function(user) {
@@ -3375,9 +3433,14 @@ window.onFirebaseLogin = async function(user) {
   }
 
   const now = Date.now();
+  // Guard: if another uid's login is in-flight, skip
   if (window._fmLoginInFlight && window._fmLoginInFlight !== user.uid) return;
-  if (window._fmLastHandledUid === user.uid && now - (window._fmLastHandledAt || 0) < 1800) {
+  // Guard: deduplicate within 3 seconds — prevents double-fire from onAuthStateChanged + direct call
+  // But allow if triggered by a fresh manual login (signInBtn/signUpBtn loading state is set)
+  const isManual = window._fmManualLoginPending === true;
+  if (!isManual && window._fmLastHandledUid === user.uid && now - (window._fmLastHandledAt || 0) < 3000) {
     setBtnLoading('signInBtn', false, 'Sign In →');
+    setBtnLoading('signUpBtn', false, 'Create Account →');
     return;
   }
 
@@ -3429,7 +3492,8 @@ window.onFirebaseLogin = async function(user) {
 
           if (data.chatCount && data.chatCount.date === new Date().toISOString().split('T')[0]) {
             msgCount = data.chatCount.count || 0;
-            localStorage.setItem('fm_chat_count', String(msgCount));
+            // Store in correct JSON format so getDailyCount() reads it properly
+            localStorage.setItem('fm_chat_count', JSON.stringify({ date: data.chatCount.date, count: msgCount }));
           }
         } else {
           const existingPlan = localStorage.getItem('fm_plan');
@@ -3447,7 +3511,10 @@ window.onFirebaseLogin = async function(user) {
       }
     }
 
-    load();
+    // Reload state from localStorage (Firestore data was just written above)
+    tasks  = JSON.parse(localStorage.getItem('fm_tasks')  || '[]');
+    assets = JSON.parse(localStorage.getItem('fm_assets') || '[]');
+    goals  = JSON.parse(localStorage.getItem('fm_goals')  || '[]');
     animateIntoApp();
     setTimeout(() => {
       startApp();
@@ -3475,6 +3542,13 @@ window.onFirebaseLogin = async function(user) {
     window._fmManualLoginPending = false;
     window._fmLoginInFlight = null;
     setBtnLoading('signInBtn', false, 'Sign In →');
+    setBtnLoading('signUpBtn', false, 'Create Account →');
+    // Reset Google button if it got stuck in loading state
+    const gBtn = document.getElementById('googleLoginBtn');
+    if (gBtn && gBtn.disabled) {
+      gBtn.disabled = false;
+      gBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.3 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 35.5 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.4 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.6 4.6-4.8 6l6.2 5.2C40.5 35.7 44 30.3 44 24c0-1.3-.1-2.7-.4-4z"/></svg> Continue with Google';
+    }
   }
 };
 
@@ -7266,8 +7340,8 @@ function animateIntoApp() {
 }
 
 // 9. Wrappers
-function handleSignIn() { setBtnLoading('signInBtn',true,'Signing in...'); setTimeout(()=>firebaseLogin(),50); }
-function handleSignUp() { setBtnLoading('signUpBtn',true,'Creating account...'); setTimeout(()=>firebaseSignup(),50); }
+function handleSignIn() { setBtnLoading('signInBtn',true,'Signing in...'); window._fmManualLoginPending = true; setTimeout(()=>firebaseLogin(),50); }
+function handleSignUp() { setBtnLoading('signUpBtn',true,'Creating account...'); window._fmManualLoginPending = true; setTimeout(()=>firebaseSignup(),50); }
 function handleQuickEnter() {
   const n = document.getElementById('quickName').value.trim();
   if (!n) { toast('⚠️ Please enter your name'); return; }
