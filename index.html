@@ -2276,11 +2276,12 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         <div class="plan-save">&nbsp;</div>
         <ul class="plan-features">
           <li><span class="fi">✓</span> 25 AI chats/day</li>
-          <li><span class="fi">✓</span> Basic Daily Planning</li>
-          <li><span class="fi">✓</span> Basic Task Tracking</li>
-          <li><span class="fi">✓</span> Simple Notes</li>
-          <li><span class="fi">✓</span> Daily Quiz (10/day)</li>
-          <li><span class="fi" style="color:var(--silver)">✗</span> No Wealth Strategy</li>
+          <li><span class="fi">✓</span> 10 tasks total</li>
+          <li><span class="fi">✓</span> 5 goals total</li>
+          <li><span class="fi">✓</span> 1 quiz/day</li>
+          <li><span class="fi">✓</span> 2 basic games</li>
+          <li><span class="fi" style="color:var(--silver)">✗</span> No Wealth Tracking</li>
+          <li><span class="fi" style="color:var(--silver)">✗</span> No Smart Insights</li>
           <li><span class="fi" style="color:var(--silver)">✗</span> No AI Reports</li>
         </ul>
         <button class="plan-btn plan-btn-free" onclick="closePricing()">Current Plan</button>
@@ -2292,12 +2293,13 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         <div class="plan-price">₹299 <span>/month</span></div>
         <div class="plan-save">or ₹199/mo billed yearly · Save 33%</div>
         <ul class="plan-features">
-          <li><span class="fi">✓</span> Unlimited AI Conversations</li>
-          <li><span class="fi">✓</span> AI Daily Life Planner</li>
+          <li><span class="fi">✓</span> Unlimited AI chats</li>
+          <li><span class="fi">✓</span> Unlimited tasks & goals</li>
+          <li><span class="fi">✓</span> 5 quizzes/day</li>
+          <li><span class="fi">✓</span> All games unlocked</li>
+          <li><span class="fi">✓</span> Smart AI planning</li>
           <li><span class="fi">✓</span> Wealth Growth Suggestions</li>
           <li><span class="fi">✓</span> Monthly Productivity Report</li>
-          <li><span class="fi">✓</span> Goal Tracking System</li>
-          <li><span class="fi">✓</span> Smart Habit Tracker</li>
           <li><span class="fi">✓</span> Priority AI Response</li>
         </ul>
         <button class="plan-btn plan-btn-pro" onclick="startPayment('pro');closePricing();">Upgrade to Pro →</button>
@@ -2310,12 +2312,13 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         <div class="plan-save">or ₹499/mo billed yearly · Save 29%</div>
         <ul class="plan-features">
           <li><span class="fi">✓</span> Everything in Pro</li>
-          <li><span class="fi">✓</span> AI Wealth Strategy Planner</li>
-          <li><span class="fi">✓</span> Advanced Monthly Reports</li>
-          <li><span class="fi">✓</span> Personal Growth Dashboard</li>
+          <li><span class="fi">✓</span> Advanced AI (GPT-4 class)</li>
+          <li><span class="fi">✓</span> Full Wealth Tracking</li>
+          <li><span class="fi">✓</span> Deep Insights & Analytics</li>
           <li><span class="fi">✓</span> AI Decision Assistant</li>
           <li><span class="fi">✓</span> AI Life Score Tracker</li>
           <li><span class="fi">✓</span> Early Access to New Features</li>
+          <li><span class="fi">✓</span> Advanced Monthly Reports</li>
         </ul>
         <button class="plan-btn plan-btn-premium" onclick="startPayment('premium');closePricing();">Go Premium →</button>
       </div>
@@ -2334,12 +2337,16 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
       </thead>
       <tbody>
         <tr><td>AI Chat</td><td>25/day</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
-        <tr><td>Daily Planner</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>Wealth Strategy</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+        <tr><td>Tasks</td><td>10 total</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Goals</td><td>5 total</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Daily Quiz</td><td>1/day</td><td>5/day</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Games</td><td>2 basic</td><td class="yes">All unlocked</td><td class="yes">All unlocked</td></tr>
+        <tr><td>Wealth Tracking</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+        <tr><td>Smart Insights</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
         <tr><td>Monthly Reports</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>AI Weekly Report</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
         <tr><td>AI Decision Assistant</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
         <tr><td>AI Life Score</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
+        <tr><td>Deep Analytics</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
         <tr><td>Early Feature Access</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
       </tbody>
     </table>
@@ -2382,12 +2389,6 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
           <input class="landing-name-input" id="loginPassword" type="password" placeholder="Password" />
           <div id="loginError" style="color:var(--red);font-size:12px;margin-bottom:8px;display:none;"></div>
           <button class="landing-btn" id="signInBtn" onclick="handleSignIn()">Sign In →</button>
-          <div style="display:flex;align-items:center;gap:10px;margin:10px 0 4px;">
-            <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
-            <span style="font-size:11px;color:var(--silver);letter-spacing:1px;">or</span>
-            <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
-          </div>
-          <button id="googleLoginBtn" onclick="firebaseGoogleLogin()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r2);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.2s;margin-bottom:2px;" onmouseover="this.style.background='rgba(255,255,255,0.1)';this.style.borderColor='rgba(255,255,255,0.22)'" onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.3 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 35.5 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.4 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.6 4.6-4.8 6l6.2 5.2C40.5 35.7 44 30.3 44 24c0-1.3-.1-2.7-.4-4z"/></svg> Continue with Google</button>
         </div>
 
         <div id="signupForm" style="display:none;">
@@ -2396,12 +2397,6 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
           <input class="landing-name-input" id="signupPassword" type="password" placeholder="Password (min 6 chars)" />
           <div id="signupError" style="color:var(--red);font-size:12px;margin-bottom:8px;display:none;"></div>
           <button class="landing-btn" id="signUpBtn" onclick="handleSignUp()">Create Account →</button>
-          <div style="display:flex;align-items:center;gap:10px;margin:10px 0 4px;">
-            <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
-            <span style="font-size:11px;color:var(--silver);letter-spacing:1px;">or</span>
-            <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
-          </div>
-          <button onclick="firebaseGoogleLogin()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r2);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.2s;margin-bottom:2px;" onmouseover="this.style.background='rgba(255,255,255,0.1)';this.style.borderColor='rgba(255,255,255,0.22)'" onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.12)'"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.3 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 35.5 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.4 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.6 4.6-4.8 6l6.2 5.2C40.5 35.7 44 30.3 44 24c0-1.3-.1-2.7-.4-4z"/></svg> Sign up with Google</button>
         </div>
 
         <div id="forgotSection" style="text-align:center;margin-top:8px;">
@@ -2415,12 +2410,7 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         </div>
       </div>
 
-      <div class="landing-features">
-        <div class="landing-feat"><span>✦</span> AI Chat</div>
-        <div class="landing-feat"><span>✦</span> Cloud Sync</div>
-        <div class="landing-feat"><span>✦</span> Wealth AI</div>
-        <div class="landing-feat"><span>✦</span> Reports</div>
-      </div>
+
 
       <div class="quick-enter-wrap" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);">
         <p style="color:var(--silver);font-size:11px;margin-bottom:8px;">Just want to try locally?</p>
@@ -2944,13 +2934,14 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         <div class="plan-save">&nbsp;</div>
         <ul class="plan-features">
           <li><span class="fi">✓</span> 25 AI chats/day</li>
-          <li><span class="fi">✓</span> Basic Daily Planning</li>
-          <li><span class="fi">✓</span> Task & Goal Tracking</li>
-          <li><span class="fi">✓</span> Daily Quiz (10/day)</li>
-          <li><span class="fi" style="color:var(--silver)">✗</span> No Wealth Strategy</li>
-          <li><span class="fi" style="color:var(--silver)">✗</span> No AI Reports</li>
+          <li><span class="fi">✓</span> 10 tasks total</li>
+          <li><span class="fi">✓</span> 5 goals total</li>
+          <li><span class="fi">✓</span> 1 quiz/day</li>
+          <li><span class="fi">✓</span> 2 basic games</li>
+          <li><span class="fi" style="color:var(--silver)">✗</span> No Wealth Tracking</li>
+          <li><span class="fi" style="color:var(--silver)">✗</span> No Smart Insights</li>
         </ul>
-        <button class="plan-btn plan-btn-free" onclick="newChat();closeLimitOverlay();">✏️ New Chat (resets tomorrow)</button>
+        <button class="plan-btn plan-btn-free" onclick="newChat();closeLimitOverlay();">✏️ Wait till tomorrow</button>
       </div>
       <!-- PRO -->
       <div class="plan-card pro">
@@ -2959,13 +2950,13 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         <div class="plan-price">₹299 <span>/month</span></div>
         <div class="plan-save">or ₹199/mo billed yearly · Save 33%</div>
         <ul class="plan-features">
-          <li><span class="fi">✓</span> Unlimited AI Conversations</li>
-          <li><span class="fi">✓</span> AI Daily Life Planner</li>
+          <li><span class="fi">✓</span> Unlimited AI chats</li>
+          <li><span class="fi">✓</span> Unlimited tasks & goals</li>
+          <li><span class="fi">✓</span> 5 quizzes/day</li>
+          <li><span class="fi">✓</span> All games unlocked</li>
+          <li><span class="fi">✓</span> Smart AI planning</li>
           <li><span class="fi">✓</span> Wealth Growth Suggestions</li>
           <li><span class="fi">✓</span> Monthly Productivity Report</li>
-          <li><span class="fi">✓</span> Goal Tracking System</li>
-          <li><span class="fi">✓</span> Smart Habit Tracker</li>
-          <li><span class="fi">✓</span> Priority AI Response</li>
         </ul>
         <button class="plan-btn plan-btn-pro" onclick="startPayment('pro');closeLimitOverlay();">⚡ Upgrade to Pro →</button>
       </div>
@@ -3001,10 +2992,13 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
       </thead>
       <tbody>
         <tr><td>AI Chat</td><td>25/day</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
-        <tr><td>Daily Planner</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>Wealth Strategy</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+        <tr><td>Tasks</td><td>10 total</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Goals</td><td>5 total</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Daily Quiz</td><td>1/day</td><td>5/day</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Games</td><td>2 basic</td><td class="yes">All unlocked</td><td class="yes">All unlocked</td></tr>
+        <tr><td>Wealth Tracking</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+        <tr><td>Smart Insights</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
         <tr><td>Monthly Reports</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>AI Weekly Report</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
         <tr><td>AI Decision Assistant</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
         <tr><td>AI Life Score</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
         <tr><td>Early Feature Access</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
@@ -3676,59 +3670,70 @@ function switchPanel(name, btn) {
     badge.style.display = 'none';
   }
   if (name === 'quiz') {
-    // Block free users from quiz
+    // Free users get 1 quiz/day — check if they've used it
     if (!isPro()) {
-      // Show locked state instead
-      const container = document.getElementById('quizContainer');
-      if (container) container.innerHTML = `
-        <div style="text-align:center;padding:60px 20px;">
-          <div style="font-size:56px;margin-bottom:16px;"></div>
-          <div style="font-size:22px;font-weight:800;color:var(--text1);margin-bottom:8px;">Daily Quiz is Premium</div>
-          <div style="font-size:14px;color:var(--silver);margin-bottom:24px;max-width:300px;margin-left:auto;margin-right:auto;">
-            Upgrade to Pro or Premium to unlock Daily Quiz, track your streak, and challenge your knowledge every day!
-          </div>
-          <button onclick="openPricing()" style="
-            padding:14px 32px;
-            background:linear-gradient(135deg,var(--purple),#7c3aed);
-            color:#fff;border:none;border-radius:var(--r2);
-            font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:15px;
-            cursor:pointer;box-shadow:0 4px 20px rgba(168,85,247,0.4);
-          ">🚀 Upgrade to Unlock Quiz</button>
-        </div>
-      `;
-      return;
-    }
-    initQuiz();
-    renderQuiz();
-  }
-  if (name === 'games') {
-    // Block free users from games
-    if (!isPro()) {
-      const container = document.getElementById('panel-games');
-      if (container) {
-        // Only show lock screen if games content is there
-        const existingLock = container.querySelector('.games-lock');
-        if (!existingLock) {
-          const lockDiv = document.createElement('div');
-          lockDiv.className = 'games-lock';
-          lockDiv.style.cssText = 'text-align:center;padding:60px 20px;';
-          lockDiv.innerHTML = `
-            <div style="font-size:56px;margin-bottom:16px;"></div>
-            <div style="font-size:22px;font-weight:800;color:var(--text1);margin-bottom:8px;">Games are Premium</div>
-            <div style="font-size:14px;color:var(--silver);margin-bottom:24px;">Upgrade to Pro or Premium to unlock all games!</div>
+      const quizDone = getDailyCount('fm_quiz_count');
+      if (quizDone >= FREE_QUIZ_LIMIT) {
+        const container = document.getElementById('quizContainer');
+        if (container) container.innerHTML = `
+          <div style="text-align:center;padding:60px 20px;">
+            <div style="font-size:56px;margin-bottom:16px;">🧠</div>
+            <div style="font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px;">Daily Quiz Done!</div>
+            <div style="font-size:14px;color:var(--silver);margin-bottom:6px;max-width:300px;margin-left:auto;margin-right:auto;">
+              You've used your 1 free quiz today. Want to improve faster?
+            </div>
+            <div style="font-size:13px;color:var(--gold);font-weight:700;margin-bottom:24px;">Unlock 5 quizzes/day with Pro 🔥</div>
             <button onclick="openPricing()" style="
               padding:14px 32px;
               background:linear-gradient(135deg,var(--purple),#7c3aed);
               color:#fff;border:none;border-radius:var(--r2);
               font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:15px;
               cursor:pointer;box-shadow:0 4px 20px rgba(168,85,247,0.4);
-            ">🚀 Upgrade to Unlock Games</button>
-          `;
-          container.innerHTML = '';
-          container.appendChild(lockDiv);
-        }
+            ">🚀 Upgrade to Pro for More Quizzes</button>
+          </div>
+        `;
+        return;
       }
-      return;
+    }
+    initQuiz();
+    renderQuiz();
+  }
+  if (name === 'games') {
+    // Free users get 2 basic games — lock the advanced ones
+    if (!isPro()) {
+      // Add FREE badge to unlocked games and lock overlay to premium ones
+      setTimeout(() => {
+        // Mark free games with a badge
+        const freeCards = document.querySelectorAll('#panel-games .game-card');
+        freeCards.forEach((card, idx) => {
+          // Games 0 (Wealth IQ) and 1 (Startup CEO) are free
+          if (idx < 2) {
+            if (!card.querySelector('.free-game-tag')) {
+              const tag = document.createElement('span');
+              tag.className = 'free-game-tag';
+              tag.style.cssText = 'display:inline-block;font-size:9px;font-weight:800;letter-spacing:1px;background:rgba(61,255,160,0.12);color:var(--green);border:1px solid rgba(61,255,160,0.25);border-radius:20px;padding:2px 8px;margin-bottom:4px;';
+              tag.textContent = '✦ FREE';
+              card.insertBefore(tag, card.firstChild);
+            }
+          } else {
+            // Lock games 2+ (Habit Streak, Market Mind)
+            if (!card.querySelector('.pro-game-lock')) {
+              card.style.position = 'relative';
+              card.style.overflow = 'hidden';
+              const lock = document.createElement('div');
+              lock.className = 'pro-game-lock';
+              lock.style.cssText = 'position:absolute;inset:0;background:rgba(13,13,18,0.88);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:var(--r2);z-index:5;';
+              lock.innerHTML = `
+                <div style="font-size:28px;">🔒</div>
+                <div style="font-size:13px;font-weight:800;color:var(--text);">Pro Feature</div>
+                <div style="font-size:11px;color:var(--silver);text-align:center;max-width:160px;">Unlock all games with Pro</div>
+                <button onclick="openPricing()" style="margin-top:4px;padding:8px 18px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--ink);border:none;border-radius:20px;font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:11px;cursor:pointer;">Upgrade →</button>
+              `;
+              card.appendChild(lock);
+            }
+          }
+        });
+      }, 50);
     }
   }
   if (name === 'tasks' || name === 'goals') {
@@ -6793,9 +6798,9 @@ function renderWeeklyReport() {
 }
 
 // --- PLAN SYSTEM ---------------------------------------------
-// FREE: 5 tasks, 5 goals, 10 AI chats/day, 10 quiz/day, no wealth
-// PRO ₹299/mo: unlimited everything + wealth + reports + weekly AI report
-// PREMIUM ₹699/mo: everything in Pro + AI Life Score + Decision Assistant + early access
+// FREE: 10 tasks, 5 goals, 25 AI chats/day, 1 quiz/day, 2 basic games, no wealth/insights
+// PRO ₹299/mo: unlimited chats/tasks/goals, 5 quizzes/day, all games, wealth, reports, smart AI planning
+// PREMIUM ₹699/mo: everything in Pro + Advanced AI + Wealth Tracking + Deep Insights + AI Life Score
 const RAZORPAY_KEY = 'rzp_test_YourKeyHere';
 const PRO_AMOUNT    = 29900;   // ₹299 in paise
 const PREMIUM_AMOUNT = 69900;  // ₹699 in paise
@@ -6851,8 +6856,14 @@ function updatePlanUI() {
   // Show/hide lock badges on nav items
   const quizLock = document.getElementById('quizNavLock');
   const gamesLock = document.getElementById('gamesNavLock');
-  if (quizLock) quizLock.style.display = isPro() ? 'none' : 'inline';
-  if (gamesLock) gamesLock.style.display = isPro() ? 'none' : 'inline';
+  if (quizLock) {
+    quizLock.textContent = isPro() ? '' : '1/day';
+    quizLock.style.display = isPro() ? 'none' : 'inline';
+  }
+  if (gamesLock) {
+    gamesLock.textContent = isPro() ? '' : '2 free';
+    gamesLock.style.display = isPro() ? 'none' : 'inline';
+  }
 
   if (isPremium()) {
     badge.textContent = '🔥 PREMIUM';
@@ -6879,8 +6890,8 @@ function updatePlanUI() {
       const used = getDailyCount('fm_chat_count');
       const remaining = Math.max(0, FREE_CHAT_LIMIT - used);
       chatBadge.style.display = 'block';
-      chatBadge.textContent = `${remaining}/${FREE_CHAT_LIMIT} chats`;
-      chatBadge.style.color = remaining <= 5 ? 'var(--red)' : remaining <= 10 ? 'var(--gold)' : 'var(--silver)';
+      chatBadge.textContent = remaining <= 0 ? '0 chats left' : `${remaining}/${FREE_CHAT_LIMIT} chats`;
+      chatBadge.style.color = remaining <= 3 ? 'var(--red)' : remaining <= 10 ? 'var(--gold)' : 'var(--silver)';
     }
   }
 }
@@ -6975,15 +6986,16 @@ async function startPayment(tier) {
   }
 }
 // --- FREE PLAN LIMIT CHECKS ----------------------------------
-const FREE_TASK_LIMIT = 5;
-const FREE_GOAL_LIMIT = 5;
-const FREE_CHAT_LIMIT = 25; // 25 free chats per day
+const FREE_TASK_LIMIT = 10;  // 10 tasks — usable but limited
+const FREE_GOAL_LIMIT = 5;   // 5 goals — long-term, fine
+const FREE_CHAT_LIMIT = 25;  // 25 chats/day — feels valuable
+const FREE_QUIZ_LIMIT = 1;   // 1 quiz/day — taste of the feature
 
 function checkTaskLimit() {
   if (isPro()) return true;
   if (tasks.length >= FREE_TASK_LIMIT) {
-    showToast(`⚠️ Free plan limit: ${FREE_TASK_LIMIT} tasks max. Upgrade to Pro for unlimited!`);
-    setTimeout(openPricing, 1000);
+    toast(`📋 You've reached your task limit. Upgrade to Pro to manage unlimited tasks 🚀`);
+    setTimeout(openPricing, 1200);
     return false;
   }
   return true;
@@ -6992,8 +7004,8 @@ function checkTaskLimit() {
 function checkGoalLimit() {
   if (isPro()) return true;
   if (goals.length >= FREE_GOAL_LIMIT) {
-    showToast(`⚠️ Free plan limit: ${FREE_GOAL_LIMIT} goals max. Upgrade to Pro for unlimited!`);
-    setTimeout(openPricing, 1000);
+    toast(`🎯 Goal limit reached. Upgrade to Pro for unlimited goals & AI planning 🚀`);
+    setTimeout(openPricing, 1200);
     return false;
   }
   return true;
