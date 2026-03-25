@@ -1984,74 +1984,198 @@ body::before {
 .live-hint { font-size:12px; color:rgba(255,255,255,0.22); text-align:center; font-family:'Cabinet Grotesk',sans-serif; }
 
 /* -- PRICING MODAL -- */
+/* =========================================
+   PRICING MODAL — PREMIUM REDESIGN
+   ========================================= */
 .pricing-modal-overlay {
-  position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;
-  display:none;align-items:center;justify-content:center;padding:16px;
+  position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:3000;
+  display:none; align-items:center; justify-content:center;
+  padding:16px; overflow-y:auto; backdrop-filter:blur(16px);
 }
 .pricing-modal-overlay.show { display:flex; }
+
 .pricing-modal {
-  background:var(--ink2);border:1px solid var(--line2);border-radius:var(--r3);
-  padding:32px 28px;max-width:680px;width:100%;animation:fadeUp 0.3s ease;
-  max-height:92vh;overflow-y:auto;
+  background:linear-gradient(160deg,#13131c 0%,#0d0d12 100%);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:28px; padding:40px 36px 32px;
+  max-width:880px; width:100%; position:relative;
+  box-shadow:0 40px 120px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+  animation:pricingReveal 0.45s cubic-bezier(0.34,1.2,0.64,1);
+  max-height:94vh; overflow-y:auto;
 }
-.pricing-modal-headline {
-  font-family:'Instrument Serif',serif;font-size:30px;text-align:center;
-  margin-bottom:6px;background:linear-gradient(135deg,var(--text),var(--gold));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+@keyframes pricingReveal {
+  from { opacity:0; transform:scale(0.93) translateY(20px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
 }
-.pricing-modal-tagline {
-  text-align:center;color:var(--silver);font-size:14px;margin-bottom:6px;
+
+/* Close X */
+.pricing-close-x {
+  position:absolute; top:16px; right:18px;
+  width:32px; height:32px; border-radius:50%;
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09);
+  color:var(--silver); font-size:14px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s; line-height:1;
 }
-.pricing-modal-sub {
-  text-align:center;color:var(--gold);font-size:13px;font-weight:700;
-  margin-bottom:24px;letter-spacing:0.3px;
+.pricing-close-x:hover { background:rgba(255,255,255,0.12); color:var(--text); transform:scale(1.1); }
+
+/* --- Header --- */
+.pricing-header { text-align:center; margin-bottom:24px; }
+.pricing-eyebrow {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(245,200,66,0.1); border:1px solid rgba(245,200,66,0.22);
+  border-radius:20px; padding:4px 14px; margin-bottom:12px;
+  font-size:10px; font-weight:800; letter-spacing:2px;
+  text-transform:uppercase; color:var(--gold);
 }
-.plans-grid { display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px; }
-@media(max-width:600px){.plans-grid{grid-template-columns:1fr;}}
+.pricing-headline {
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(22px,3vw,32px); line-height:1.2; margin-bottom:8px;
+  background:linear-gradient(135deg,var(--text) 40%,var(--gold));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.pricing-subline { font-size:13px; color:var(--silver); line-height:1.6; }
+
+/* --- Billing Toggle --- */
+.billing-toggle-wrap {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; margin-bottom:26px; flex-wrap:wrap;
+}
+.billing-label { font-size:13px; color:var(--silver); font-weight:600; cursor:pointer; transition:color 0.2s; user-select:none; }
+.billing-label.active { color:var(--text); }
+.billing-toggle-btn {
+  width:50px; height:27px; background:var(--line2);
+  border-radius:14px; cursor:pointer; position:relative;
+  border:1px solid rgba(255,255,255,0.08); transition:background 0.3s;
+  flex-shrink:0;
+}
+.billing-toggle-btn.yearly { background:linear-gradient(135deg,var(--gold),var(--gold2)); }
+.billing-toggle-btn::after {
+  content:''; position:absolute; top:3px; left:3px;
+  width:19px; height:19px; background:#fff;
+  border-radius:50%; transition:transform 0.3s; box-shadow:0 1px 6px rgba(0,0,0,0.4);
+}
+.billing-toggle-btn.yearly::after { transform:translateX(23px); }
+.billing-save-pill {
+  background:rgba(61,255,160,0.12); border:1px solid rgba(61,255,160,0.25);
+  color:var(--green); font-size:10px; font-weight:800;
+  padding:3px 10px; border-radius:20px; letter-spacing:0.5px;
+}
+
+/* --- Plans Grid --- */
+.plans-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:20px; }
+@media(max-width:680px){ .plans-grid{ grid-template-columns:1fr; } }
+
+/* --- Plan Cards --- */
 .plan-card {
-  background:var(--ink3);border:2px solid var(--line2);border-radius:var(--r2);
-  padding:20px 16px;text-align:center;transition:all 0.2s;position:relative;
+  background:rgba(22,22,31,0.7); border:1px solid rgba(255,255,255,0.07);
+  border-radius:20px; padding:26px 20px; position:relative;
+  display:flex; flex-direction:column; overflow:hidden;
+  transition:transform 0.25s, box-shadow 0.25s, border-color 0.25s;
 }
-.plan-card.pro { border-color:var(--gold);background:rgba(245,200,66,0.05); }
-.plan-card.premium { border-color:var(--purple);background:rgba(168,85,247,0.05); }
+.plan-card:hover { transform:translateY(-4px); }
+.plan-card.pro {
+  border-color:rgba(245,200,66,0.4);
+  background:linear-gradient(160deg,rgba(245,200,66,0.07),rgba(22,22,31,0.9));
+  box-shadow:0 0 50px rgba(245,200,66,0.07);
+}
+.plan-card.pro:hover { box-shadow:0 10px 50px rgba(245,200,66,0.18); }
+.plan-card.premium {
+  border-color:rgba(168,85,247,0.4);
+  background:linear-gradient(160deg,rgba(168,85,247,0.08),rgba(22,22,31,0.9));
+  box-shadow:0 0 50px rgba(168,85,247,0.07);
+}
+.plan-card.premium:hover { box-shadow:0 10px 50px rgba(168,85,247,0.18); }
+/* top glow line */
+.plan-card.pro::before {
+  content:''; position:absolute; top:0; left:15%; right:15%; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.plan-card.premium::before {
+  content:''; position:absolute; top:0; left:15%; right:15%; height:1px;
+  background:linear-gradient(90deg,transparent,var(--purple),transparent);
+}
+
 .plan-card-badge {
-  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
-  background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;
-  padding:3px 10px;border-radius:20px;white-space:nowrap;letter-spacing:1px;
+  position:absolute; top:0; left:50%; transform:translateX(-50%);
+  font-size:9px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase;
+  padding:4px 16px; border-radius:0 0 12px 12px; white-space:nowrap;
+  background:var(--gold); color:var(--ink);
 }
-.plan-card-badge.premium-badge { background:var(--purple); color:#fff; }
-.plan-name { font-size:16px;font-weight:800;margin-bottom:6px; }
-.plan-price { font-size:26px;font-weight:900;color:var(--gold);margin-bottom:2px; }
-.plan-price.purple { color:var(--purple); }
-.plan-price span { font-size:12px;color:var(--silver);font-weight:400; }
-.plan-save { font-size:11px;color:var(--green);font-weight:700;margin-bottom:10px; }
-.plan-features { list-style:none;margin:10px 0;text-align:left; }
-.plan-features li { font-size:12px;color:var(--text2);padding:3px 0;display:flex;gap:6px;align-items:flex-start; }
-.plan-features li .fi { flex-shrink:0; }
+.plan-card-badge.premium-badge { background:linear-gradient(135deg,var(--purple),#7c3aed); color:#fff; }
+
+.plan-icon { font-size:26px; margin-bottom:8px; display:block; }
+.plan-name { font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--silver); margin-bottom:10px; }
+.plan-price { font-family:'JetBrains Mono',monospace; font-size:36px; font-weight:900; color:var(--text); line-height:1; margin-bottom:2px; display:flex; align-items:flex-start; gap:2px; }
+.plan-price-sym { font-size:16px; font-weight:700; color:var(--silver); margin-top:6px; }
+.plan-price-amt { font-size:36px; font-weight:900; }
+.plan-price-per { font-size:12px; color:var(--silver); font-weight:400; font-family:'Cabinet Grotesk',sans-serif; align-self:flex-end; margin-bottom:4px; }
+.plan-save { font-size:11px; color:var(--green); font-weight:700; margin-bottom:6px; min-height:15px; }
+.plan-desc { font-size:12px; color:var(--silver); margin-bottom:14px; line-height:1.55; }
+.plan-divider { height:1px; background:rgba(255,255,255,0.06); margin:12px 0; }
+
+.plan-features { list-style:none; margin:0 0 18px; flex:1; }
+.plan-features li { font-size:12px; color:var(--text2); padding:5px 0; display:flex; gap:8px; align-items:flex-start; line-height:1.4; border-bottom:1px solid rgba(255,255,255,0.03); }
+.plan-features li:last-child { border-bottom:none; }
+.plan-features li .fi { flex-shrink:0; font-size:11px; width:16px; text-align:center; margin-top:1px; }
+.plan-features li .fi.yes { color:var(--green); }
+.plan-features li .fi.no  { color:rgba(255,255,255,0.18); }
+
+/* Yearly prices (hidden by default, shown when toggle is yearly) */
+.price-monthly { display:block; }
+.price-yearly  { display:none;  }
+body.billing-yearly .price-monthly { display:none; }
+body.billing-yearly .price-yearly  { display:block; }
+body.billing-yearly .save-yearly   { display:block; }
+.save-yearly { display:none; }
+
 .plan-btn {
-  width:100%;padding:11px;border:none;border-radius:var(--r2);
-  font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:13px;
-  cursor:pointer;transition:all 0.2s;margin-top:8px;
+  width:100%; padding:13px; border:none; border-radius:14px;
+  font-family:'Cabinet Grotesk',sans-serif; font-weight:800;
+  font-size:13px; cursor:pointer; letter-spacing:0.4px;
+  transition:all 0.2s; position:relative; overflow:hidden; margin-top:auto;
 }
-.plan-btn-free { background:var(--ink2);color:var(--silver);border:1px solid var(--line2); }
-.plan-btn-pro { background:var(--gold);color:var(--ink); }
-.plan-btn-pro:hover { background:var(--gold2);transform:translateY(-2px); }
-.plan-btn-premium { background:linear-gradient(135deg,var(--purple),#7c3aed);color:#fff; }
-.plan-btn-premium:hover { opacity:0.9;transform:translateY(-2px); }
-.plan-close-btn {
-  display:block;width:100%;padding:10px;background:transparent;
-  border:none;color:var(--silver);font-size:13px;cursor:pointer;margin-top:8px;
+.plan-btn::before { content:''; position:absolute; inset:0; background:rgba(255,255,255,0.1); opacity:0; transition:opacity 0.2s; }
+.plan-btn:hover::before { opacity:1; }
+.plan-btn-free { background:rgba(255,255,255,0.05); color:var(--silver); border:1px solid rgba(255,255,255,0.1); }
+.plan-btn-free:hover { background:rgba(255,255,255,0.09); color:var(--text); }
+.plan-btn-pro { background:linear-gradient(135deg,var(--gold),var(--gold2)); color:var(--ink); box-shadow:0 4px 20px rgba(245,200,66,0.3); }
+.plan-btn-pro:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(245,200,66,0.5); }
+.plan-btn-premium { background:linear-gradient(135deg,#a855f7,#7c3aed); color:#fff; box-shadow:0 4px 20px rgba(168,85,247,0.3); }
+.plan-btn-premium:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(168,85,247,0.5); }
+
+/* --- Social proof --- */
+.pricing-social {
+  display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap;
+  padding:12px 20px; margin-bottom:18px;
+  background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:14px;
 }
-/* Comparison table */
-.compare-table { width:100%;border-collapse:collapse;margin-top:16px;font-size:12px; }
-.compare-table th { padding:8px 10px;text-align:center;color:var(--silver);font-weight:600;border-bottom:1px solid var(--line); }
+.pricing-social-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--silver); font-weight:600; }
+.pricing-social-dot { width:5px; height:5px; border-radius:50%; background:var(--green); flex-shrink:0; }
+
+/* --- Compare Table --- */
+.compare-section-title { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--silver); text-align:center; margin:18px 0 10px; }
+.compare-table { width:100%; border-collapse:collapse; font-size:12px; }
+.compare-table th { padding:9px 10px; text-align:center; color:var(--silver); font-weight:700; font-size:10px; letter-spacing:1px; text-transform:uppercase; border-bottom:1px solid var(--line); }
 .compare-table th:first-child { text-align:left; }
-.compare-table td { padding:7px 10px;text-align:center;border-bottom:1px solid var(--line);color:var(--text2); }
-.compare-table td:first-child { text-align:left;color:var(--text); }
+.compare-table td { padding:8px 10px; text-align:center; border-bottom:1px solid rgba(255,255,255,0.04); color:var(--text2); }
+.compare-table td:first-child { text-align:left; color:var(--text); font-weight:600; }
 .compare-table tr:last-child td { border-bottom:none; }
-.compare-table .yes { color:var(--green);font-weight:700; }
-.compare-table .no { color:var(--silver); }
-.compare-section-title { font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--silver);text-align:center;margin:16px 0 8px; }
+.compare-table tr:hover td { background:rgba(255,255,255,0.02); }
+.compare-table .yes { color:var(--green); font-weight:700; }
+.compare-table .no { color:rgba(255,255,255,0.18); }
+
+/* --- Footer --- */
+.plan-close-btn {
+  display:block; margin:18px auto 0; background:transparent; border:none;
+  color:var(--silver); font-size:12px; cursor:pointer;
+  font-family:'Cabinet Grotesk',sans-serif; transition:color 0.2s;
+}
+.plan-close-btn:hover { color:var(--text); }
+.pricing-guarantee {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  margin-top:14px; font-size:11px; color:var(--silver);
+}
 /* Plan indicator in topbar */
 .pro-badge {
   background:linear-gradient(135deg,var(--gold),var(--gold2));
@@ -2205,10 +2329,11 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
   .modal h2 { font-size: 18px; }
 
   /* -- Pricing modal -- */
-  .pricing-modal { padding: 20px 14px; border-radius: 16px; }
-  .pricing-modal-headline { font-size: 22px; }
+  .pricing-modal { padding: 24px 16px 20px; border-radius: 20px; }
+  .pricing-headline { font-size: 22px; }
   .plans-grid { grid-template-columns: 1fr !important; gap: 12px; }
   .compare-table { font-size: 11px; }
+  .billing-toggle-wrap { gap: 8px; }
 
   /* -- Saved chats panel -- */
   .saved-chats-panel { width: 100% !important; right: 0 !important; top: 52px !important; bottom: 0; border-radius: 0; }
@@ -2265,74 +2390,129 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
 <!-- PRICING MODAL -->
 <div class="pricing-modal-overlay" id="pricingModal">
   <div class="pricing-modal">
-    <div class="pricing-modal-headline">🚀 Upgrade Your Life With AI</div>
-    <p class="pricing-modal-tagline">Your AI partner for productivity, wealth building, and life planning.</p>
-    <p class="pricing-modal-sub">Turn Your Daily Actions Into Wealth &amp; Growth</p>
+
+    <!-- Close button -->
+    <button class="pricing-close-x" onclick="closePricing()">✕</button>
+
+    <!-- Header -->
+    <div class="pricing-header">
+      <div class="pricing-eyebrow">⚡ FlowMind AI Plans</div>
+      <div class="pricing-headline">Invest in Your Best Self</div>
+      <p class="pricing-subline">Turn daily actions into wealth, focus, and unstoppable growth.</p>
+    </div>
+
+    <!-- Billing Toggle -->
+    <div class="billing-toggle-wrap">
+      <span class="billing-label active" id="lblMonthly" onclick="setBilling('monthly')">Monthly</span>
+      <div class="billing-toggle-btn" id="billingToggle" onclick="toggleBilling()"></div>
+      <span class="billing-label" id="lblYearly" onclick="setBilling('yearly')">Yearly</span>
+      <span class="billing-save-pill">🎉 Save up to 33%</span>
+    </div>
+
+    <!-- Social Proof Strip -->
+    <div class="pricing-social">
+      <div class="pricing-social-item"><span class="pricing-social-dot"></span> 100% secure payments via Razorpay</div>
+      <div class="pricing-social-item"><span class="pricing-social-dot"></span> Cancel anytime, no questions asked</div>
+      <div class="pricing-social-item"><span class="pricing-social-dot"></span> Instant activation after payment</div>
+    </div>
+
+    <!-- Plans Grid -->
     <div class="plans-grid">
-      <!-- FREE PLAN -->
+
+      <!-- FREE -->
       <div class="plan-card">
-        <div class="plan-name">🟢 Free</div>
-        <div class="plan-price">₹0 <span>/month</span></div>
-        <div class="plan-save">&nbsp;</div>
+        <span class="plan-icon">🟢</span>
+        <div class="plan-name">Free</div>
+        <div class="price-monthly">
+          <div class="plan-price"><span class="plan-price-sym">₹</span><span class="plan-price-amt">0</span><span class="plan-price-per">/mo</span></div>
+          <div class="plan-save">&nbsp;</div>
+        </div>
+        <div class="price-yearly" style="display:none">
+          <div class="plan-price"><span class="plan-price-sym">₹</span><span class="plan-price-amt">0</span><span class="plan-price-per">/mo</span></div>
+          <div class="plan-save">&nbsp;</div>
+        </div>
+        <div class="plan-desc">Perfect to explore FlowMind and feel the value before upgrading.</div>
+        <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li><span class="fi">✓</span> 25 AI chats/day</li>
-          <li><span class="fi">✓</span> 10 tasks total</li>
-          <li><span class="fi">✓</span> 5 goals total</li>
-          <li><span class="fi">✓</span> 1 quiz/day</li>
-          <li><span class="fi">✓</span> 2 basic games</li>
-          <li><span class="fi" style="color:var(--silver)">✗</span> No Wealth Tracking</li>
-          <li><span class="fi" style="color:var(--silver)">✗</span> No Smart Insights</li>
-          <li><span class="fi" style="color:var(--silver)">✗</span> No AI Reports</li>
+          <li><span class="fi yes">✓</span> 25 AI chats / day</li>
+          <li><span class="fi yes">✓</span> 10 tasks total</li>
+          <li><span class="fi yes">✓</span> 5 goals total</li>
+          <li><span class="fi yes">✓</span> 1 quiz / day</li>
+          <li><span class="fi yes">✓</span> 2 basic games</li>
+          <li><span class="fi no">✗</span> <span style="color:rgba(255,255,255,0.3)">No Wealth Tracking</span></li>
+          <li><span class="fi no">✗</span> <span style="color:rgba(255,255,255,0.3)">No Smart Insights</span></li>
+          <li><span class="fi no">✗</span> <span style="color:rgba(255,255,255,0.3)">No AI Reports</span></li>
         </ul>
         <button class="plan-btn plan-btn-free" onclick="closePricing()">Current Plan</button>
       </div>
-      <!-- PRO PLAN -->
+
+      <!-- PRO -->
       <div class="plan-card pro">
         <div class="plan-card-badge">⭐ MOST POPULAR</div>
-        <div class="plan-name" style="color:var(--gold)">🔵 Pro</div>
-        <div class="plan-price">₹299 <span>/month</span></div>
-        <div class="plan-save">or ₹199/mo billed yearly · Save 33%</div>
+        <span class="plan-icon" style="margin-top:14px;">⚡</span>
+        <div class="plan-name" style="color:var(--gold)">Pro</div>
+        <div class="price-monthly">
+          <div class="plan-price"><span class="plan-price-sym">₹</span><span class="plan-price-amt" style="color:var(--gold)">299</span><span class="plan-price-per">/mo</span></div>
+          <div class="plan-save">Billed monthly · Cancel anytime</div>
+        </div>
+        <div class="price-yearly" style="display:none">
+          <div class="plan-price"><span class="plan-price-sym">₹</span><span class="plan-price-amt" style="color:var(--gold)">199</span><span class="plan-price-per">/mo</span></div>
+          <div class="plan-save save-yearly" style="display:none">₹2,388/yr · You save ₹1,200 🎉</div>
+        </div>
+        <div class="plan-desc">For serious achievers who want unlimited AI power and real results.</div>
+        <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li><span class="fi">✓</span> Unlimited AI chats</li>
-          <li><span class="fi">✓</span> Unlimited tasks & goals</li>
-          <li><span class="fi">✓</span> 5 quizzes/day</li>
-          <li><span class="fi">✓</span> All games unlocked</li>
-          <li><span class="fi">✓</span> Smart AI planning</li>
-          <li><span class="fi">✓</span> Wealth Growth Suggestions</li>
-          <li><span class="fi">✓</span> Monthly Productivity Report</li>
-          <li><span class="fi">✓</span> Priority AI Response</li>
+          <li><span class="fi yes">✓</span> <strong>Unlimited</strong> AI chats</li>
+          <li><span class="fi yes">✓</span> <strong>Unlimited</strong> tasks & goals</li>
+          <li><span class="fi yes">✓</span> 5 quizzes / day</li>
+          <li><span class="fi yes">✓</span> All 4 games unlocked</li>
+          <li><span class="fi yes">✓</span> Smart AI planning</li>
+          <li><span class="fi yes">✓</span> Wealth growth suggestions</li>
+          <li><span class="fi yes">✓</span> Monthly productivity report</li>
+          <li><span class="fi yes">✓</span> Priority AI response speed</li>
         </ul>
         <button class="plan-btn plan-btn-pro" onclick="startPayment('pro');closePricing();">Upgrade to Pro →</button>
       </div>
-      <!-- PREMIUM PLAN -->
+
+      <!-- PREMIUM -->
       <div class="plan-card premium">
         <div class="plan-card-badge premium-badge">🔥 BEST VALUE</div>
-        <div class="plan-name" style="color:var(--purple)">🟡 Premium</div>
-        <div class="plan-price purple">₹699 <span>/month</span></div>
-        <div class="plan-save">or ₹499/mo billed yearly · Save 29%</div>
+        <span class="plan-icon" style="margin-top:14px;">👑</span>
+        <div class="plan-name" style="color:var(--purple)">Premium</div>
+        <div class="price-monthly">
+          <div class="plan-price"><span class="plan-price-sym">₹</span><span class="plan-price-amt" style="color:var(--purple)">699</span><span class="plan-price-per">/mo</span></div>
+          <div class="plan-save">Billed monthly · Cancel anytime</div>
+        </div>
+        <div class="price-yearly" style="display:none">
+          <div class="plan-price"><span class="plan-price-sym">₹</span><span class="plan-price-amt" style="color:var(--purple)">499</span><span class="plan-price-per">/mo</span></div>
+          <div class="plan-save save-yearly" style="display:none">₹5,988/yr · You save ₹2,400 🔥</div>
+        </div>
+        <div class="plan-desc">The complete AI life operating system. Wealth, insights, and advanced intelligence.</div>
+        <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li><span class="fi">✓</span> Everything in Pro</li>
-          <li><span class="fi">✓</span> Advanced AI (GPT-4 class)</li>
-          <li><span class="fi">✓</span> Full Wealth Tracking</li>
-          <li><span class="fi">✓</span> Deep Insights & Analytics</li>
-          <li><span class="fi">✓</span> AI Decision Assistant</li>
-          <li><span class="fi">✓</span> AI Life Score Tracker</li>
-          <li><span class="fi">✓</span> Early Access to New Features</li>
-          <li><span class="fi">✓</span> Advanced Monthly Reports</li>
+          <li><span class="fi yes">✓</span> Everything in Pro</li>
+          <li><span class="fi yes">✓</span> Advanced AI (GPT-4 class)</li>
+          <li><span class="fi yes">✓</span> Full wealth tracking</li>
+          <li><span class="fi yes">✓</span> Deep insights & analytics</li>
+          <li><span class="fi yes">✓</span> AI Decision Assistant</li>
+          <li><span class="fi yes">✓</span> AI Life Score Tracker</li>
+          <li><span class="fi yes">✓</span> Unlimited quizzes</li>
+          <li><span class="fi yes">✓</span> Early access to new features</li>
         </ul>
         <button class="plan-btn plan-btn-premium" onclick="startPayment('premium');closePricing();">Go Premium →</button>
       </div>
-    </div>
+
+    </div><!-- end plans-grid -->
 
     <!-- Comparison Table -->
-    <div class="compare-section-title">— Feature Comparison —</div>
+    <div class="compare-section-title">— Full Feature Comparison —</div>
     <table class="compare-table">
       <thead>
         <tr>
           <th>Feature</th>
           <th>Free</th>
-          <th style="color:var(--gold)">Pro</th>
-          <th style="color:var(--purple)">Premium</th>
+          <th style="color:var(--gold)">⚡ Pro</th>
+          <th style="color:var(--purple)">👑 Premium</th>
         </tr>
       </thead>
       <tbody>
@@ -2340,16 +2520,21 @@ body.light-mode .ambient-1, body.light-mode .ambient-2, body.light-mode .ambient
         <tr><td>Tasks</td><td>10 total</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
         <tr><td>Goals</td><td>5 total</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
         <tr><td>Daily Quiz</td><td>1/day</td><td>5/day</td><td class="yes">Unlimited</td></tr>
-        <tr><td>Games</td><td>2 basic</td><td class="yes">All unlocked</td><td class="yes">All unlocked</td></tr>
+        <tr><td>Games</td><td>2 basic</td><td class="yes">All 4 unlocked</td><td class="yes">All 4 unlocked</td></tr>
         <tr><td>Wealth Tracking</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
-        <tr><td>Smart Insights</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+        <tr><td>Smart AI Planning</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
         <tr><td>Monthly Reports</td><td class="no">✗</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+        <tr><td>Deep Analytics</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
         <tr><td>AI Decision Assistant</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
         <tr><td>AI Life Score</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
-        <tr><td>Deep Analytics</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
+        <tr><td>Advanced AI Model</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
         <tr><td>Early Feature Access</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✔</td></tr>
       </tbody>
     </table>
+
+    <div class="pricing-guarantee">
+      🔒 Secure payment · No hidden fees · Cancel anytime
+    </div>
 
     <button class="plan-close-btn" onclick="closePricing()">✕ Maybe later</button>
   </div>
@@ -7362,6 +7547,32 @@ function handleQuickEnter() {
 }
 
 
+
+// --- BILLING TOGGLE (Monthly / Yearly) ---
+let _billingMode = 'monthly';
+function toggleBilling() {
+  _billingMode = _billingMode === 'monthly' ? 'yearly' : 'monthly';
+  applyBilling();
+}
+function setBilling(mode) {
+  _billingMode = mode;
+  applyBilling();
+}
+function applyBilling() {
+  const toggle = document.getElementById('billingToggle');
+  const lblM   = document.getElementById('lblMonthly');
+  const lblY   = document.getElementById('lblYearly');
+  const isYearly = _billingMode === 'yearly';
+
+  if (toggle)  toggle.classList.toggle('yearly', isYearly);
+  if (lblM)    lblM.classList.toggle('active', !isYearly);
+  if (lblY)    lblY.classList.toggle('active', isYearly);
+
+  // Show/hide price blocks
+  document.querySelectorAll('.price-monthly').forEach(el => el.style.display = isYearly ? 'none' : 'block');
+  document.querySelectorAll('.price-yearly').forEach(el  => el.style.display = isYearly ? 'block' : 'none');
+  document.querySelectorAll('.save-yearly').forEach(el   => el.style.display = isYearly ? 'block' : 'none');
+}
 
 // Close modal on outside click
 document.getElementById('pricingModal').addEventListener('click', function(e) {
